@@ -1,0 +1,6 @@
+@ISKI.SARS.API_HostAddress = http://localhost:5111
+
+GET {{ISKI.SARS.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
