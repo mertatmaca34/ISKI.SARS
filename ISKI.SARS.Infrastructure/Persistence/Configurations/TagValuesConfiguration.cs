@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ISKI.SARS.Infrastructure.Persistence.Configurations;
+using ISKI.SARS.Core.Infrastructure;
 
 namespace ISKI.SARS.Infrastructure.Persistence.Configurations;
 

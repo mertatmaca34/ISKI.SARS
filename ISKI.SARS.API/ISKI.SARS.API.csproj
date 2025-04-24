@@ -17,4 +17,8 @@
     <ProjectReference Include="..\ISKI.SARS.Infrastructure\ISKI.SARS.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
 </Project>

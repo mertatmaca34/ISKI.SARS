@@ -1,4 +1,5 @@
-﻿using ISKI.SARS.Domain.Entities;
+﻿using ISKI.SARS.Core.Infrastructure;
+using ISKI.SARS.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

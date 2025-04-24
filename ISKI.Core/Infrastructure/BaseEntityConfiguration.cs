@@ -1,8 +1,8 @@
-﻿using ISKI.SARS.Domain.Common;
+﻿using ISKI.SARS.Core.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ISKI.SARS.Infrastructure.Persistence.Configurations;
+namespace ISKI.SARS.Core.Infrastructure;
 
 public abstract class BaseEntityConfiguration<T, TId> : IEntityTypeConfiguration<T> where T : BaseEntity<TId>
 {
