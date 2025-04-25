@@ -1,5 +1,8 @@
 using ISKI.Core.Infrastructure;
+using ISKI.SARS.Application;
+using ISKI.SARS.Application.Features.Tags.Profiles;
 using ISKI.SARS.Domain.Services;
+using ISKI.SARS.Infrastructure;
 using ISKI.SARS.Infrastructure.Persistence;
 using ISKI.SARS.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +16,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<ITagRepository, TagRepository>();
-
-builder.Services.AddDbContext<SarsDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddApplicationServices();
+builder.Services.AddInfrastructureServices(builder.Configuration.GetConnectionString("DefaultConnection")!);
 
 var app = builder.Build();
 

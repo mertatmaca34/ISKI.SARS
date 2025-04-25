@@ -18,7 +18,7 @@ public class ReportTemplateTagsConfiguration : BaseEntityConfiguration<ReportTem
             .HasForeignKey(x => x.ReportTemplateId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne<Tags>()
+        builder.HasOne<Tag>()
             .WithMany()
             .HasForeignKey(x => x.TagId)
             .OnDelete(DeleteBehavior.Cascade);

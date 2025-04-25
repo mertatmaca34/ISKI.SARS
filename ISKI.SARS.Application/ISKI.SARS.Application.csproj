@@ -10,4 +10,13 @@
     <Folder Include="Services\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="14.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ISKI.Core\ISKI.Core.csproj" />
+    <ProjectReference Include="..\ISKI.SARS.Domain\ISKI.SARS.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

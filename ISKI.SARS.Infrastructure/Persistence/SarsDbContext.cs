@@ -11,7 +11,7 @@ public class SarsDbContext : DbContext
     {
     }
 
-    public DbSet<Tags> Tags => Set<Tags>();
+    public DbSet<Tag> Tags => Set<Tag>();
     public DbSet<TagValues> TagValues => Set<TagValues>();
     public DbSet<ReportTemplates> ReportTemplates => Set<ReportTemplates>();
     public DbSet<ReportTemplateTags> ReportTemplateTags => Set<ReportTemplateTags>();

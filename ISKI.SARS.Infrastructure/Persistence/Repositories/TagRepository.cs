@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ISKI.SARS.Infrastructure.Persistence.Repositories;
 
-public class TagRepository : EfRepositoryBase<Tags, SarsDbContext>, ITagRepository
+public class TagRepository : EfRepositoryBase<Tag, SarsDbContext>, ITagRepository
 {
     public TagRepository(SarsDbContext context) : base(context)
     {

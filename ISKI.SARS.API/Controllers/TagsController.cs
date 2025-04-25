@@ -23,7 +23,7 @@ public class TagsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] Tags tag)
+    public async Task<IActionResult> Create([FromBody] Tag tag)
     {
         await _tagRepository.AddAsync(tag);
         return Ok();

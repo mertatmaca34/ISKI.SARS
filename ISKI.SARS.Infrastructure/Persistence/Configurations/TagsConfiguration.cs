@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ISKI.SARS.Infrastructure.Persistence.Configurations;
 
-public class TagsConfiguration : BaseEntityConfiguration<Tags, Guid>
+public class TagsConfiguration : BaseEntityConfiguration<Tag, Guid>
 {
-    public override void Configure(EntityTypeBuilder<Tags> builder)
+    public override void Configure(EntityTypeBuilder<Tag> builder)
     {
         base.Configure(builder);
 
