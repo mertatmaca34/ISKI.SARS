@@ -1,5 +1,6 @@
 ﻿using ISKI.Core.Infrastructure;
 using ISKI.SARS.Domain.Entities;
+using ISKI.SARS.Domain.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;

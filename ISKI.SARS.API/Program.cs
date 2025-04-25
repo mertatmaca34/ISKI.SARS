@@ -1,4 +1,7 @@
+using ISKI.Core.Infrastructure;
+using ISKI.SARS.Domain.Services;
 using ISKI.SARS.Infrastructure.Persistence;
+using ISKI.SARS.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +12,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<ITagRepository, TagRepository>();
 
 builder.Services.AddDbContext<SarsDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

@@ -9,7 +9,6 @@ public class SarsDbContext : DbContext
 {
     public SarsDbContext(DbContextOptions<SarsDbContext> options) : base(options)
     {
-        Database.EnsureCreated();
     }
 
     public DbSet<Tags> Tags => Set<Tags>();
