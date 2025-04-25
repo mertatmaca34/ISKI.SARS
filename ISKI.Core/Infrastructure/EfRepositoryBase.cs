@@ -15,25 +15,29 @@ public class EfRepositoryBase<TEntity, TContext>(TContext context) : IAsyncRepos
     public virtual async Task<TEntity?> GetByIdAsync(Guid id)
         => await _context.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id && x.DeletedAt == null);
 
-    public virtual async Task AddAsync(TEntity entity)
+    public virtual async Task<TEntity> AddAsync(TEntity entity)
     {
         await _context.Set<TEntity>().AddAsync(entity);
         await _context.SaveChangesAsync();
+        return entity;
     }
 
-    public virtual async Task UpdateAsync(TEntity entity)
+    public virtual async Task<TEntity> UpdateAsync(TEntity entity)
     {
+        entity.UpdatedAt = DateTime.UtcNow;
         _context.Set<TEntity>().Update(entity);
         await _context.SaveChangesAsync();
+        return entity;
     }
 
-    public virtual async Task DeleteAsync(Guid id)
+    public virtual async Task<TEntity?> DeleteAsync(Guid id)
     {
         var entity = await _context.Set<TEntity>().FindAsync(id);
-        if (entity != null)
-        {
-            entity.DeletedAt = DateTime.UtcNow;
-            await _context.SaveChangesAsync();
-        }
+        if (entity == null)
+            return null;
+
+        entity.DeletedAt = DateTime.UtcNow;
+        await _context.SaveChangesAsync();
+        return entity;
     }
 }
