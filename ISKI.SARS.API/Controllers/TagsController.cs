@@ -29,11 +29,64 @@ public class TagsController : ControllerBase
         return Created("", result);
     }
 
+    // GET /api/tags
     [HttpGet]
     public async Task<IActionResult> Get()
     {
         var tags = await _tagRepository.GetAllAsync();
         var result = _mapper.Map<List<TagDto>>(tags);
+        return Ok(result);
+    }
+
+    // GET /api/tags/{id}
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var tag = await _tagRepository.GetByIdAsync(id);
+        if (tag == null) return NotFound();
+
+        var result = _mapper.Map<TagDto>(tag);
+        return Ok(result);
+    }
+
+    // POST /api/tags
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] CreateTagDto dto)
+    {
+        var entity = _mapper.Map<Tag>(dto);
+        entity.Id = Guid.NewGuid();
+        entity.CreatedAt = DateTime.UtcNow;
+
+        var result = await _tagRepository.AddAsync(entity);
+        var dtoResult = _mapper.Map<TagDto>(result);
+
+        return CreatedAtAction(nameof(GetById), new { id = dtoResult.Id }, dtoResult);
+    }
+
+    // PUT /api/tags/{id}
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateTagDto dto)
+    {
+        if (id != dto.Id)
+            return BadRequest("URL ile gövde ID eşleşmiyor.");
+
+        var entity = _mapper.Map<Tag>(dto);
+        entity.UpdatedAt = DateTime.UtcNow;
+
+        var updated = await _tagRepository.UpdateAsync(entity);
+        var result = _mapper.Map<TagDto>(updated);
+
+        return Ok(result);
+    }
+
+    // DELETE /api/tags/{id}
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var deleted = await _tagRepository.DeleteAsync(id);
+        if (deleted == null) return NotFound();
+
+        var result = _mapper.Map<TagDto>(deleted);
         return Ok(result);
     }
 }
