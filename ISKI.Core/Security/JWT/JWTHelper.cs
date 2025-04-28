@@ -7,15 +7,10 @@ using ISKI.Core.Security.Entities;
 
 namespace ISKI.Core.Security.JWT;
 
-public class JwtHelper
+public class JwtHelper(IConfiguration configuration)
 {
-    private readonly TokenOptions _tokenOptions;
-
-    public JwtHelper(IConfiguration configuration)
-    {
-        _tokenOptions = configuration.GetSection("TokenOptions").Get<TokenOptions>()
+    private readonly TokenOptions _tokenOptions = configuration.GetSection("TokenOptions").Get<TokenOptions>()
                         ?? throw new Exception("TokenOptions bulunamadı!");
-    }
 
     public AccessToken CreateAccessToken(User user, IList<OperationClaim> operationClaims)
     {
@@ -41,13 +36,13 @@ public class JwtHelper
         };
     }
 
-    private IEnumerable<Claim> SetClaims(User user, IList<OperationClaim> operationClaims)
+    private static List<Claim> SetClaims(User user, IList<OperationClaim> operationClaims)
     {
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
-            new Claim(ClaimTypes.Email, user.Email),
+            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
+            new(ClaimTypes.Email, user.Email),
         };
 
         claims.AddRange(operationClaims.Select(c => new Claim(ClaimTypes.Role, c.Name)));
