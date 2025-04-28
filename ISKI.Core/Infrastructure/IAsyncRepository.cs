@@ -1,11 +1,16 @@
-﻿using ISKI.Core.Infrastructure.Paging;
-using ISKI.SARS.Core.Domain;
+﻿using ISKI.Core.Persistence.Dynamic;
+using ISKI.Core.Persistence.Paging;
+using System.Linq.Expressions;
 
-public interface IAsyncRepository<TEntity> where TEntity : BaseEntity<Guid>
+namespace ISKI.Core.Infrastructure;
+
+public interface IAsyncRepository<TEntity> where TEntity : class
 {
     Task<PaginatedList<TEntity>> GetAllAsync(int pageNumber, int pageSize);
+    Task<PaginatedList<TEntity>> GetAllAsync(int pageNumber, int pageSize, DynamicQuery dynamicQuery);
+    Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> predicate);
     Task<TEntity?> GetByIdAsync(Guid id);
     Task<TEntity> AddAsync(TEntity entity);
-    Task<TEntity> UpdateAsync(TEntity entity);  
+    Task<TEntity> UpdateAsync(TEntity entity);
     Task<TEntity?> DeleteAsync(Guid id);
 }

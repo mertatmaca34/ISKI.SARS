@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 
-namespace ISKI.Core.CrossCuttingConcerns.ExceptionHandling;
+namespace ISKI.Core.CrossCuttingConcerns.Exceptions.ExceptionHandling;
 
 public class ExceptionMiddleware
 {

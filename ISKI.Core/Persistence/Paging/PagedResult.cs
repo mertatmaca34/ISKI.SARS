@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISKI.Core.Infrastructure.Paging;
+namespace ISKI.Core.Persistence.Paging;
 
 public class PagedResult<T>
 {

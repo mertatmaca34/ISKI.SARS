@@ -1,4 +1,4 @@
-﻿namespace ISKI.Core.Infrastructure.Paging;
+﻿namespace ISKI.Core.Persistence.Paging;
 
 public class PageRequest
 {

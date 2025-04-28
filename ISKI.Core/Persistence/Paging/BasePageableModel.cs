@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISKI.Core.Domain.Common.Models;
+namespace ISKI.Core.Persistence.Paging;
 
 public class BasePageableModel
 {
