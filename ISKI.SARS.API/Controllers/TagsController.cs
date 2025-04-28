@@ -5,6 +5,7 @@ using ISKI.SARS.Domain.Entities;
 using ISKI.SARS.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using ISKI.Core.Infrastructure.Paging;
+using ISKI.Core.CrossCuttingConcerns.ExceptionHandling; // Bunu da ekle (ErrorResponse için)
 
 namespace ISKI.SARS.API.Controllers;
 
@@ -21,7 +22,6 @@ public class TagsController : ControllerBase
         _mapper = mapper;
     }
 
-    //POST/api/tags
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateTagDto dto)
     {
@@ -34,7 +34,6 @@ public class TagsController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = dtoResult.Id }, dtoResult);
     }
 
-    // GET /api/tags
     [HttpGet]
     public async Task<IActionResult> Get([FromQuery] PageRequest paginationQuery)
     {
@@ -53,23 +52,22 @@ public class TagsController : ControllerBase
         return Ok(pagedResult);
     }
 
-    // GET /api/tags/{id}
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id)
     {
         var tag = await _tagRepository.GetByIdAsync(id);
-        if (tag == null) return NotFound();
+        if (tag == null)
+            throw new NotFoundException("Tag not found."); // Özel bir exception atıyoruz
 
         var result = _mapper.Map<GetTagDto>(tag);
         return Ok(result);
     }
 
-    // PUT /api/tags/{id}
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateTagDto dto)
     {
         if (id != dto.Id)
-            return BadRequest("URL ile gövde ID eşleşmiyor.");  
+            throw new BadRequestException("URL ID ile body ID uyuşmuyor.");
 
         var entity = _mapper.Map<Tag>(dto);
         entity.UpdatedAt = DateTime.UtcNow;
@@ -80,12 +78,12 @@ public class TagsController : ControllerBase
         return Ok(result);
     }
 
-    // DELETE /api/tags/{id}
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {
         var deleted = await _tagRepository.DeleteAsync(id);
-        if (deleted == null) return NotFound();
+        if (deleted == null)
+            throw new NotFoundException("Tag not found for deletion.");
 
         var result = _mapper.Map<DeleteTagDto>(deleted);
         return Ok(result);

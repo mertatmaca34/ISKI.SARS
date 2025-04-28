@@ -1,3 +1,4 @@
+using ISKI.Core.CrossCuttingConcerns.ExceptionHandling;
 using ISKI.Core.Infrastructure;
 using ISKI.SARS.Application;
 using ISKI.SARS.Application.Features.Tags.Profiles;
@@ -30,6 +31,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseAuthorization();
 
