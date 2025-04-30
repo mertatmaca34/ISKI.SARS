@@ -38,9 +38,6 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration.GetConnectionString("DefaultConnection")!);
 
-// 💥 Exception Middleware
-builder.Services.AddScoped<ExceptionMiddleware>();
-
 // 🔐 CORS (Opsiyonel açılabilir)
 builder.Services.AddCors(options =>
 {

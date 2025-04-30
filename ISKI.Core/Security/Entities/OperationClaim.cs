@@ -1,8 +1,9 @@
-﻿namespace ISKI.Core.Security.Entities;
+﻿using ISKI.Core.Domain;
 
-public class OperationClaim
+namespace ISKI.Core.Security.Entities;
+
+public class OperationClaim : BaseEntity<Guid>
 {
-    public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;
 
     // Navigation

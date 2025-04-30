@@ -1,8 +1,9 @@
-﻿namespace ISKI.Core.Security.JWT;
+﻿using ISKI.Core.Domain;
 
-public class RefreshToken
+namespace ISKI.Core.Security.JWT;
+
+public class RefreshToken : BaseEntity<Guid>
 {
-    public Guid Id { get; set; }
     public Guid UserId { get; set; }
     public string Token { get; set; }
     public DateTime Expires { get; set; }

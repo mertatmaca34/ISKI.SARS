@@ -1,4 +1,4 @@
-﻿using ISKI.SARS.Core.Domain;
+﻿using ISKI.Core.Domain;
 
 namespace ISKI.SARS.Domain.Entities;
 

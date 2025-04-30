@@ -2,6 +2,7 @@
 using AutoMapper;
 using ISKI.SARS.Application.Features.Tags.Profiles;
 using ISKI.SARS.Application.Features.Tags.Rules;
+using ISKI.SARS.Application.Features.Auths.Rules;
 
 namespace ISKI.SARS.Application;
 
@@ -13,6 +14,7 @@ public static class ApplicationServiceRegistration
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ApplicationServiceRegistration).Assembly));
 
         services.AddScoped<TagBusinessRules>();
+        services.AddScoped<AuthBusinessRules>();
 
         return services;
     }

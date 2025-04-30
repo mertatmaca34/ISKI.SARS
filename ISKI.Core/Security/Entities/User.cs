@@ -1,10 +1,10 @@
-﻿using ISKI.Core.Security.Enums;
+﻿using ISKI.Core.Domain;
+using ISKI.Core.Security.Enums;
 
 namespace ISKI.Core.Security.Entities;
 
-public class User
+public class User : BaseEntity<Guid>
 {
-    public Guid Id { get; set; }
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
