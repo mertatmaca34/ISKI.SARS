@@ -2,10 +2,10 @@
 
 namespace ISKI.Core.Security.Entities;
 
-public class UserOperationClaim : BaseEntity<Guid>
+public class UserOperationClaim : BaseEntity<int>
 {
     public Guid UserId { get; set; }
-    public Guid OperationClaimId { get; set; }
+    public int OperationClaimId { get; set; }
 
     // Navigation
     public User User { get; set; }

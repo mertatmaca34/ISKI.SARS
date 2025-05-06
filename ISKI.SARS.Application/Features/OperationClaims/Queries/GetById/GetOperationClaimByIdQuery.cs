@@ -5,5 +5,5 @@ namespace ISKI.SARS.Application.Features.OperationClaims.Queries.GetById;
 
 public class GetOperationClaimByIdQuery : IRequest<OperationClaimDto>
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
 }

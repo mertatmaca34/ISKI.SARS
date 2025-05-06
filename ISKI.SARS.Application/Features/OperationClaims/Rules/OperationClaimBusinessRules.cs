@@ -15,7 +15,7 @@ public class OperationClaimBusinessRules
 
     public async Task OperationClaimNameMustBeUnique(string name)
     {
-        var existingClaim = await _operationClaimRepository.GetAsync(x => x.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
+        var existingClaim = await _operationClaimRepository.GetAsync(x => x.Name.ToLower() == name.ToLower());
         if (existingClaim != null)
             throw new BusinessException(OperationClaimMessages.OperationClaimNameAlreadyExists);
     }

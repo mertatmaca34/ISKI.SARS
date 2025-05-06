@@ -4,5 +4,5 @@ namespace ISKI.SARS.Application.Features.OperationClaims.Commands.Delete;
 
 public class DeleteOperationClaimCommand : IRequest<DeletedOperationClaimResponse>
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
 }

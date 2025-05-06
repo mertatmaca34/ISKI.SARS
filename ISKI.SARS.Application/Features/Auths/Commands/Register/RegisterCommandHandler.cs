@@ -53,13 +53,12 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AccessTok
 
         await _userRepository.AddAsync(user);
 
-        var defaultClaims = await _claimRepository.GetAllAsync(1, 50); // varsayılan tüm yetkileri çek
+        var defaultClaims = await _claimRepository.GetAllAsync(1, 50);
         foreach (var claim in defaultClaims.Items)
         {
             await _userClaimRepository.AddAsync(new UserOperationClaim
             {
-                Id = Guid.NewGuid(),
-                UserId = user.Id,
+                UserId = user.Id, // burası artık int olacak
                 OperationClaimId = claim.Id
             });
         }

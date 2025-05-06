@@ -6,6 +6,7 @@ using ISKI.SARS.Application.Features.OperationClaims.Commands.Delete;
 using ISKI.SARS.Application.Features.OperationClaims.Queries.GetList;
 using ISKI.SARS.Application.Features.OperationClaims.Queries;
 using ISKI.SARS.Application.Features.OperationClaims.Dtos;
+using ISKI.Core.Persistence.Paging;
 
 namespace ISKI.SARS.Application.Features.OperationClaims.Profiles;
 
@@ -25,6 +26,9 @@ public class OperationClaimProfile : Profile
         CreateMap<OperationClaim, DeletedOperationClaimResponse>();
 
         // Query
-        CreateMap<OperationClaim, OperationClaimDto>();
+        CreateMap<OperationClaim, OperationClaimDto>().ReverseMap();
+
+        CreateMap<PaginatedList<OperationClaim>, PaginatedList<OperationClaimDto>>();
+
     }
 }

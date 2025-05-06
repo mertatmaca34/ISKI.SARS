@@ -2,7 +2,7 @@
 
 namespace ISKI.Core.Security.Entities;
 
-public class OperationClaim : BaseEntity<Guid>
+public class OperationClaim : BaseEntity<int>
 {
     public string Name { get; set; } = string.Empty;
 

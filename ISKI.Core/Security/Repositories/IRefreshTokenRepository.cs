@@ -4,7 +4,6 @@ using ISKI.Core.Security.JWT;
 
 namespace ISKI.Core.Security.Repositories;
 
-public interface IRefreshTokenRepository : IAsyncRepository<RefreshToken>
+public interface IRefreshTokenRepository : IAsyncRepository<RefreshToken, Guid>
 {
-    // Refresh token özel işlemler gerekirse buraya eklenebilir
 }

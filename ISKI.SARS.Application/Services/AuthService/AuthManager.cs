@@ -41,7 +41,6 @@ public class AuthManager(
         {
             await userOperationClaimRepository.AddAsync(new UserOperationClaim
             {
-                Id = Guid.NewGuid(),
                 UserId = user.Id,
                 OperationClaimId = claim.Id
             });

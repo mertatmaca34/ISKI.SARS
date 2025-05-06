@@ -8,7 +8,7 @@ namespace ISKI.SARS.Infrastructure.Persistence;
 
 public class SarsDbContext(DbContextOptions<SarsDbContext> options) : DbContext(options)
 {
-    public DbSet<User> Users => Set<User>();
+    public DbSet<ISKI.Core.Security.Entities.User> Users => Set<ISKI.Core.Security.Entities.User>();
     public DbSet<OperationClaim> OperationClaims => Set<OperationClaim>();
     public DbSet<UserOperationClaim> UserOperationClaims => Set<UserOperationClaim>();
     public DbSet<Tag> Tags => Set<Tag>();

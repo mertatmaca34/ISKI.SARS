@@ -6,8 +6,8 @@ using ISKI.Core.Domain;
 
 namespace ISKI.Core.Infrastructure;
 
-public class EfRepositoryBase<TEntity, TContext>(TContext context) : IAsyncRepository<TEntity>
-    where TEntity : BaseEntity<Guid>
+public class EfRepositoryBase<TEntity, TEntityId, TContext>(TContext context) : IAsyncRepository<TEntity, TEntityId>
+    where TEntity : BaseEntity<TEntityId>
     where TContext : DbContext
 {
     protected readonly TContext _context = context;
@@ -75,9 +75,9 @@ public class EfRepositoryBase<TEntity, TContext>(TContext context) : IAsyncRepos
         return await _context.Set<TEntity>().FirstOrDefaultAsync(predicate);
     }
 
-    public virtual async Task<TEntity?> GetByIdAsync(Guid id)
+    public virtual async Task<TEntity?> GetByIdAsync(TEntityId id)
     {
-        return await _context.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id && x.DeletedAt == null);
+        return await _context.Set<TEntity>().FirstOrDefaultAsync(x => EqualityComparer<TEntityId>.Default.Equals(x.Id, id) && x.DeletedAt == null);
     }
 
     public virtual async Task<TEntity> AddAsync(TEntity entity)
@@ -95,14 +95,15 @@ public class EfRepositoryBase<TEntity, TContext>(TContext context) : IAsyncRepos
         return entity;
     }
 
-    public virtual async Task<TEntity?> DeleteAsync(Guid id)
+    public virtual async Task<TEntity?> DeleteAsync(TEntity entity)
     {
-        var entity = await _context.Set<TEntity>().FindAsync(id);
-        if (entity == null)
+        var existingEntity = await _context.Set<TEntity>().FindAsync(entity.Id);
+        if (existingEntity == null)
             return null;
 
-        entity.DeletedAt = DateTime.UtcNow;
+        existingEntity.DeletedAt = DateTime.UtcNow;
         await _context.SaveChangesAsync();
-        return entity;
+        return existingEntity;
     }
+
 }

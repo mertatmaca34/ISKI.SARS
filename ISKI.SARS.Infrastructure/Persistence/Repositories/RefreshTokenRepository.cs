@@ -6,9 +6,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ISKI.SARS.Infrastructure.Persistence.Repositories;
 
-public class RefreshTokenRepository : EfRepositoryBase<RefreshToken, SarsDbContext>, IRefreshTokenRepository
+public class RefreshTokenRepository(SarsDbContext context) : EfRepositoryBase<RefreshToken, Guid, SarsDbContext>(context), IRefreshTokenRepository
 {
-    public RefreshTokenRepository(SarsDbContext context) : base(context)
-    {
-    }
 }

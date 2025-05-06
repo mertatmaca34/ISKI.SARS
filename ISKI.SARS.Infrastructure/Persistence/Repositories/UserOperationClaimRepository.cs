@@ -9,6 +9,6 @@ using System.Threading.Tasks;
 
 namespace ISKI.SARS.Infrastructure.Persistence.Repositories;
 
-class UserOperationClaimRepository(SarsDbContext context) : EfRepositoryBase<UserOperationClaim, SarsDbContext>(context), IUserOperationClaimRepository
+class UserOperationClaimRepository(SarsDbContext context) : EfRepositoryBase<UserOperationClaim, int, SarsDbContext>(context), IUserOperationClaimRepository
 {
 }
