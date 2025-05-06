@@ -2,6 +2,7 @@
 using ISKI.Core.Security.JWT;
 using ISKI.SARS.Application;
 using ISKI.SARS.Infrastructure;
+using ISKI.SARS.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -95,4 +96,12 @@ app.UseAuthorization();
 app.UseCors("AllowAll");
 
 app.MapControllers();
+
+// 🔧 Veritabanı oluşturma ve migration uygulama
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<SarsDbContext>();
+    dbContext.Database.EnsureCreated();
+}
+
 app.Run();

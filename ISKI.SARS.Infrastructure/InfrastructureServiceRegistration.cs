@@ -14,7 +14,7 @@ public static class ServiceRegistration
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, string connectionString)
     {
         services.AddDbContext<SarsDbContext>(options =>
-            options.UseInMemoryDatabase(connectionString));
+            options.UseSqlServer(connectionString));
 
         services.AddScoped<JwtHelper>();
 
