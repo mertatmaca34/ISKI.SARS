@@ -1,8 +1,8 @@
 ﻿using ISKI.Core.Persistence.Paging;
 using ISKI.Core.Persistence.Dynamic;
-using ISKI.SARS.Core.Domain;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using ISKI.Core.Domain;
 
 namespace ISKI.Core.Infrastructure;
 
@@ -56,6 +56,18 @@ public class EfRepositoryBase<TEntity, TContext>(TContext context) : IAsyncRepos
             Count = totalCount,
             Pages = totalPages
         };
+    }
+
+    public virtual async Task<List<TEntity>> GetAllAsync(
+    Expression<Func<TEntity, bool>> predicate,
+    Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null)
+    {
+        IQueryable<TEntity> query = _context.Set<TEntity>();
+
+        if (include is not null)
+            query = include(query);
+
+        return await query.Where(predicate).ToListAsync();
     }
 
     public virtual async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> predicate)

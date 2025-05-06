@@ -1,4 +1,4 @@
-﻿namespace ISKI.SARS.Core.Domain;
+﻿namespace ISKI.Core.Domain;
 
 public abstract class BaseEntity<T>
 {

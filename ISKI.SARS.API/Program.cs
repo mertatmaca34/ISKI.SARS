@@ -1,40 +1,98 @@
-using ISKI.Core.CrossCuttingConcerns.Exceptions.ExceptionHandling;
-using ISKI.Core.Infrastructure;
+﻿using ISKI.Core.CrossCuttingConcerns.Exceptions.ExceptionHandling;
+using ISKI.Core.Security.JWT;
 using ISKI.SARS.Application;
-using ISKI.SARS.Application.Features.Tags.Profiles;
-using ISKI.SARS.Domain.Services;
 using ISKI.SARS.Infrastructure;
-using ISKI.SARS.Infrastructure.Persistence;
-using ISKI.SARS.Infrastructure.Persistence.Repositories;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// 🔐 TokenOptions config
+var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
+builder.Services.Configure<TokenOptions>(builder.Configuration.GetSection("TokenOptions"));
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+// 🔑 JWT Authentication
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = tokenOptions!.Issuer,
+            ValidAudience = tokenOptions!.Audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOptions.SecurityKey))
+        };
+    });
 
+// 📦 MediatR & AutoMapper
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+// 📚 Application & Infrastructure servisleri
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration.GetConnectionString("DefaultConnection")!);
+
+// 🔐 CORS (Opsiyonel açılabilir)
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder => builder
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader());
+});
+
+// 📖 Controller + Swagger
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(opt =>
+{
+    opt.SwaggerDoc("v1", new OpenApiInfo { Title = "ISKI.SARS API", Version = "v1" });
+
+    // 🔐 Swagger'da JWT Token gönderimi
+    var securitySchema = new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Description = "JWT Token header'ına 'Bearer {token}' formatında eklenmeli.",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT"
+    };
+    opt.AddSecurityDefinition("Bearer", securitySchema);
+    opt.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            securitySchema,
+            new[] { "Bearer" }
+        }
+    });
+});
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// 🌐 Environment config
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    //sd
     app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
 
+// 🔥 Global hata yönetimi
 app.UseMiddleware<ExceptionMiddleware>();
 
+// 🔑 Auth
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseCors("AllowAll");
 
+app.MapControllers();
 app.Run();
