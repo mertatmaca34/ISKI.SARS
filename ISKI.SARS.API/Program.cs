@@ -1,3 +1,4 @@
+using ISKI.Core.CrossCuttingConcerns.Exceptions.ExceptionHandling;
 using ISKI.Core.Infrastructure;
 using ISKI.SARS.Application;
 using ISKI.SARS.Application.Features.Tags.Profiles;
@@ -18,7 +19,6 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration.GetConnectionString("DefaultConnection")!);
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -30,6 +30,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseAuthorization();
 

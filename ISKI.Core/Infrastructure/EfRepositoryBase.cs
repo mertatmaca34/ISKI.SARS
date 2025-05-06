@@ -1,5 +1,8 @@
-﻿using ISKI.SARS.Core.Domain;
+﻿using ISKI.Core.Persistence.Paging;
+using ISKI.Core.Persistence.Dynamic;
+using ISKI.SARS.Core.Domain;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace ISKI.Core.Infrastructure;
 
@@ -9,11 +12,61 @@ public class EfRepositoryBase<TEntity, TContext>(TContext context) : IAsyncRepos
 {
     protected readonly TContext _context = context;
 
-    public virtual async Task<List<TEntity>> GetAllAsync()
-        => await _context.Set<TEntity>().Where(x => x.DeletedAt == null).ToListAsync();
+    public virtual async Task<PaginatedList<TEntity>> GetAllAsync(int pageNumber, int pageSize)
+    {
+        var query = _context.Set<TEntity>().Where(x => x.DeletedAt == null);
+
+        var totalCount = await query.CountAsync();
+        var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+
+        var data = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return new PaginatedList<TEntity>
+        {
+            Items = data,
+            Index = pageNumber,
+            Size = pageSize,
+            Count = totalCount,
+            Pages = totalPages
+        };
+    }
+
+    public virtual async Task<PaginatedList<TEntity>> GetAllAsync(int pageNumber, int pageSize, DynamicQuery dynamicQuery)
+    {
+        var query = _context.Set<TEntity>().Where(x => x.DeletedAt == null);
+
+        query = query.ApplyDynamicQuery(dynamicQuery);
+
+        var totalCount = await query.CountAsync();
+        var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+
+        var data = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return new PaginatedList<TEntity>
+        {
+            Items = data,
+            Index = pageNumber,
+            Size = pageSize,
+            Count = totalCount,
+            Pages = totalPages
+        };
+    }
+
+    public virtual async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        return await _context.Set<TEntity>().FirstOrDefaultAsync(predicate);
+    }
 
     public virtual async Task<TEntity?> GetByIdAsync(Guid id)
-        => await _context.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id && x.DeletedAt == null);
+    {
+        return await _context.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id && x.DeletedAt == null);
+    }
 
     public virtual async Task<TEntity> AddAsync(TEntity entity)
     {

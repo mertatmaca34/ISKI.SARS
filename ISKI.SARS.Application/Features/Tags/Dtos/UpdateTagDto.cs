@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ISKI.SARS.Application.Features.Tags.Dtos;
 
-namespace ISKI.SARS.Application.Features.Tags.Dtos;
-
-public class TagDto
+public class UpdateTagDto
 {
     public Guid Id { get; set; }
     public string DisplayName { get; set; } = string.Empty;
