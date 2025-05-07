@@ -10,8 +10,6 @@
     <Folder Include="Features\Auths\Dtos\" />
     <Folder Include="Features\Tags\Commands\DeleteTag\" />
     <Folder Include="Features\Tags\Commands\UpdateTag\" />
-    <Folder Include="Features\UserOperationClaims\Dtos\" />
-    <Folder Include="Features\UserOperationClaims\Queries\" />
   </ItemGroup>
 
   <ItemGroup>

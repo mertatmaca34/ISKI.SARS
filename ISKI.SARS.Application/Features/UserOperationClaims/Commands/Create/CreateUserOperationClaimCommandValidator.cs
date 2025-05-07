@@ -7,9 +7,6 @@ public class CreateUserOperationClaimCommandValidator : AbstractValidator<Create
 {
     public CreateUserOperationClaimCommandValidator()
     {
-        RuleFor(x => x.UserId)
-            .GreaterThan(0).WithMessage(UserOperationClaimMessages.UserIdInvalid);
-
         RuleFor(x => x.OperationClaimId)
             .GreaterThan(0).WithMessage(UserOperationClaimMessages.OperationClaimIdInvalid);
     }
