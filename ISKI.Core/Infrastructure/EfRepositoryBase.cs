@@ -77,7 +77,8 @@ public class EfRepositoryBase<TEntity, TEntityId, TContext>(TContext context) : 
 
     public virtual async Task<TEntity?> GetByIdAsync(TEntityId id)
     {
-        return await _context.Set<TEntity>().FirstOrDefaultAsync(x => EqualityComparer<TEntityId>.Default.Equals(x.Id, id) && x.DeletedAt == null);
+        return await _context.Set<TEntity>()
+            .FirstOrDefaultAsync(x => x.Id.Equals(id) && x.DeletedAt == null);
     }
 
     public virtual async Task<TEntity> AddAsync(TEntity entity)

@@ -7,23 +7,14 @@ using MediatR;
 
 namespace ISKI.SARS.Application.Features.Users.Queries.GetById;
 
-public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, UserDto>
+public class GetUserByIdQueryHandler(IUserRepository repository, IMapper mapper) : IRequestHandler<GetUserByIdQuery, UserDto>
 {
-    private readonly IUserRepository _repository;
-    private readonly IMapper _mapper;
-
-    public GetUserByIdQueryHandler(IUserRepository repository, IMapper mapper)
-    {
-        _repository = repository;
-        _mapper = mapper;
-    }
-
     public async Task<UserDto> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
-        var user = await _repository.GetByIdAsync(request.Id);
+        var user = await repository.GetByIdAsync(request.Id);
         if (user == null)
             throw new BusinessException(UserMessages.UserNotFound);
 
-        return _mapper.Map<UserDto>(user);
+        return mapper.Map<UserDto>(user);
     }
 }
