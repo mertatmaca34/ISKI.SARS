@@ -6,6 +6,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ISKI.SARS.Infrastructure.Persistence.Repositories;
 
-public class UserRepository(SarsDbContext context) : EfRepositoryBase<User, SarsDbContext>(context), IUserRepository
+public class UserRepository(SarsDbContext context) : EfRepositoryBase<User, Guid, SarsDbContext>(context), IUserRepository
 {
 }   

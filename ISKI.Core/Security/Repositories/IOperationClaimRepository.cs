@@ -3,6 +3,6 @@ using ISKI.Core.Infrastructure;
 
 namespace ISKI.Core.Security.Repositories;
 
-public interface IOperationClaimRepository : IAsyncRepository<OperationClaim>
+public interface IOperationClaimRepository : IAsyncRepository<OperationClaim, int>
 {
 }
