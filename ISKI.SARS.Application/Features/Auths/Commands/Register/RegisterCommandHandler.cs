@@ -1,42 +1,27 @@
 ﻿using AutoMapper;
+using ISKI.Core.Security.Constants;
 using ISKI.Core.Security.Entities;
 using ISKI.Core.Security.Hashing;
 using ISKI.Core.Security.JWT;
 using ISKI.Core.Security.Repositories;
+using ISKI.SARS.Application.Features.Auths.Constants;
 using ISKI.SARS.Application.Features.Auths.Rules;
 using ISKI.SARS.Domain.Services;
 using MediatR;
 
 namespace ISKI.SARS.Application.Features.Auths.Commands.Register;
 
-public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AccessToken>
+public class RegisterCommandHandler(
+    IUserRepository userRepository,
+    IOperationClaimRepository claimRepository,
+    IUserOperationClaimRepository userClaimRepository,
+    IMapper mapper,
+    JwtHelper jwtHelper,
+    AuthBusinessRules rules) : IRequestHandler<RegisterCommand, AccessToken>
 {
-    private readonly IUserRepository _userRepository;
-    private readonly IOperationClaimRepository _claimRepository;
-    private readonly IUserOperationClaimRepository _userClaimRepository;
-    private readonly IMapper _mapper;
-    private readonly JwtHelper _jwtHelper;
-    private readonly AuthBusinessRules _rules;
-
-    public RegisterCommandHandler(
-        IUserRepository userRepository,
-        IOperationClaimRepository claimRepository,
-        IUserOperationClaimRepository userClaimRepository,
-        IMapper mapper,
-        JwtHelper jwtHelper,
-        AuthBusinessRules rules)
-    {
-        _userRepository = userRepository;
-        _claimRepository = claimRepository;
-        _userClaimRepository = userClaimRepository;
-        _mapper = mapper;
-        _jwtHelper = jwtHelper;
-        _rules = rules;
-    }
-
     public async Task<AccessToken> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        await _rules.EmailMustBeUnique(request.RegisterDto.Email);
+        await rules.EmailMustBeUnique(request.RegisterDto.Email);
 
         HashingHelper.CreatePasswordHash(request.RegisterDto.Password, out var hash, out var salt);
 
@@ -51,19 +36,18 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AccessTok
             Status = true
         };
 
-        await _userRepository.AddAsync(user);
+        await userRepository.AddAsync(user);
 
-        var defaultClaims = await _claimRepository.GetAllAsync(1, 50);
-        foreach (var claim in defaultClaims.Items)
+        var pendingRole = await claimRepository.GetAsync(x => x.Name == GeneralOperationClaims.PendingUser);
+        rules.DefaultPendingRoleMustExist(pendingRole);
+
+        await userClaimRepository.AddAsync(new UserOperationClaim
         {
-            await _userClaimRepository.AddAsync(new UserOperationClaim
-            {
-                UserId = user.Id, // burası artık int olacak
-                OperationClaimId = claim.Id
-            });
-        }
+            UserId = user.Id,
+            OperationClaimId = pendingRole.Id
+        });
 
-        var token = _jwtHelper.CreateAccessToken(user, defaultClaims.Items);
+        var token = jwtHelper.CreateAccessToken(user, new List<OperationClaim> { pendingRole });
         return token;
     }
 }

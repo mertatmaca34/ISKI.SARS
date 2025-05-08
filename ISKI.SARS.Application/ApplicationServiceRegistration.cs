@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using AutoMapper;
 using ISKI.SARS.Application.Features.Tags.Profiles;
 using ISKI.SARS.Application.Features.Tags.Rules;
 using ISKI.SARS.Application.Features.Auths.Rules;

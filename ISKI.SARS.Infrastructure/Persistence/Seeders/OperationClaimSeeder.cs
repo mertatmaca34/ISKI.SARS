@@ -11,7 +11,12 @@ public static class OperationClaimSeeder
         var existingClaims = await repository.GetAllAsync(1, 100);
         var existingNames = existingClaims.Items.Select(c => c.Name).ToHashSet();
 
-        var defaultClaims = new List<string> { GeneralOperationClaims.Admin };
+        var defaultClaims = new List<string>
+        {
+            GeneralOperationClaims.Admin,
+            GeneralOperationClaims.Operator,
+            GeneralOperationClaims.PendingUser
+        };
 
         foreach (var claim in defaultClaims)
         {
