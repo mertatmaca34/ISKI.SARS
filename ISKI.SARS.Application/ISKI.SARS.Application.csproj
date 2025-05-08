@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ISKI.Core\ISKI.Core.csproj" />
     <ProjectReference Include="..\ISKI.SARS.Domain\ISKI.SARS.Domain.csproj" />
+    <ProjectReference Include="..\ISKI.SARS.Infrastructure\ISKI.SARS.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,20 +1,28 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using ISKI.SARS.Domain.Services;
-using ISKI.SARS.Infrastructure.Persistence;
-using ISKI.SARS.Infrastructure.Persistence.Repositories;
+﻿using ISKI.Core.Security.JWT;
 using ISKI.Core.Security.Repositories;
-using ISKI.Core.Security.JWT;
-using Microsoft.Extensions.Configuration;
+using ISKI.SARS.Domain.Services;
+using ISKI.SARS.Infrastructure.Persistence.Repositories;
+using ISKI.SARS.Infrastructure.Persistence;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.DependencyInjection;
+using System.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace ISKI.SARS.Infrastructure;
-
-public static class ServiceRegistration
+public static class InfrastructureServiceRegistration
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, string connectionString)
     {
-        services.AddDbContext<SarsDbContext>(options =>
-            options.UseSqlServer(connectionString));
+        if (CanConnect(connectionString))
+        {
+            services.AddDbContext<SarsDbContext>(options =>
+                options.UseSqlServer(connectionString));
+        }
+        else
+        {
+            services.AddDbContext<SarsDbContext>(options =>
+            options.UseInMemoryDatabase("FakeDB"));
+        }
 
         services.AddScoped<JwtHelper>();
 
@@ -23,8 +31,21 @@ public static class ServiceRegistration
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserOperationClaimRepository, UserOperationClaimRepository>();
         services.AddScoped<IOperationClaimRepository, OperationClaimRepository>();
-        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
         return services;
+    }
+
+    private static bool CanConnect(string connectionString)
+    {
+        try
+        {
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            return connection.State == ConnectionState.Open;
+        }
+        catch
+        {
+            return false;
+        }
     }
 }
