@@ -5,6 +5,7 @@ using ISKI.SARS.Application.Features.Tags.Rules;
 using ISKI.SARS.Application.Features.Auths.Rules;
 using ISKI.SARS.Application.Features.OperationClaims.Rules;
 using ISKI.SARS.Application.Features.UserOperationClaims.Rules;
+using ISKI.SARS.Application.Features.Users.Rules;
 
 namespace ISKI.SARS.Application;
 
@@ -15,10 +16,11 @@ public static class ApplicationServiceRegistration
         services.AddAutoMapper(typeof(TagProfile).Assembly);
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ApplicationServiceRegistration).Assembly));
 
-        services.AddScoped<TagBusinessRules>();
         services.AddScoped<AuthBusinessRules>();
         services.AddScoped<OperationClaimBusinessRules>();
+        services.AddScoped<TagBusinessRules>();
         services.AddScoped<UserOperationClaimBusinessRules>();
+        services.AddScoped<UserBusinessRules>();
 
         return services;
     }

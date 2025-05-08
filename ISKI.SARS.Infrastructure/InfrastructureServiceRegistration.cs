@@ -35,8 +35,12 @@ public static class InfrastructureServiceRegistration
 
         using (var scope = services.BuildServiceProvider().CreateScope())
         {
-            var repo = scope.ServiceProvider.GetRequiredService<IOperationClaimRepository>();
-            OperationClaimSeeder.SeedAsync(repo).Wait();
+            var opClaimRepo = scope.ServiceProvider.GetRequiredService<IOperationClaimRepository>();
+            OperationClaimSeeder.SeedAsync(opClaimRepo).Wait();
+
+            var userRepo = scope.ServiceProvider.GetRequiredService<IUserRepository>();
+            var userOpClaimRepo = scope.ServiceProvider.GetRequiredService<IUserOperationClaimRepository>();
+            UserSeeder.SeedAsync(userRepo, opClaimRepo, userOpClaimRepo).Wait();
         }
 
         return services;
