@@ -3,6 +3,7 @@ using ISKI.Core.Security.Repositories;
 using ISKI.SARS.Domain.Services;
 using ISKI.SARS.Infrastructure.Persistence.Repositories;
 using ISKI.SARS.Infrastructure.Persistence;
+using ISKI.SARS.Infrastructure.Persistence.Seeders;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.DependencyInjection;
 using System.Data;
@@ -21,7 +22,7 @@ public static class InfrastructureServiceRegistration
         else
         {
             services.AddDbContext<SarsDbContext>(options =>
-            options.UseInMemoryDatabase("FakeDB"));
+                options.UseInMemoryDatabase("FakeDB"));
         }
 
         services.AddScoped<JwtHelper>();
@@ -31,6 +32,16 @@ public static class InfrastructureServiceRegistration
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserOperationClaimRepository, UserOperationClaimRepository>();
         services.AddScoped<IOperationClaimRepository, OperationClaimRepository>();
+
+        using (var scope = services.BuildServiceProvider().CreateScope())
+        {
+            var opClaimRepo = scope.ServiceProvider.GetRequiredService<IOperationClaimRepository>();
+            OperationClaimSeeder.SeedAsync(opClaimRepo).Wait();
+
+            var userRepo = scope.ServiceProvider.GetRequiredService<IUserRepository>();
+            var userOpClaimRepo = scope.ServiceProvider.GetRequiredService<IUserOperationClaimRepository>();
+            UserSeeder.SeedAsync(userRepo, opClaimRepo, userOpClaimRepo).Wait();
+        }
 
         return services;
     }
