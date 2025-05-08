@@ -34,6 +34,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 // 📦 MediatR & AutoMapper
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddHttpContextAccessor();
 
 // 📚 Application & Infrastructure servisleri
 builder.Services.AddApplicationServices();
@@ -55,22 +56,29 @@ builder.Services.AddSwaggerGen(opt =>
 {
     opt.SwaggerDoc("v1", new OpenApiInfo { Title = "ISKI.SARS API", Version = "v1" });
 
-    // 🔐 Swagger'da JWT Token gönderimi
-    var securitySchema = new OpenApiSecurityScheme
+    var jwtSecurityScheme = new OpenApiSecurityScheme
     {
+        Scheme = "bearer",
+        BearerFormat = "JWT",
         Name = "Authorization",
-        Description = "JWT Token header'ına 'Bearer {token}' formatında eklenmeli.",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.Http,
-        Scheme = "bearer",
-        BearerFormat = "JWT"
+        Description = "JWT Token header'ına 'Bearer {token}' formatında girin.",
+
+        Reference = new OpenApiReference
+        {
+            Id = "Bearer",
+            Type = ReferenceType.SecurityScheme
+        }
     };
-    opt.AddSecurityDefinition("Bearer", securitySchema);
+
+    opt.AddSecurityDefinition("Bearer", jwtSecurityScheme);
+
     opt.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
-            securitySchema,
-            new[] { "Bearer" }
+            jwtSecurityScheme,
+            Array.Empty<string>()
         }
     });
 });
