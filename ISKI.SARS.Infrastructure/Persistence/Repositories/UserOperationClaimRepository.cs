@@ -1,14 +1,19 @@
 ﻿using ISKI.Core.Infrastructure;
 using ISKI.Core.Security.Entities;
 using ISKI.Core.Security.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace ISKI.SARS.Infrastructure.Persistence.Repositories;
 
-class UserOperationClaimRepository(SarsDbContext context) : EfRepositoryBase<UserOperationClaim, int, SarsDbContext>(context), IUserOperationClaimRepository
+public class UserOperationClaimRepository(SarsDbContext context)
+    : EfRepositoryBase<UserOperationClaim, int, SarsDbContext>(context), IUserOperationClaimRepository
 {
+    public async Task<List<OperationClaim>> GetClaims(User user)
+    {
+        return await _context.UserOperationClaims
+            .Where(uoc => uoc.UserId == user.Id)
+            .Include(uoc => uoc.OperationClaim)
+            .Select(uoc => uoc.OperationClaim!)
+            .ToListAsync();
+    }
 }
