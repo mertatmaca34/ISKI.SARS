@@ -15,6 +15,15 @@ namespace ISKI.SARS.WebUI.Controllers
         }
 
         [HttpGet]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.SetString("UserName", "Admin User");
+            HttpContext.Session.SetString("UserRole", "Yönetici");
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Login");
+        }
+
+        [HttpGet]
         public IActionResult Index()
         {
             return View(new LoginViewModel());
