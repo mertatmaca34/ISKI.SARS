@@ -1,8 +1,127 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    Layout = null;
+    ViewData["Title"] = "İSKİ Atıksu Arıtma Tesisleri";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script>
+        function openPage(pageId) {
+            const pages = document.querySelectorAll(".page");
+            pages.forEach(p => p.classList.add("hidden"));
+
+            document.getElementById(pageId).classList.remove("hidden");
+        }
+    </script>
+</head>
+<body class="flex flex-col h-screen">
+
+    <header class="bg-blue-600 text-white flex justify-between items-center px-6 py-3 relative">
+        <h1 class="font-semibold text-lg">💧 İSKİ Atıksu Arıtma Tesisleri</h1>
+
+        <!-- Kullanıcı Bilgisi ve Menü -->
+        <div class="relative">
+            <div id="userButton" class="cursor-pointer flex items-center gap-2" onclick="toggleUserMenu(event)">
+                <span>Admin User</span>
+                <div class="bg-green-500 rounded-full w-8 h-8 flex items-center justify-center text-white">A</div>
+            </div>
+
+            <div id="userDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white text-black rounded shadow-lg z-50">
+                <a href="#" class="block px-4 py-2 hover:bg-gray-100">👤 Kullanıcı Ayarları</a>
+                <a href="/Login/Logout" class="block px-4 py-2 hover:bg-gray-100 text-red-600">🚪 Oturumu Kapat</a>
+            </div>
+        </div>
+    </header>
+
+    <script>
+        function toggleUserMenu(event) {
+            event.stopPropagation(); // Menü tıklamasında kapanmayı engelle
+            const dropdown = document.getElementById("userDropdown");
+            dropdown.classList.toggle("hidden");
+        }
+
+        document.addEventListener("click", function (event) {
+            const dropdown = document.getElementById("userDropdown");
+            const button = document.getElementById("userButton");
+
+            // Tıklanan yer button veya dropdown değilse menüyü kapat
+            if (!dropdown.contains(event.target) && !button.contains(event.target)) {
+                dropdown.classList.add("hidden");
+            }
+        });
+    </script>
+
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Sidebar -->
+        <aside class="bg-blue-100 w-64 flex flex-col py-6 px-4 space-y-2">
+            <button onclick="openPage('dashboard')" class="text-left px-4 py-2 rounded hover:bg-blue-200 flex items-center gap-2">🏠 Ana Sayfa</button>
+            <button onclick="openPage('template')" class="text-left px-4 py-2 rounded hover:bg-blue-200 flex items-center gap-2">➕ Yeni Rapor Şablonu</button>
+            <button onclick="openPage('report')" class="text-left px-4 py-2 rounded hover:bg-blue-200 flex items-center gap-2">📄 Yeni Rapor Oluştur</button>
+            <button onclick="openPage('reports')" class="text-left px-4 py-2 rounded hover:bg-blue-200 flex items-center gap-2">📊 Raporlar</button>
+            <button onclick="openPage('settings')" class="text-left px-4 py-2 rounded hover:bg-blue-200 flex items-center gap-2">⚙️ Ayarlar</button>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 bg-gray-100 p-6 overflow-y-auto">
+            <!-- Dashboard -->
+            <div id="dashboard" class="page">
+                <h2 class="text-xl font-bold mb-4">Hoş Geldiniz, Admin User</h2>
+                <p class="mb-4">İSKİ Atıksu Arıtma Tesisleri Raporlama Sistemi'ne hoş geldiniz.</p>
+                <!-- Placeholder Kartlar -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="p-4 bg-white rounded shadow text-center">
+                        <div class="text-blue-600 text-2xl mb-2">📦</div>
+                        <div class="font-semibold">Rapor Şablonları</div>
+                        <div class="text-gray-500">0</div>
+                    </div>
+                    <div class="p-4 bg-white rounded shadow text-center">
+                        <div class="text-green-600 text-2xl mb-2">📈</div>
+                        <div class="font-semibold">Oluşturulan Raporlar</div>
+                        <div class="text-gray-500">0</div>
+                    </div>
+                    <div class="p-4 bg-white rounded shadow text-center">
+                        <div class="text-yellow-600 text-2xl mb-2">🔌</div>
+                        <div class="font-semibold">Aktif Bağlantılar</div>
+                        <div class="text-gray-500">1</div>
+                    </div>
+                    <div class="p-4 bg-white rounded shadow text-center">
+                        <div class="text-red-600 text-2xl mb-2">🗄️</div>
+                        <div class="font-semibold">Veri Kaynakları</div>
+                        <div class="text-gray-500">12</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Yeni Rapor Şablonu -->
+            <div id="template" class="page hidden">
+                <h2 class="text-xl font-bold mb-4">Yeni Rapor Şablonu Oluştur</h2>
+                <p class="mb-4 text-gray-600">Bu sayfa boş bırakıldı, ileride içerik eklenebilir.</p>
+            </div>
+
+            <!-- Yeni Rapor Oluştur -->
+            <div id="report" class="page hidden">
+                <h2 class="text-xl font-bold mb-4">Yeni Rapor Oluştur</h2>
+                <p class="mb-4 text-gray-600">Bu sayfa boş bırakıldı, ileride içerik eklenebilir.</p>
+            </div>
+
+            <!-- Raporlar -->
+            <div id="reports" class="page hidden">
+                <h2 class="text-xl font-bold mb-4">Raporlar</h2>
+                <p class="mb-4 text-gray-600">Bu sayfa boş bırakıldı, ileride içerik eklenebilir.</p>
+            </div>
+
+            <!-- Ayarlar -->
+            <div id="settings" class="page hidden">
+                <h2 class="text-xl font-bold mb-4">Ayarlar</h2>
+                <p class="mb-4 text-gray-600">Bu sayfa boş bırakıldı, ileride içerik eklenebilir.</p>
+            </div>
+
+        </main>
+    </div>
+</body>
+</html>
