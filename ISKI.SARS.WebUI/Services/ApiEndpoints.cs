@@ -6,6 +6,7 @@
         public static class Auth
         {
             public const string Login = "/api/Auth/login";
+            public const string Register = "/api/Auth/register";
         }
     }
 }

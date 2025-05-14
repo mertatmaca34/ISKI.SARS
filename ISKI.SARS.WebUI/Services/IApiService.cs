@@ -6,5 +6,6 @@ namespace ISKI.SARS.WebUI.Services
     public interface IApiService
     {
         Task<string> LoginAsync(LoginViewModel model);
+        Task<bool> RegisterAsync(RegisterViewModel model);
     }
 }

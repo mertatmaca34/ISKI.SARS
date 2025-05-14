@@ -106,5 +106,4 @@ public class EfRepositoryBase<TEntity, TEntityId, TContext>(TContext context) : 
         await _context.SaveChangesAsync();
         return existingEntity;
     }
-
 }
