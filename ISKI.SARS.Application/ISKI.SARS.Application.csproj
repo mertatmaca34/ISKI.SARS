@@ -8,8 +8,9 @@
 
   <ItemGroup>
     <Folder Include="Features\Auths\Dtos\" />
-    <Folder Include="Features\Tags\Commands\DeleteTag\" />
-    <Folder Include="Features\Tags\Commands\UpdateTag\" />
+    <Folder Include="Features\ReportTemplates\" />
+    <Folder Include="Features\InstantValues\Commands\DeleteTag\" />
+    <Folder Include="Features\InstantValues\Commands\UpdateTag\" />
   </ItemGroup>
 
   <ItemGroup>
