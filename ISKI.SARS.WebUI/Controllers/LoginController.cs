@@ -2,6 +2,9 @@
 using ISKI.SARS.WebUI.Models;
 using ISKI.SARS.WebUI.Services;
 using System.Threading.Tasks;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Http;
+using System.Runtime.InteropServices;
 
 namespace ISKI.SARS.WebUI.Controllers
 {
@@ -17,8 +20,6 @@ namespace ISKI.SARS.WebUI.Controllers
         [HttpGet]
         public IActionResult Logout()
         {
-            HttpContext.Session.SetString("UserName", "Admin User");
-            HttpContext.Session.SetString("UserRole", "Yönetici");
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Login");
         }
@@ -37,9 +38,20 @@ namespace ISKI.SARS.WebUI.Controllers
 
             try
             {
-                var result = await _apiService.LoginAsync(model);
-                // result => JWT ya da kullanıcı bilgileri
-                TempData["LoginResult"] = result;
+                var loginResponse = await _apiService.LoginAsync(model);
+                var token = loginResponse.Token;
+
+                // 🎯 Token'dan userId'yi çıkar
+                var handler = new JwtSecurityTokenHandler();
+                var jwtToken = handler.ReadJwtToken(token);
+                var userId = jwtToken.Claims
+                    .FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")
+                    ?.Value;
+
+                // 🌐 Session'a kaydet
+                HttpContext.Session.SetString("AccessToken", token);
+                HttpContext.Session.SetString("UserId", userId ?? "");
+
                 return RedirectToAction("Index", "Home");
             }
             catch (HttpRequestException)

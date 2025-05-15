@@ -1,6 +1,7 @@
 ﻿using ISKI.SARS.WebUI.Models;
 using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
 
 namespace ISKI.SARS.WebUI.Services
 {
@@ -11,10 +12,10 @@ namespace ISKI.SARS.WebUI.Services
         public ApiService(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new System.Uri(ApiEndpoints.BaseUrl);
+            _httpClient.BaseAddress = new Uri(ApiEndpoints.BaseUrl);
         }
 
-        public async Task<string> LoginAsync(LoginViewModel model)
+        public async Task<LoginResponse> LoginAsync(LoginViewModel model)
         {
             var jsonContent = new StringContent(
                 System.Text.Json.JsonSerializer.Serialize(model),
@@ -24,7 +25,9 @@ namespace ISKI.SARS.WebUI.Services
 
             var response = await _httpClient.PostAsync(ApiEndpoints.Auth.Login, jsonContent);
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsStringAsync();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<LoginResponse>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
 
         public async Task<bool> RegisterAsync(RegisterViewModel model)
@@ -37,7 +40,7 @@ namespace ISKI.SARS.WebUI.Services
                 password = model.Password
             };
 
-            var response = await _httpClient.PostAsJsonAsync("/api/Auth/register", payload);
+            var response = await _httpClient.PostAsJsonAsync(ApiEndpoints.Auth.Register, payload);
             return response.IsSuccessStatusCode;
         }
     }

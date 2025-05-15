@@ -14,3 +14,14 @@ namespace ISKI.SARS.WebUI.Models
     }
 }
 
+
+namespace ISKI.SARS.WebUI.Models
+{
+    public class LoginResponse
+    {
+        public string Token { get; set; }
+        public string Expiration { get; set; }
+    }
+}
+
+
