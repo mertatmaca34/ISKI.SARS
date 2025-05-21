@@ -8,5 +8,4 @@ public class ReportTemplateTag : BaseEntity<int>
     public string TagName { get; set; } = string.Empty;
     public string TagNodeId { get; set; } = string.Empty;
     public ReportTemplate? ReportTemplate { get; set; }
-
 }

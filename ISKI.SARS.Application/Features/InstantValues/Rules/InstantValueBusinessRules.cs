@@ -28,4 +28,11 @@ public class InstantValueBusinessRules(IInstantValueRepository instantValueRepos
         if (tagId <= 0)
             throw new BusinessException(InstantValueMessages.InvalidTagId);
     }
+    public async Task MustExist(DateTime timestamp)
+    {
+        var entity = await _instantValueRepository.GetByIdAsync(timestamp);
+
+        if (entity is null)
+            throw new BusinessException(InstantValueMessages.InstantValueNotFound);
+    }
 }
