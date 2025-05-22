@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
-using ISKI.SARS.Application.Features.ReportTemplates.Commands.CreateReportTemplate;
 using ISKI.SARS.Application.Features.ReportTemplates.Dtos;
 using ISKI.SARS.Application.Features.ReportTemplates.Rules;
 using ISKI.SARS.Domain.Entities;
 using ISKI.SARS.Domain.Services;
 using MediatR;
 
-namespace ISKI.SARS.Application.Features.ReportTemplates.Commands;
+namespace ISKI.SARS.Application.Features.ReportTemplates.Commands.CreateReportTemplate;
 
 public class CreateReportTemplateCommandHandler(
     IReportTemplateRepository repository,

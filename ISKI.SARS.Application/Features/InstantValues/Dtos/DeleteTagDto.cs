@@ -1,4 +1,4 @@
-﻿namespace ISKI.SARS.Application.Features.Tags.Dtos;
+﻿namespace ISKI.SARS.Application.Features.InstantValues.Dtos;
 
 public class DeleteTagDto
 {

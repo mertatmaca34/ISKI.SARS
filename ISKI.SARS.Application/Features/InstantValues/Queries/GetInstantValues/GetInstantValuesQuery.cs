@@ -1,7 +1,6 @@
 ﻿using ISKI.Core.Persistence.Dynamic;
 using ISKI.Core.Persistence.Paging;
 using ISKI.SARS.Application.Features.InstantValues.Dtos;
-using ISKI.SARS.Application.Features.Tags.Dtos;
 using MediatR;
 
 namespace ISKI.SARS.Application.Features.InstantValues.Queries.GetInstantValues;

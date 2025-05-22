@@ -1,9 +1,8 @@
 ﻿using FluentValidation;
 using ISKI.SARS.Application.Features.ReportTemplates.Commands;
-using ISKI.SARS.Application.Features.ReportTemplates.Commands.CreateReportTemplate;
 using ISKI.SARS.Application.Features.ReportTemplates.Constants;
 
-namespace ISKI.SARS.Application.Features.ReportTemplates.Validators;
+namespace ISKI.SARS.Application.Features.ReportTemplates.Commands.CreateReportTemplate;
 
 public class CreateReportTemplateCommandValidator : AbstractValidator<CreateReportTemplateCommand>
 {
