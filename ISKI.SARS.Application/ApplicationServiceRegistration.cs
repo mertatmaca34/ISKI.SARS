@@ -5,6 +5,7 @@ using ISKI.SARS.Application.Features.Auths.Rules;
 using ISKI.SARS.Application.Features.OperationClaims.Rules;
 using ISKI.SARS.Application.Features.UserOperationClaims.Rules;
 using ISKI.SARS.Application.Features.Users.Rules;
+using ISKI.SARS.Application.Features.ReportTemplates.Rules;
 
 namespace ISKI.SARS.Application;
 
@@ -21,6 +22,7 @@ public static class ApplicationServiceRegistration
         services.AddScoped<UserOperationClaimBusinessRules>();
         services.AddScoped<UserBusinessRules>();
         services.AddScoped<InstantValueBusinessRules>();
+        services.AddScoped<ReportTemplateBusinessRules>();
 
         return services;
     }
