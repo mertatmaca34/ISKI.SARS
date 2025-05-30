@@ -1,0 +1,50 @@
+﻿@{
+    Layout = null;
+    ViewData["Title"] = "Kullanıcı Bilgileri";
+    var user = (ISKI.SARS.WebUI.Models.UserInfoViewModel?)ViewData["UserInfo"];
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+
+    <div class="bg-white p-8 rounded shadow-md w-full max-w-xl">
+        <h2 class="text-2xl font-bold text-blue-700 mb-6 flex items-center gap-2">
+            <span>👤</span> Kullanıcı Bilgileri
+        </h2>
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
+                @Html.Raw(TempData["ErrorMessage"])
+            </div>
+        }
+        else if (user != null)
+        {
+            <div class="space-y-3 text-gray-800">
+                <p><strong>Ad:</strong> @user.FirstName</p>
+                <p><strong>Soyad:</strong> @user.LastName</p>
+                <p><strong>Email:</strong> @user.Email</p>
+                <p><strong>Durum:</strong> @(user.Status ? "Aktif" : "Pasif")</p>
+            </div>
+        }
+        else
+        {
+            <div class="bg-yellow-100 text-yellow-800 p-4 rounded">
+                Kullanıcı bilgileri bulunamadı.
+            </div>
+        }
+
+        <div class="mt-6 text-center">
+            <a href="/Home/Index" class="text-blue-600 hover:underline">← Ana Sayfaya Dön</a>
+        </div>
+    </div>
+
+</body>
+</html>
