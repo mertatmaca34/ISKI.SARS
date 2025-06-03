@@ -14,6 +14,7 @@
         {
             public const string GetById = "/api/Users/{0}";
             public const string Update = "/api/Users";
+            public const string ChangePassword = "/api/Users/change-password";
         }
     }
 }

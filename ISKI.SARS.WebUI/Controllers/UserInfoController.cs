@@ -55,4 +55,24 @@ public class UserInfoController : Controller
 
         return RedirectToAction("Index");
     }
+
+    [HttpPost]
+    public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+    {
+        var token = HttpContext.Session.GetString("AccessToken");
+        var userId = HttpContext.Session.GetString("UserId");
+
+        if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(userId))
+            return RedirectToAction("Index", "Login");
+
+        model.UserId = userId;
+        var success = await _apiService.ChangePasswordAsync(model, token);
+
+        if (success)
+            TempData["SuccessMessage"] = "Şifre başarıyla değiştirildi.";
+        else
+            TempData["ErrorMessage"] = "Şifre değiştirme başarısız.";
+
+        return RedirectToAction("Index");
+    }
 }
