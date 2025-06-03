@@ -27,7 +27,9 @@ public static class InfrastructureServiceRegistration
 
         services.AddScoped<JwtHelper>();
 
-        services.AddScoped<ITagRepository, TagRepository>();
+        services.AddScoped<IInstantValueRepository, InstantValueRepository>();
+        services.AddScoped<IReportTemplateRepository, ReportTemplateRepository>();
+        services.AddScoped<IReportTemplateTagRepository, ReportTemplateTagRepository>();
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserOperationClaimRepository, UserOperationClaimRepository>();

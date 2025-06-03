@@ -1,10 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ISKI.SARS.Application.Features.Tags.Profiles;
-using ISKI.SARS.Application.Features.Tags.Rules;
+using ISKI.SARS.Application.Features.InstantValues.Profiles;
+using ISKI.SARS.Application.Features.InstantValues.Rules;
 using ISKI.SARS.Application.Features.Auths.Rules;
 using ISKI.SARS.Application.Features.OperationClaims.Rules;
 using ISKI.SARS.Application.Features.UserOperationClaims.Rules;
 using ISKI.SARS.Application.Features.Users.Rules;
+using ISKI.SARS.Application.Features.ReportTemplates.Rules;
+using ISKI.SARS.Application.Features.ReportTemplateTags.Rules;
 
 namespace ISKI.SARS.Application;
 
@@ -12,14 +14,17 @@ public static class ApplicationServiceRegistration
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-        services.AddAutoMapper(typeof(TagProfile).Assembly);
+        services.AddAutoMapper(typeof(InstantValueMappingProfile).Assembly);
+
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ApplicationServiceRegistration).Assembly));
 
         services.AddScoped<AuthBusinessRules>();
         services.AddScoped<OperationClaimBusinessRules>();
-        services.AddScoped<TagBusinessRules>();
         services.AddScoped<UserOperationClaimBusinessRules>();
         services.AddScoped<UserBusinessRules>();
+        services.AddScoped<InstantValueBusinessRules>();
+        services.AddScoped<ReportTemplateBusinessRules>();
+        services.AddScoped<ReportTemplateTagBusinessRules>();
 
         return services;
     }
