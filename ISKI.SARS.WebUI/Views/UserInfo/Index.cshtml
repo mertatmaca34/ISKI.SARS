@@ -25,26 +25,29 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-800">
                 <div>
                     <label class="font-semibold block mb-1">Ad:</label>
-                    <input asp-for="FirstName" name="FirstName" class="w-full px-3 py-2 border border-gray-300 rounded" readonly />
+                    <input asp-for="FirstName" name="FirstName" pattern="^[A-Za-zÇçĞğİıÖöŞşÜü\s]+$" class="w-full px-3 py-2 border border-gray-300 rounded" readonly />
+                    <span class="text-sm text-red-600 hidden" id="nameError">Sadece harf giriniz.</span>
                 </div>
                 <div>
                     <label class="font-semibold block mb-1">Soyad:</label>
-                    <input asp-for="LastName" name="LastName" class="w-full px-3 py-2 border border-gray-300 rounded" readonly />
+                    <input asp-for="LastName" name="LastName" pattern="^[A-Za-zÇçĞğİıÖöŞşÜü\s]+$" class="w-full px-3 py-2 border border-gray-300 rounded" readonly />
+                    <span class="text-sm text-red-600 hidden" id="surnameError">Sadece harf giriniz.</span>
                 </div>
                 <div class="md:col-span-2">
                     <label class="font-semibold block mb-1">Email:</label>
-                    <input asp-for="Email" name="Email" class="w-full px-3 py-2 border border-gray-300 rounded" readonly />
+                    <input asp-for="Email" name="Email" type="email" class="w-full px-3 py-2 border border-gray-300 rounded" readonly />
+                    <span class="text-sm text-red-600 hidden" id="emailError">Geçerli bir email giriniz.</span>
                 </div>
             </div>
 
             <div class="mt-8 flex flex-wrap gap-4">
-                <a href="/Home/Index" class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">← Ana Sayfa</a>
+                <a href="/Home/Index" class="px-6 py-2 bg-blue-600 text-white rounded hover\:bg-blue-700">← Ana Sayfa</a>
 
-                <button type="button" id="editBtn" class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                <button type="button" id="editBtn" class="px-6 py-2 bg-blue-600 text-white rounded hover\:bg-blue-700">
                     ✏️ Bilgileri Değiştir
                 </button>
 
-                <button type="submit" id="saveBtn" class="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 hidden" disabled>
+                <button type="submit" id="saveBtn" class="px-6 py-2 bg-green-600 text-white rounded hover\:bg-green-700 opacity-50 cursor-not-allowed hidden" disabled>
                     💾 Kaydet
                 </button>
             </div>
@@ -57,36 +60,57 @@
         const editBtn = document.getElementById("editBtn");
         const saveBtn = document.getElementById("saveBtn");
         const form = document.getElementById("userForm");
-        const formInputs = form.querySelectorAll("input:not([type=hidden])");
+        const inputs = form.querySelectorAll("input:not([type=hidden])");
+
+        const nameError = document.getElementById("nameError");
+        const surnameError = document.getElementById("surnameError");
+        const emailError = document.getElementById("emailError");
 
         let originalValues = {};
 
-        // 🎯 Edit modunu aç
         editBtn.addEventListener("click", () => {
-            formInputs.forEach(input => {
+            inputs.forEach(input => {
                 originalValues[input.name] = input.value;
                 input.removeAttribute("readonly");
             });
-
             editBtn.classList.add("hidden");
             saveBtn.classList.remove("hidden");
             saveBtn.disabled = true;
             saveBtn.classList.add("opacity-50", "cursor-not-allowed");
         });
 
-        // 🔁 Değişiklikleri takip et
         form.addEventListener("input", () => {
             let hasChanges = false;
-            formInputs.forEach(input => {
-                if (input.value !== originalValues[input.name]) {
-                    hasChanges = true;
+            let valid = true;
+
+            inputs.forEach(input => {
+                const isChanged = input.value !== originalValues[input.name];
+                const isValid = input.checkValidity();
+
+                hasChanges ||= isChanged;
+                valid &&= isValid;
+
+                // Hata mesajlarını göster/gizle
+                if (input.name === "FirstName") {
+                    nameError.classList.toggle("hidden", isValid);
+                } else if (input.name === "LastName") {
+                    surnameError.classList.toggle("hidden", isValid);
+                } else if (input.name === "Email") {
+                    emailError.classList.toggle("hidden", isValid);
                 }
             });
 
-            saveBtn.disabled = !hasChanges;
-            saveBtn.classList.toggle("opacity-50", !hasChanges);
-            saveBtn.classList.toggle("cursor-not-allowed", !hasChanges);
+            saveBtn.disabled = !(hasChanges && valid);
+            saveBtn.classList.toggle("opacity-50", saveBtn.disabled);
+            saveBtn.classList.toggle("cursor-not-allowed", saveBtn.disabled);
         });
+
+        function showPopup(message, isError = false) {
+            const popup = document.createElement('div');
+            popup.className = `fixed top-8 left-1/2 transform -translate-x-1/2 ${isError ? 'bg-red-100 border-red-400 text-red-700' : 'bg-green-100 border-green-400 text-green-700'} border px-4 py-3 rounded shadow-md z-50`;
+            popup.innerHTML = `<strong class="font-bold">Bilgilendirme:</strong> <span>${message}</span>`;
+            document.body.appendChild(popup);
+            setTimeout(() => popup.remove(), 3000);
+        }
     </script>
 }
-
