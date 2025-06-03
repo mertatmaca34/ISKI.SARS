@@ -92,5 +92,24 @@ namespace ISKI.SARS.WebUI.Services
                 return null;
             }
         }
+        public async Task<bool> UpdateUserInfoAsync(UserInfoViewModel model, string token)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Put, "/api/Users");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            request.Content = JsonContent.Create(model);
+
+            var response = await _httpClient.SendAsync(request);
+            return response.IsSuccessStatusCode;
+        }
+
+        public async Task<bool> UpdateUserAsync(UserInfoViewModel model, string token)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Put, "/api/Users");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            request.Content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.SendAsync(request);
+            return response.IsSuccessStatusCode;
+        }
     }
 }

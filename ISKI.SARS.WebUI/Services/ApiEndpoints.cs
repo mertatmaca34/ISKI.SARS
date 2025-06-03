@@ -13,6 +13,7 @@
         public static class Users
         {
             public const string GetById = "/api/Users/{0}";
+            public const string Update = "/api/Users";
         }
     }
 }

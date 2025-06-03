@@ -1,101 +1,31 @@
 ﻿@{
-    Layout = null;
-    ViewData["Title"] = "İSKİ Atıksu Arıtma Tesisleri";
+    ViewData["Title"] = "Ana Sayfa";
 }
 
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-</head>
-<body class="flex flex-col h-screen">
+<div id="dashboard" class="page">
+    <h2 class="text-xl font-bold mb-4">Hoş Geldiniz, Admin User</h2>
+    <p class="mb-4">İSKİ Atıksu Arıtma Tesisleri Raporlama Sistemi'ne hoş geldiniz.</p>
 
-    <!-- Header -->
-    <header class="bg-blue-600 text-white flex justify-between items-center px-6 py-3">
-        <h1 class="font-semibold text-lg">💧 İSKİ Atıksu Arıtma Tesisleri</h1>
-
-        <!-- Sağ Üstte: Kullanıcı Ayarlarına Git -->
-        <button onclick="window.location.href='/UserInfo/Index'" class="flex items-center gap-2 hover:underline">
-            <span>Admin User</span>
-            <div class="bg-green-500 rounded-full w-8 h-8 flex items-center justify-center text-white">A</div>
-        </button>
-    </header>
-
-    <!-- İçerik Alanı -->
-    <div class="flex flex-1 overflow-hidden">
-
-        <!-- Sidebar -->
-        <aside class="bg-blue-100 w-64 flex flex-col py-6 px-4 space-y-2">
-            <button onclick="openPage('dashboard')" class="text-left px-4 py-2 rounded hover:bg-blue-200 flex items-center gap-2">🏠 Ana Sayfa</button>
-            <button onclick="openPage('template')" class="text-left px-4 py-2 rounded hover:bg-blue-200 flex items-center gap-2">➕ Yeni Rapor Şablonu</button>
-            <button onclick="openPage('report')" class="text-left px-4 py-2 rounded hover:bg-blue-200 flex items-center gap-2">📄 Yeni Rapor Oluştur</button>
-            <button onclick="openPage('reports')" class="text-left px-4 py-2 rounded hover:bg-blue-200 flex items-center gap-2">📊 Raporlar</button>
-
-            <!-- Logout En Altta -->
-            <div class="mt-auto">
-                <button onclick="window.location.href='/Login/Logout'" class="w-full text-left px-4 py-2 rounded hover:bg-red-200 text-red-600 flex items-center gap-2">
-                    🚪 Oturumu Kapat
-                </button>
-            </div>
-        </aside>
-
-        <!-- Main -->
-        <main class="flex-1 bg-gray-100 p-6 overflow-y-auto">
-            <div id="dashboard" class="page">
-                <h2 class="text-xl font-bold mb-4">Hoş Geldiniz, Admin User</h2>
-                <p class="mb-4">İSKİ Atıksu Arıtma Tesisleri Raporlama Sistemi'ne hoş geldiniz.</p>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="p-4 bg-white rounded shadow text-center">
-                        <div class="text-blue-600 text-2xl mb-2">📦</div>
-                        <div class="font-semibold">Rapor Şablonları</div>
-                        <div class="text-gray-500">0</div>
-                    </div>
-                    <div class="p-4 bg-white rounded shadow text-center">
-                        <div class="text-green-600 text-2xl mb-2">📈</div>
-                        <div class="font-semibold">Oluşturulan Raporlar</div>
-                        <div class="text-gray-500">0</div>
-                    </div>
-                    <div class="p-4 bg-white rounded shadow text-center">
-                        <div class="text-yellow-600 text-2xl mb-2">🔌</div>
-                        <div class="font-semibold">Aktif Bağlantılar</div>
-                        <div class="text-gray-500">1</div>
-                    </div>
-                    <div class="p-4 bg-white rounded shadow text-center">
-                        <div class="text-red-600 text-2xl mb-2">🗄️</div>
-                        <div class="font-semibold">Veri Kaynakları</div>
-                        <div class="text-gray-500">12</div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="template" class="page hidden">
-                <h2 class="text-xl font-bold mb-4">Yeni Rapor Şablonu Oluştur</h2>
-                <p class="mb-4 text-gray-600">Bu sayfa boş bırakıldı, ileride içerik eklenebilir.</p>
-            </div>
-
-            <div id="report" class="page hidden">
-                <h2 class="text-xl font-bold mb-4">Yeni Rapor Oluştur</h2>
-                <p class="mb-4 text-gray-600">Bu sayfa boş bırakıldı, ileride içerik eklenebilir.</p>
-            </div>
-
-            <div id="reports" class="page hidden">
-                <h2 class="text-xl font-bold mb-4">Raporlar</h2>
-                <p class="mb-4 text-gray-600">Bu sayfa boş bırakıldı, ileride içerik eklenebilir.</p>
-            </div>
-        </main>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="p-4 bg-white rounded shadow text-center">
+            <div class="text-blue-600 text-2xl mb-2">📦</div>
+            <div class="font-semibold">Rapor Şablonları</div>
+            <div class="text-gray-500">0</div>
+        </div>
+        <div class="p-4 bg-white rounded shadow text-center">
+            <div class="text-green-600 text-2xl mb-2">📈</div>
+            <div class="font-semibold">Oluşturulan Raporlar</div>
+            <div class="text-gray-500">0</div>
+        </div>
+        <div class="p-4 bg-white rounded shadow text-center">
+            <div class="text-yellow-600 text-2xl mb-2">🔌</div>
+            <div class="font-semibold">Aktif Bağlantılar</div>
+            <div class="text-gray-500">1</div>
+        </div>
+        <div class="p-4 bg-white rounded shadow text-center">
+            <div class="text-red-600 text-2xl mb-2">🗄️</div>
+            <div class="font-semibold">Veri Kaynakları</div>
+            <div class="text-gray-500">12</div>
+        </div>
     </div>
-
-    <script>
-        function openPage(pageId) {
-            const pages = document.querySelectorAll(".page");
-            pages.forEach(p => p.classList.add("hidden"));
-            const selectedPage = document.getElementById(pageId);
-            if (selectedPage) selectedPage.classList.remove("hidden");
-        }
-    </script>
-</body>
-</html>
+</div>

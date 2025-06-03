@@ -8,5 +8,7 @@ namespace ISKI.SARS.WebUI.Services
         Task<LoginResponse> LoginAsync(LoginViewModel model);
         Task<bool> RegisterAsync(RegisterViewModel model);
         Task<UserInfoViewModel?> GetUserInfoAsync(string userId, string token);
+        Task<bool> UpdateUserAsync(UserInfoViewModel model, string token);
+        Task<bool> UpdateUserInfoAsync(UserInfoViewModel model, string token);
     }
 }

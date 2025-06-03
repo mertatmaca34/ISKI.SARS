@@ -1,50 +1,92 @@
-﻿@{
-    Layout = null;
+﻿@model ISKI.SARS.WebUI.Models.UserInfoViewModel
+
+@{
     ViewData["Title"] = "Kullanıcı Bilgileri";
-    var user = (ISKI.SARS.WebUI.Models.UserInfoViewModel?)ViewData["UserInfo"];
 }
 
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-</head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
-
-    <div class="bg-white p-8 rounded shadow-md w-full max-w-xl">
-        <h2 class="text-2xl font-bold text-blue-700 mb-6 flex items-center gap-2">
+<div class="w-full h-[calc(100vh-64px)] px-10 py-8 bg-[#dcecff]">
+    <div class="bg-white p-10 rounded shadow-md w-full max-w-6xl">
+        <h2 class="text-3xl font-bold text-blue-700 mb-6 flex items-center gap-2">
             <span>👤</span> Kullanıcı Bilgileri
         </h2>
 
-        @if (TempData["ErrorMessage"] != null)
+        @if (TempData["SuccessMessage"] != null)
         {
-            <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
-                @Html.Raw(TempData["ErrorMessage"])
-            </div>
+            <script>window.onload = () => showPopup("@TempData["SuccessMessage"]", false);</script>
         }
-        else if (user != null)
+        else if (TempData["ErrorMessage"] != null)
         {
-            <div class="space-y-3 text-gray-800">
-                <p><strong>Ad:</strong> @user.FirstName</p>
-                <p><strong>Soyad:</strong> @user.LastName</p>
-                <p><strong>Email:</strong> @user.Email</p>
-                <p><strong>Durum:</strong> @(user.Status ? "Aktif" : "Pasif")</p>
-            </div>
-        }
-        else
-        {
-            <div class="bg-yellow-100 text-yellow-800 p-4 rounded">
-                Kullanıcı bilgileri bulunamadı.
-            </div>
+            <script>window.onload = () => showPopup("@TempData["ErrorMessage"]", true);</script>
         }
 
-        <div class="mt-6 text-center">
-            <a href="/Home/Index" class="text-blue-600 hover:underline">← Ana Sayfaya Dön</a>
-        </div>
+        <form method="post" asp-action="Update" asp-controller="UserInfo" id="userForm">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-800">
+                <div>
+                    <label class="font-semibold block mb-1">Ad:</label>
+                    <input asp-for="FirstName" name="FirstName" class="w-full px-3 py-2 border border-gray-300 rounded" readonly />
+                </div>
+                <div>
+                    <label class="font-semibold block mb-1">Soyad:</label>
+                    <input asp-for="LastName" name="LastName" class="w-full px-3 py-2 border border-gray-300 rounded" readonly />
+                </div>
+                <div class="md:col-span-2">
+                    <label class="font-semibold block mb-1">Email:</label>
+                    <input asp-for="Email" name="Email" class="w-full px-3 py-2 border border-gray-300 rounded" readonly />
+                </div>
+            </div>
+
+            <div class="mt-8 flex flex-wrap gap-4">
+                <a href="/Home/Index" class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">← Ana Sayfa</a>
+
+                <button type="button" id="editBtn" class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                    ✏️ Bilgileri Değiştir
+                </button>
+
+                <button type="submit" id="saveBtn" class="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 hidden" disabled>
+                    💾 Kaydet
+                </button>
+            </div>
+        </form>
     </div>
+</div>
 
-</body>
-</html>
+@section Scripts {
+    <script>
+        const editBtn = document.getElementById("editBtn");
+        const saveBtn = document.getElementById("saveBtn");
+        const form = document.getElementById("userForm");
+        const formInputs = form.querySelectorAll("input:not([type=hidden])");
+
+        let originalValues = {};
+
+        // 🎯 Edit modunu aç
+        editBtn.addEventListener("click", () => {
+            formInputs.forEach(input => {
+                originalValues[input.name] = input.value;
+                input.removeAttribute("readonly");
+            });
+
+            editBtn.classList.add("hidden");
+            saveBtn.classList.remove("hidden");
+            saveBtn.disabled = true;
+            saveBtn.classList.add("opacity-50", "cursor-not-allowed");
+        });
+
+        // 🔁 Değişiklikleri takip et
+        form.addEventListener("input", () => {
+            let hasChanges = false;
+            formInputs.forEach(input => {
+                if (input.value !== originalValues[input.name]) {
+                    hasChanges = true;
+                }
+            });
+
+            saveBtn.disabled = !hasChanges;
+            saveBtn.classList.toggle("opacity-50", !hasChanges);
+            saveBtn.classList.toggle("cursor-not-allowed", !hasChanges);
+        });
+    </script>
+}
+
