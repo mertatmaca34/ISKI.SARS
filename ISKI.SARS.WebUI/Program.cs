@@ -8,7 +8,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient<IApiService, ApiService>();
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.IdleTimeout = TimeSpan.FromDays(1.0);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
