@@ -6,6 +6,7 @@ using ISKI.SARS.Application.Features.Users.Queries.GetList;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ISKI.SARS.Application.Features.Users.Commands.ChangePassword;
 
 namespace ISKI.SARS.API.Controllers;
 
@@ -50,6 +51,14 @@ public class UsersController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> GetList([FromQuery] GetUserListQuery query)
     {
         var result = await mediator.Send(query);
+        return Ok(result);
+    }
+
+    [Authorize(Roles = "Admin,Operator")]
+    [HttpPut("change-password")]
+    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommand command)
+    {
+        var result = await mediator.Send(command);
         return Ok(result);
     }
 }
