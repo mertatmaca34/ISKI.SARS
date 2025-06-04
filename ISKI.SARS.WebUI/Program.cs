@@ -7,7 +7,6 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddHttpClient<IApiService, ApiService>();
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);

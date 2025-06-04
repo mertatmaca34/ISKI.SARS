@@ -141,4 +141,5 @@ public class ApiService : IApiService
         return await _httpClient.GetByteArrayAsync($"{ApiEndpoints.ReportTemplates.Base}/{templateId}/excel");
     }
 }
+}
 
