@@ -17,8 +17,9 @@ namespace ISKI.SARS.WebUI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(string? message)
         {
+            ViewBag.Message = message;
             return View(new LoginViewModel());
         }
 
