@@ -8,20 +8,5 @@
             public const string Login = "/api/Auth/login";
             public const string Register = "/api/Auth/register";
         }
-
-        public static class Users
-        {
-            public const string Base = "/api/Users";
-        }
-
-        public static class ReportTemplates
-        {
-            public const string Base = "/api/ReportTemplates";
-        }
-
-        public static class ReportTemplateTags
-        {
-            public const string Base = "/api/ReportTemplateTags";
-        }
     }
 }

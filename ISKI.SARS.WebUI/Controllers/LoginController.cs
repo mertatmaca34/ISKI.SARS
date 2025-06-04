@@ -2,10 +2,6 @@
 using ISKI.SARS.WebUI.Models;
 using ISKI.SARS.WebUI.Services;
 using System.Threading.Tasks;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using ISKI.Core.Security.JWT;
 
 namespace ISKI.SARS.WebUI.Controllers
 {
@@ -21,6 +17,8 @@ namespace ISKI.SARS.WebUI.Controllers
         [HttpGet]
         public IActionResult Logout()
         {
+            HttpContext.Session.SetString("UserName", "Admin User");
+            HttpContext.Session.SetString("UserRole", "Yönetici");
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Login");
         }
@@ -40,19 +38,8 @@ namespace ISKI.SARS.WebUI.Controllers
             try
             {
                 var result = await _apiService.LoginAsync(model);
-                var token = System.Text.Json.JsonSerializer.Deserialize<AccessToken>(result);
-                if (token != null)
-                {
-                    HttpContext.Session.SetString("Token", token.Token);
-                    var handler = new JwtSecurityTokenHandler();
-                    var jwt = handler.ReadJwtToken(token.Token);
-                    var role = jwt.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
-                    var name = jwt.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
-                    if (!string.IsNullOrEmpty(role))
-                        HttpContext.Session.SetString("UserRole", role);
-                    if (!string.IsNullOrEmpty(name))
-                        HttpContext.Session.SetString("UserName", name);
-                }
+                // result => JWT ya da kullanıcı bilgileri
+                TempData["LoginResult"] = result;
                 return RedirectToAction("Index", "Home");
             }
             catch (HttpRequestException)

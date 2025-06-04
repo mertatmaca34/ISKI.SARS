@@ -22,25 +22,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        @if(Context.Session.GetString("UserRole") == "Admin"){
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Users" asp-action="Index">Users</a>
-                            </li>
-                        }
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Reports" asp-action="Index">Reports</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                    </ul>
-                    <ul class="navbar-nav">
-                        @if(string.IsNullOrEmpty(Context.Session.GetString("Token")))
-                        {
-                            <li class="nav-item"><a class="nav-link" asp-controller="Login" asp-action="Index">Login</a></li>
-                        }
-                        else
-                        {
-                            <li class="nav-item"><span class="navbar-text me-2">@Context.Session.GetString("UserName")</span></li>
-                            <li class="nav-item"><a class="nav-link" asp-controller="Login" asp-action="Logout">Logout</a></li>
-                        }
                     </ul>
                 </div>
             </div>
