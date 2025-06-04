@@ -1,0 +1,29 @@
+@model IEnumerable<ISKI.SARS.WebUI.Models.TagViewModel>
+@{
+    ViewData["Title"] = "Tags";
+    var templateId = ViewBag.TemplateId as int? ?? 0;
+}
+<h2>Tags</h2>
+<a asp-action="Create" asp-route-templateId="@templateId" class="btn btn-primary mb-2">Add Tag</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Node Id</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.TagName</td>
+                <td>@item.TagNodeId</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-secondary">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" asp-route-templateId="@templateId" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

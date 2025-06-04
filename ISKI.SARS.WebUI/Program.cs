@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddHttpClient<IApiService, ApiService>();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
