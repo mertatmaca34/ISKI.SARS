@@ -14,6 +14,5 @@ public class ReportTemplateConfiguration : BaseEntityConfiguration<ReportTemplat
         builder.Property(x => x.Name).IsRequired().HasMaxLength(200);
         builder.Property(x => x.OpcEndpoint).IsRequired().HasMaxLength(300);
         builder.Property(x => x.PullInterval).IsRequired();
-        builder.Property(x => x.Type).IsRequired();
     }
 }
