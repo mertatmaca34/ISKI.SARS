@@ -27,8 +27,6 @@ public class UpdateUserOperationClaimCommandHandler : IRequestHandler<UpdateUser
         if (entity == null)
             throw new BusinessException(UserOperationClaimMessages.NotFound);
 
-        await _rules.UserOperationClaimCannotBeDuplicated(request.UserId, request.OperationClaimId);
-
         _mapper.Map(request, entity);
         var updated = await _repository.UpdateAsync(entity);
 

@@ -1,5 +1,4 @@
-﻿using ISKI.SARS.Application.Features.ReportTemplates.Commands;
-using ISKI.SARS.Application.Features.ReportTemplates.Dtos;
+﻿using ISKI.SARS.Application.Features.ReportTemplates.Dtos;
 using ISKI.Core.Persistence.Dynamic;
 using ISKI.Core.Persistence.Paging;
 using MediatR;

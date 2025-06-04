@@ -38,6 +38,7 @@ builder.Services.AddHttpContextAccessor();
 
 // 📚 Application & Infrastructure servisleri
 builder.Services.AddApplicationServices();
+
 builder.Services.AddInfrastructureServices(builder.Configuration.GetConnectionString("DefaultConnection")!);
 
 // 🔐 CORS (Opsiyonel açılabilir)

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ISKI.SARS.Infrastructure.Migrations
 {
     [DbContext(typeof(SarsDbContext))]
-    [Migration("20250502123257_Create_Database")]
-    partial class Create_Database
+    [Migration("20250617085759_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,9 +51,11 @@ namespace ISKI.SARS.Infrastructure.Migrations
 
             modelBuilder.Entity("ISKI.Core.Security.Entities.OperationClaim", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -145,9 +147,11 @@ namespace ISKI.SARS.Infrastructure.Migrations
 
             modelBuilder.Entity("ISKI.Core.Security.Entities.UserOperationClaim", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -155,8 +159,8 @@ namespace ISKI.SARS.Infrastructure.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("OperationClaimId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("OperationClaimId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -173,11 +177,10 @@ namespace ISKI.SARS.Infrastructure.Migrations
                     b.ToTable("UserOperationClaims");
                 });
 
-            modelBuilder.Entity("ISKI.SARS.Domain.Entities.ReportTemplateTags", b =>
+            modelBuilder.Entity("ISKI.SARS.Domain.Entities.InstantValue", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<DateTime>("Id")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -185,79 +188,52 @@ namespace ISKI.SARS.Infrastructure.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DisplayName")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                    b.Property<int>("ReportTemplateTagId")
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("ReportTemplateId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TagId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ReportTemplateId");
+                    b.HasIndex("Id");
 
-                    b.HasIndex("TagId");
+                    b.HasIndex("ReportTemplateTagId");
 
-                    b.ToTable("ReportTemplateTags");
+                    b.ToTable("InstantValues");
                 });
 
-            modelBuilder.Entity("ISKI.SARS.Domain.Entities.ReportTemplates", b =>
+            modelBuilder.Entity("ISKI.SARS.Domain.Entities.ReportTemplate", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ReportTemplates");
-                });
-
-            modelBuilder.Entity("ISKI.SARS.Domain.Entities.Tag", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DisplayName")
+                    b.Property<string>("OpcEndpoint")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("OpcPath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<int>("PullInterval")
                         .HasColumnType("int");
@@ -267,14 +243,16 @@ namespace ISKI.SARS.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tags");
+                    b.ToTable("ReportTemplates");
                 });
 
-            modelBuilder.Entity("ISKI.SARS.Domain.Entities.TagValues", b =>
+            modelBuilder.Entity("ISKI.SARS.Domain.Entities.ReportTemplateTag", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -282,23 +260,30 @@ namespace ISKI.SARS.Infrastructure.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("RecordDate")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("ReportTemplateId")
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("TagId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("TagName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("TagNodeId")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.HasKey("Id");
 
-                    b.ToTable("TagValues");
+                    b.HasIndex("ReportTemplateId");
+
+                    b.ToTable("ReportTemplateTags");
                 });
 
             modelBuilder.Entity("ISKI.Core.Security.Entities.EmailAuthenticator", b =>
@@ -342,19 +327,26 @@ namespace ISKI.SARS.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ISKI.SARS.Domain.Entities.ReportTemplateTags", b =>
+            modelBuilder.Entity("ISKI.SARS.Domain.Entities.InstantValue", b =>
                 {
-                    b.HasOne("ISKI.SARS.Domain.Entities.ReportTemplates", null)
+                    b.HasOne("ISKI.SARS.Domain.Entities.ReportTemplateTag", "ReportTemplateTag")
+                        .WithMany()
+                        .HasForeignKey("ReportTemplateTagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ReportTemplateTag");
+                });
+
+            modelBuilder.Entity("ISKI.SARS.Domain.Entities.ReportTemplateTag", b =>
+                {
+                    b.HasOne("ISKI.SARS.Domain.Entities.ReportTemplate", "ReportTemplate")
                         .WithMany()
                         .HasForeignKey("ReportTemplateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ISKI.SARS.Domain.Entities.Tag", null)
-                        .WithMany()
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("ReportTemplate");
                 });
 
             modelBuilder.Entity("ISKI.Core.Security.Entities.OperationClaim", b =>

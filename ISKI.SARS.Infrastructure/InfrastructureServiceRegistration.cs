@@ -35,8 +35,11 @@ public static class InfrastructureServiceRegistration
         services.AddScoped<IUserOperationClaimRepository, UserOperationClaimRepository>();
         services.AddScoped<IOperationClaimRepository, OperationClaimRepository>();
 
+        // Burada DbContext'i alıyoruz
         using (var scope = services.BuildServiceProvider().CreateScope())
         {
+            var dbContext = scope.ServiceProvider.GetRequiredService<SarsDbContext>();
+
             var opClaimRepo = scope.ServiceProvider.GetRequiredService<IOperationClaimRepository>();
             OperationClaimSeeder.SeedAsync(opClaimRepo).Wait();
 
