@@ -8,5 +8,4 @@ public class InstantValue : BaseEntity<DateTime>
     public string Value { get; set; } = string.Empty;
     public bool Status { get; set; }
     public ReportTemplateTag? ReportTemplateTag { get; set; }
-
 }

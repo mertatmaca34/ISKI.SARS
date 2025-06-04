@@ -8,5 +8,4 @@ public class ReportTemplate : BaseEntity<int>
     public string Name { get; set; } = string.Empty;
     public string OpcEndpoint { get; set; } = string.Empty;
     public int PullInterval { get; set; }
-    public TagTypes Type { get; set; }
 }
