@@ -1,0 +1,32 @@
+@model ISKI.SARS.WebUI.Models.ReportTemplateViewModel
+@{
+    ViewData["Title"] = "Create Report Template";
+}
+<h2>Create Template</h2>
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="OpcEndpoint" class="form-label"></label>
+        <input asp-for="OpcEndpoint" class="form-control" />
+        <span asp-validation-for="OpcEndpoint" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="PullInterval" class="form-label"></label>
+        <input asp-for="PullInterval" class="form-control" />
+        <span asp-validation-for="PullInterval" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Type" class="form-label"></label>
+        <select asp-for="Type" asp-items="Html.GetEnumSelectList<ISKI.SARS.Domain.Enums.TagTypes>()" class="form-select"></select>
+        <span asp-validation-for="Type" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

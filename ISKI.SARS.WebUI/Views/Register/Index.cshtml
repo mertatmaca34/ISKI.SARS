@@ -1,70 +1,59 @@
-﻿@model ISKI.SARS.WebUI.Models.RegisterViewModel
-
+@model ISKI.SARS.WebUI.Models.RegisterViewModel
 @{
     Layout = null;
     ViewData["Title"] = "Kayıt Ol";
 }
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 </head>
-
-<body class="min-h-screen flex items-center justify-center bg-blue-50">
-
-    <div class="max-w-md w-full space-y-8">
-        <div class="text-center">
-            <h1 class="text-5xl font-bold text-blue-700">SARS</h1>
-            <p class="mt-2 text-lg text-blue-600">Scada Arşivleme ve Raporlama Sistemi</p>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <h2 class="text-center mb-4">SARS</h2>
+                <form asp-action="Index" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="mb-3">
+                        <label asp-for="FirstName" class="form-label"></label>
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="LastName" class="form-label"></label>
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label"></label>
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="ConfirmPassword" class="form-label"></label>
+                        <input asp-for="ConfirmPassword" class="form-control" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Kaydol</button>
+                    <div class="text-center mt-3">
+                        <a asp-controller="Login" asp-action="Index">Zaten hesabınız var mı?</a>
+                    </div>
+                </form>
+            </div>
         </div>
-
-        <form asp-action="Index" method="post" class="mt-8 space-y-6">
-            @Html.AntiForgeryToken()
-
-            @if (!ViewData.ModelState.IsValid)
-            {
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
-                    <strong class="font-bold">Hata:</strong>
-                    <span class="block sm:inline">Girdiğiniz bilgileri kontrol ediniz.</span>
-                </div>
-            }
-
-            <div class="space-y-4">
-                <input asp-for="FirstName" placeholder="Ad" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500" />
-                <span asp-validation-for="FirstName" class="text-red-600 text-sm"></span>
-
-                <input asp-for="LastName" placeholder="Soyad" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500" />
-                <span asp-validation-for="LastName" class="text-red-600 text-sm"></span>
-
-                <input asp-for="Email" placeholder="E-Posta" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500" />
-                <span asp-validation-for="Email" class="text-red-600 text-sm"></span>
-
-                <input asp-for="Password" type="password" placeholder="Şifre" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500" />
-                <span asp-validation-for="Password" class="text-red-600 text-sm"></span>
-
-                <input asp-for="ConfirmPassword" type="password" placeholder="Şifre (Tekrar)" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500" />
-                <span asp-validation-for="ConfirmPassword" class="text-red-600 text-sm"></span>
-            </div>
-
-            <div class="space-y-4">
-                <button type="submit" class="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded">
-                    Kaydol
-                </button>
-
-                <p class="text-center text-sm text-gray-600">
-                    Zaten hesabınız var mı? <a href="/Login/Index" class="text-blue-600 hover:underline">Giriş yap</a>
-                </p>
-            </div>
-        </form>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
-
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <partial name="_ValidationScriptsPartial" />
 </body>
 </html>
