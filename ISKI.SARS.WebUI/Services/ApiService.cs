@@ -111,5 +111,15 @@ namespace ISKI.SARS.WebUI.Services
             var response = await _httpClient.SendAsync(request);
             return response.IsSuccessStatusCode;
         }
+        public async Task<bool> ChangePasswordAsync(ChangePasswordViewModel model, string token)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var url = $"{ApiEndpoints.BaseUrl}{ApiEndpoints.Users.ChangePassword}";
+            var response = await client.PutAsJsonAsync(url, model);
+            return response.IsSuccessStatusCode;
+        }
+
     }
 }

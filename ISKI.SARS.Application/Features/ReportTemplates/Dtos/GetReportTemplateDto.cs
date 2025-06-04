@@ -8,5 +8,4 @@ public class GetReportTemplateDto
     public string Name { get; set; }
     public string OpcEndpoint { get; set; }
     public int PullInterval { get; set; }
-    public TagTypes Type { get; set; }
 }

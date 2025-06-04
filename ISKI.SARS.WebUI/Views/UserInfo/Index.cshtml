@@ -25,15 +25,18 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-800">
                 <div>
                     <label class="font-semibold block mb-1">Ad:</label>
-                    <input asp-for="FirstName" name="FirstName" class="w-full px-3 py-2 border border-gray-300 rounded" readonly />
+                    <input asp-for="FirstName" name="FirstName" pattern="^[A-Za-zÇçĞğİıÖöŞşÜü\s]+$" class="w-full px-3 py-2 border border-gray-300 rounded" readonly />
+                    <span class="text-sm text-red-600 hidden" id="nameError">Sadece harf giriniz.</span>
                 </div>
                 <div>
                     <label class="font-semibold block mb-1">Soyad:</label>
-                    <input asp-for="LastName" name="LastName" class="w-full px-3 py-2 border border-gray-300 rounded" readonly />
+                    <input asp-for="LastName" name="LastName" pattern="^[A-Za-zÇçĞğİıÖöŞşÜü\s]+$" class="w-full px-3 py-2 border border-gray-300 rounded" readonly />
+                    <span class="text-sm text-red-600 hidden" id="surnameError">Sadece harf giriniz.</span>
                 </div>
                 <div class="md:col-span-2">
                     <label class="font-semibold block mb-1">Email:</label>
-                    <input asp-for="Email" name="Email" class="w-full px-3 py-2 border border-gray-300 rounded" readonly />
+                    <input asp-for="Email" name="Email" type="email" class="w-full px-3 py-2 border border-gray-300 rounded" readonly />
+                    <span class="text-sm text-red-600 hidden" id="emailError">Geçerli bir email giriniz.</span>
                 </div>
             </div>
 
@@ -44,10 +47,40 @@
                     ✏️ Bilgileri Değiştir
                 </button>
 
-                <button type="submit" id="saveBtn" class="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 hidden" disabled>
+                <button type="submit" id="saveBtn" class="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 opacity-50 cursor-not-allowed hidden" disabled>
                     💾 Kaydet
                 </button>
             </div>
+        </form>
+
+        <!-- Şifre Değiştir Formu -->
+        <hr class="my-10" />
+        <h3 class="text-2xl font-semibold text-yellow-700 flex items-center gap-2 mt-12 mb-4">
+            <span>🔒</span> Şifre Değiştir
+        </h3>
+
+        <form method="post" asp-action="ChangePassword" asp-controller="UserInfo" id="passwordForm" class="space-y-6">
+            <input type="hidden" name="UserId" value="@Model.Id" />
+
+            <div>
+                <label class="font-semibold block mb-1">Eski Şifre:</label>
+                <input type="password" name="OldPassword" id="OldPassword" class="w-full px-3 py-2 border border-gray-300 rounded" />
+            </div>
+
+            <div>
+                <label class="font-semibold block mb-1">Yeni Şifre:</label>
+                <input type="password" name="NewPassword" id="NewPassword" class="w-full px-3 py-2 border border-gray-300 rounded" />
+            </div>
+
+            <div>
+                <label class="font-semibold block mb-1">Yeni Şifre (Tekrar):</label>
+                <input type="password" id="ConfirmPassword" class="w-full px-3 py-2 border border-gray-300 rounded" />
+            </div>
+
+            <button type="submit" id="passwordBtn" disabled
+                    class="flex items-center gap-2 px-6 py-2 bg-green-400 text-white rounded hover:bg-green-500 opacity-50 cursor-not-allowed">
+                🔐 Şifreyi Güncelle
+            </button>
         </form>
     </div>
 </div>
@@ -57,36 +90,77 @@
         const editBtn = document.getElementById("editBtn");
         const saveBtn = document.getElementById("saveBtn");
         const form = document.getElementById("userForm");
-        const formInputs = form.querySelectorAll("input:not([type=hidden])");
+        const inputs = form.querySelectorAll("input:not([type=hidden])");
+
+        const nameError = document.getElementById("nameError");
+        const surnameError = document.getElementById("surnameError");
+        const emailError = document.getElementById("emailError");
 
         let originalValues = {};
 
-        // 🎯 Edit modunu aç
         editBtn.addEventListener("click", () => {
-            formInputs.forEach(input => {
+            inputs.forEach(input => {
                 originalValues[input.name] = input.value;
                 input.removeAttribute("readonly");
             });
-
             editBtn.classList.add("hidden");
             saveBtn.classList.remove("hidden");
             saveBtn.disabled = true;
             saveBtn.classList.add("opacity-50", "cursor-not-allowed");
         });
 
-        // 🔁 Değişiklikleri takip et
         form.addEventListener("input", () => {
             let hasChanges = false;
-            formInputs.forEach(input => {
-                if (input.value !== originalValues[input.name]) {
-                    hasChanges = true;
+            let valid = true;
+
+            inputs.forEach(input => {
+                const isChanged = input.value !== originalValues[input.name];
+                const isValid = input.checkValidity();
+
+                hasChanges ||= isChanged;
+                valid &&= isValid;
+
+                if (input.name === "FirstName") {
+                    nameError.classList.toggle("hidden", isValid);
+                } else if (input.name === "LastName") {
+                    surnameError.classList.toggle("hidden", isValid);
+                } else if (input.name === "Email") {
+                    emailError.classList.toggle("hidden", isValid);
                 }
             });
 
-            saveBtn.disabled = !hasChanges;
-            saveBtn.classList.toggle("opacity-50", !hasChanges);
-            saveBtn.classList.toggle("cursor-not-allowed", !hasChanges);
+            saveBtn.disabled = !(hasChanges && valid);
+            saveBtn.classList.toggle("opacity-50", saveBtn.disabled);
+            saveBtn.classList.toggle("cursor-not-allowed", saveBtn.disabled);
         });
+
+        // Şifre Değiştirme Doğrulama
+        const passwordForm = document.getElementById("passwordForm");
+        const passwordSaveBtn = document.getElementById("passwordSaveBtn");
+        const mismatchText = document.getElementById("passwordMismatch");
+
+        passwordForm.addEventListener("input", () => {
+            const oldPw = passwordForm.querySelector("input[name='OldPassword']").value.trim();
+            const newPw = passwordForm.querySelector("input[name='NewPassword']").value.trim();
+            const confirmPw = passwordForm.querySelector("input[name='ConfirmPassword']").value.trim();
+
+            const allFilled = oldPw && newPw && confirmPw;
+            const matches = newPw === confirmPw;
+
+            mismatchText.classList.toggle("hidden", matches || !allFilled);
+
+            const enable = allFilled && matches;
+            passwordSaveBtn.disabled = !enable;
+            passwordSaveBtn.classList.toggle("opacity-50", !enable);
+            passwordSaveBtn.classList.toggle("cursor-not-allowed", !enable);
+        });
+
+        function showPopup(message, isError = false) {
+            const popup = document.createElement('div');
+            popup.className = `fixed top-8 left-1/2 transform -translate-x-1/2 ${isError ? 'bg-red-100 border-red-400 text-red-700' : 'bg-green-100 border-green-400 text-green-700'} border px-4 py-3 rounded shadow-md z-50`;
+            popup.innerHTML = `<strong class="font-bold">Bilgilendirme:</strong> <span>${message}</span>`;
+            document.body.appendChild(popup);
+            setTimeout(() => popup.remove(), 3000);
+        }
     </script>
 }
-
