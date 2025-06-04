@@ -8,4 +8,12 @@
         public string LastName { get; set; } = string.Empty;
         public bool Status { get; set; }
     }
+
+    public class ChangePasswordViewModel
+    {
+        public string UserId { get; set; } = string.Empty;
+        public string OldPassword { get; set; } = string.Empty;
+        public string NewPassword { get; set; } = string.Empty;
+    }
+
 }
