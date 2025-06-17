@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace ISKI.SARS.WebUI.Controllers
 {
@@ -41,6 +42,10 @@ namespace ISKI.SARS.WebUI.Controllers
 
                 HttpContext.Session.SetString("AccessToken", token);
                 HttpContext.Session.SetString("UserId", userId ?? "");
+
+                var userInfo = await _apiService.GetUserInfoAsync(userId, token);
+
+                HttpContext.Session.SetString("UserFirstName", userInfo.FirstName);
 
                 return RedirectToAction("Index", "Home");
             }
