@@ -16,5 +16,10 @@
             public const string Update = "/api/Users";
             public const string ChangePassword = "/api/Users/change-password";
         }
+
+        public static class Template
+        {
+            public const string CreateTemplate = "/api/ReportTemplates";
+        }
     }
 }

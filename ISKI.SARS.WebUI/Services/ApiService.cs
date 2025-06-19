@@ -120,6 +120,17 @@ namespace ISKI.SARS.WebUI.Services
             var response = await client.PutAsJsonAsync(url, model);
             return response.IsSuccessStatusCode;
         }
+        public async Task<(bool IsSuccess, int StatusCode, string? Error)> CreateNewTemplateAsync(NewTemplateViewModel model, string token)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
+            var url = $"{ApiEndpoints.BaseUrl}{ApiEndpoints.Template.CreateTemplate}";
+            var response = await client.PostAsJsonAsync(url, model);
+
+            var error = !response.IsSuccessStatusCode ? await response.Content.ReadAsStringAsync() : null;
+
+            return (response.IsSuccessStatusCode, (int)response.StatusCode, error);
+        }
     }
 }

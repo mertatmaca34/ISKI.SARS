@@ -5,9 +5,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddHttpClient<IApiService, ApiService>();
+builder.Services.AddHttpClient<IApiService, ApiService>(client =>
+{
+    client.BaseAddress = new Uri(ApiEndpoints.BaseUrl);
+});
 
-builder.Services.AddHttpContextAccessor(); // << ?? EKLENDÝ
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddSession(options =>
 {
@@ -18,7 +21,6 @@ builder.Services.AddSession(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
