@@ -6,7 +6,6 @@
     var endDate = ViewBag.EndDate as string;
     var sortField = ViewBag.SortField as string;
     var sortDirection = ViewBag.SortDirection as string;
-    var totalCount = ViewBag.TotalCount as int? ?? Model.TotalCount;
 }
 
 <div class="w-full h-[calc(100vh-64px)] px-10 py-8 bg-[#dcecff]">
@@ -60,6 +59,7 @@
                     <th class="px-4 py-2 border">Ad</th>
                     <th class="px-4 py-2 border">Endpoint</th>
                     <th class="px-4 py-2 border">Çekme Aralığı</th>
+                    <th class="px-4 py-2 border">İşlem</th>
                 </tr>
             </thead>
             <tbody>
@@ -69,9 +69,58 @@
                         <td class="px-4 py-2 border">@item.Name</td>
                         <td class="px-4 py-2 border">@item.OpcEndpoint</td>
                         <td class="px-4 py-2 border">@item.PullInterval sn</td>
+                        <td class="px-4 py-2 border">
+                            <button class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700"
+                                    onclick="showConfirmPopup('@item.Id', '@item.Name', '@item.OpcEndpoint', '@item.PullInterval')">
+                                Rapor Oluştur
+                            </button>
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
+
+        <div class="mt-4 text-sm text-gray-600">
+            Toplam: @Model.TotalCount kayıt bulundu.
+        </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function showConfirmPopup(id, name, endpoint, interval) {
+            Swal.fire({
+                title: 'Bu Şablonla Rapor Oluşturmak İstiyor musunuz?',
+                html: `
+                    <div class="text-left">
+                        <p><strong>Şablon ID:</strong> ${id}</p>
+                        <p><strong>Şablon Adı:</strong> ${name}</p>
+                        <p><strong>Endpoint:</strong> ${endpoint}</p>
+                        <p><strong>Çekme Aralığı:</strong> ${interval} sn</p>
+                    </div>
+                `,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Evet, Oluştur',
+                cancelButtonText: 'Hayır',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = '/NewReport/CreateFromTemplate';
+
+                    form.innerHTML = `
+                        <input type="hidden" name="Id" value="${id}" />
+                        <input type="hidden" name="Name" value="${name}" />
+                        <input type="hidden" name="OpcEndpoint" value="${endpoint}" />
+                        <input type="hidden" name="PullInterval" value="${interval}" />
+                    `;
+
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+        }
+    </script>
+}
