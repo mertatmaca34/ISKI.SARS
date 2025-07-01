@@ -1,6 +1,7 @@
 ﻿using ISKI.SARS.WebUI.Models;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -131,6 +132,19 @@ namespace ISKI.SARS.WebUI.Services
             var error = !response.IsSuccessStatusCode ? await response.Content.ReadAsStringAsync() : null;
 
             return (response.IsSuccessStatusCode, (int)response.StatusCode, error);
+        }
+        public async Task<ReportTemplateListResponse> GetReportTemplatesAsync(ReportTemplateListRequest request, string token)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var url = $"{ApiEndpoints.BaseUrl}/api/ReportTemplates/list?pageNumber={request.PageNumber}&pageSize={request.PageSize}";
+            var response = await client.PostAsJsonAsync(url, request.Query);
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<ReportTemplateListResponse>()
+                   ?? new ReportTemplateListResponse();
         }
     }
 }

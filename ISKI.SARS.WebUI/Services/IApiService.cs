@@ -12,5 +12,7 @@ namespace ISKI.SARS.WebUI.Services
         Task<bool> UpdateUserInfoAsync(UserInfoViewModel model, string token);
         Task<bool> ChangePasswordAsync(ChangePasswordViewModel model, string token);
         Task<(bool IsSuccess, int StatusCode, string? Error)> CreateNewTemplateAsync(NewTemplateViewModel model, string token);
+        Task<ReportTemplateListResponse> GetReportTemplatesAsync(ReportTemplateListRequest request, string token);
+
     }
 }

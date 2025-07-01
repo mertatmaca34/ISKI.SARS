@@ -21,5 +21,10 @@
         {
             public const string CreateTemplate = "/api/ReportTemplates";
         }
+        public static class Report
+        {
+            public const string ListReportTemplates = "/api/ReportTemplates/list";
+
+        }
     }
 }

@@ -34,7 +34,11 @@
             <a href="/NewTemplate/Index" class="text-left px-4 py-2 rounded hover:bg-blue-200 flex items-center gap-2">
                 ➕ Yeni Rapor Şablonu
             </a>
-            <a href="#" class="text-left px-4 py-2 rounded hover:bg-blue-200 flex items-center gap-2">📄 Yeni Rapor Oluştur</a>
+            <a href="/NewReport/Index"
+               class="text-left px-4 py-2 rounded hover:bg-blue-200 flex items-center gap-2 @(ViewContext.RouteData.Values["controller"]?.ToString() == "NewReport" ? "bg-blue-200" : "")">
+                📄 Yeni Rapor Oluştur
+            </a>
+
             <a href="#" class="text-left px-4 py-2 rounded hover:bg-blue-200 flex items-center gap-2">📊 Raporlar</a>
 
             <div class="mt-auto">
