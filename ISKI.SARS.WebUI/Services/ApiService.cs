@@ -146,5 +146,22 @@ namespace ISKI.SARS.WebUI.Services
             return await response.Content.ReadFromJsonAsync<ReportTemplateListResponse>()
                    ?? new ReportTemplateListResponse();
         }
+        public async Task<ReportTemplateListResponse> GetReportTemplateListAsync(ReportTemplateListRequest request, string token)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var queryParams = $"?PageNumber={request.PageNumber}&PageSize={request.PageSize}";
+            var url = $"{ApiEndpoints.BaseUrl}/api/ReportTemplates/list{queryParams}";
+
+            var response = await client.PostAsJsonAsync(url, request.Query);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<ReportTemplateListResponse>() ?? new();
+            }
+
+            return new ReportTemplateListResponse(); // Boş liste döndür
+        }
+
     }
 }
