@@ -1,5 +1,10 @@
 ﻿using System.Threading.Tasks;
-using ISKI.SARS.WebUI.Models;
+using ISKI.SARS.WebUI.Areas.Login.ViewModels;
+using ISKI.SARS.WebUI.Areas.Register.ViewModels;
+using ISKI.SARS.WebUI.Areas.UserInfo.ViewModels;
+using ISKI.SARS.WebUI.Areas.NewTemplate.ViewModels;
+using ISKI.SARS.WebUI.Areas.InstantValues.ViewModels;
+using ISKI.SARS.WebUI.Common.ViewModels;
 
 namespace ISKI.SARS.WebUI.Services
 {

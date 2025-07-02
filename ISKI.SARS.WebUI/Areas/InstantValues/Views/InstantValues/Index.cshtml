@@ -1,0 +1,28 @@
+@model ISKI.SARS.WebUI.Areas.InstantValues.ViewModels.InstantValueListResponse
+@{
+    ViewData["Title"] = "Instant Values";
+}
+<div class="p-6">
+    <h2 class="text-2xl font-bold mb-4">Instant Values</h2>
+    <table class="table-auto w-full">
+        <thead>
+            <tr class="bg-blue-100">
+                <th class="px-4 py-2 border">Timestamp</th>
+                <th class="px-4 py-2 border">Tag Id</th>
+                <th class="px-4 py-2 border">Value</th>
+                <th class="px-4 py-2 border">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr class="hover:bg-gray-100">
+                <td class="px-4 py-2 border">@item.Timestamp</td>
+                <td class="px-4 py-2 border">@item.ReportTemplateTagId</td>
+                <td class="px-4 py-2 border">@item.Value</td>
+                <td class="px-4 py-2 border">@item.Status</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
