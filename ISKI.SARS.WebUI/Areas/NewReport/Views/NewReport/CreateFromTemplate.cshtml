@@ -1,0 +1,21 @@
+@model ISKI.SARS.WebUI.Areas.NewReport.ViewModels.NewReportFromTemplateViewModel
+@{
+    ViewData["Title"] = "Şablondan Rapor";
+}
+<div class="p-6">
+    <h2 class="text-2xl font-bold mb-4">Şablon: @Model.SelectedTemplate.Name</h2>
+    <form method="post">
+        <div class="mb-4">
+            <label class="block font-semibold mb-2">Tag Seçimi</label>
+            <div class="grid grid-cols-2 gap-2">
+                @foreach (var tag in Model.AllTags)
+                {
+                    <label class="flex items-center space-x-2">
+                        <input type="checkbox" name="SelectedTags" value="@tag.TagNodeId" class="form-checkbox" />
+                        <span>@tag.TagName (@tag.TagNodeId)</span>
+                    </label>
+                }
+            </div>
+        </div>
+    </form>
+</div>

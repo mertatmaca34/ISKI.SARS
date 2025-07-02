@@ -1,0 +1,63 @@
+﻿@model ISKI.SARS.WebUI.Areas.NewTemplate.ViewModels.NewTemplateViewModel
+
+@{
+    ViewData["Title"] = "Yeni Rapor Şablonu";
+}
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<div class="max-w-xl mx-auto bg-white p-8 rounded shadow">
+    <h2 class="text-2xl font-bold mb-6 text-blue-700">➕ Yeni Rapor Şablonu Oluştur</h2>
+
+    <form id="templateForm" asp-action="Index" method="post">
+        <div class="mb-4">
+            <label asp-for="Name" class="block font-medium mb-1">Şablon Adı</label>
+            <input asp-for="Name" class="w-full border border-gray-300 rounded px-3 py-2" />
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="OpcEndpoint" class="block font-medium mb-1">API Endpoint</label>
+            <input asp-for="OpcEndpoint" class="w-full border border-gray-300 rounded px-3 py-2" />
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="PullInterval" class="block font-medium mb-1">Çekme Aralığı (sn)</label>
+            <input asp-for="PullInterval" type="number" class="w-full border border-gray-300 rounded px-3 py-2" />
+        </div>
+
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Kaydet</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('templateForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const data = {
+            name: form.querySelector('[name="Name"]').value,
+            opcEndpoint: form.querySelector('[name="OpcEndpoint"]').value,
+            pullInterval: parseInt(form.querySelector('[name="PullInterval"]').value)
+        };
+
+        const response = await fetch('/NewTemplate/Index', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        Swal.fire({
+            icon: result.success ? 'success' : 'error',
+            title: result.success ? 'Başarılı!' : 'Hata!',
+            text: result.message
+        }).then(() => {
+            if (result.success) {
+                form.reset();
+            }
+        });
+    });
+</script>
