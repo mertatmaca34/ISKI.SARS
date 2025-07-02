@@ -1,12 +1,10 @@
-﻿using ISKI.SARS.WebUI.Models;
+using ISKI.SARS.WebUI.Models;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
-using System.Text.Json;
 
 
 namespace ISKI.SARS.WebUI.Services
@@ -106,16 +104,6 @@ namespace ISKI.SARS.WebUI.Services
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> UpdateUserAsync(UserInfoViewModel model, string token)
-        {
-            var request = new HttpRequestMessage(HttpMethod.Put, "/api/Users");
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            request.Content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-
-            var response = await _httpClient.SendAsync(request);
-            return response.IsSuccessStatusCode;
-        }
-
         public async Task<bool> ChangePasswordAsync(ChangePasswordViewModel model, string token)
         {
             var client = _httpClientFactory.CreateClient();
@@ -170,27 +158,6 @@ namespace ISKI.SARS.WebUI.Services
             return new ReportTemplateListResponse();
         }
 
-        public async Task<List<ReportTemplateTagItem>> GetReportTemplateTagsAsync(ReportTemplateQueryModel query, string token)
-        {
-            var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(ApiEndpoints.BaseUrl);
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            var url = ApiEndpoints.Report.TagList;
-            var json = JsonConvert.SerializeObject(query);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var response = await client.PostAsync(url, content);
-
-            if (!response.IsSuccessStatusCode)
-                return new List<ReportTemplateTagItem>();
-
-            var responseContent = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<ReportTemplateTagListResponse>(responseContent);
-
-            return result?.Items ?? new List<ReportTemplateTagItem>();
-        }
-
         public async Task<List<ReportTemplateTagItem>> GetReportTemplateTagListAsync(ReportTemplateTagListRequest request, string token)
         {
             var client = _httpClientFactory.CreateClient();
@@ -212,6 +179,26 @@ namespace ISKI.SARS.WebUI.Services
             var result = JsonConvert.DeserializeObject<ReportTemplateTagListResponse>(responseContent);
 
             return result?.Items ?? new List<ReportTemplateTagItem>();
+        }
+
+        public async Task<InstantValueListResponse> GetInstantValuesAsync(InstantValueListRequest request, string token)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(ApiEndpoints.BaseUrl);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var queryParams = $"?PageNumber={request.PageNumber}&PageSize={request.PageSize}";
+            var url = $"{ApiEndpoints.InstantValues.List}{queryParams}";
+
+            var json = JsonConvert.SerializeObject(request.Query);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync(url, content);
+
+            if (!response.IsSuccessStatusCode)
+                return new InstantValueListResponse();
+
+            return await response.Content.ReadFromJsonAsync<InstantValueListResponse>() ?? new InstantValueListResponse();
         }
     }
 }
