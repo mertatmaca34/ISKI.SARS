@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
+
 
 namespace ISKI.SARS.WebUI.Services
 {
@@ -93,6 +95,7 @@ namespace ISKI.SARS.WebUI.Services
                 return null;
             }
         }
+
         public async Task<bool> UpdateUserInfoAsync(UserInfoViewModel model, string token)
         {
             var request = new HttpRequestMessage(HttpMethod.Put, "/api/Users");
@@ -112,6 +115,7 @@ namespace ISKI.SARS.WebUI.Services
             var response = await _httpClient.SendAsync(request);
             return response.IsSuccessStatusCode;
         }
+
         public async Task<bool> ChangePasswordAsync(ChangePasswordViewModel model, string token)
         {
             var client = _httpClientFactory.CreateClient();
@@ -121,6 +125,7 @@ namespace ISKI.SARS.WebUI.Services
             var response = await client.PutAsJsonAsync(url, model);
             return response.IsSuccessStatusCode;
         }
+
         public async Task<(bool IsSuccess, int StatusCode, string? Error)> CreateNewTemplateAsync(NewTemplateViewModel model, string token)
         {
             var client = _httpClientFactory.CreateClient();
@@ -133,6 +138,7 @@ namespace ISKI.SARS.WebUI.Services
 
             return (response.IsSuccessStatusCode, (int)response.StatusCode, error);
         }
+
         public async Task<ReportTemplateListResponse> GetReportTemplatesAsync(ReportTemplateListRequest request, string token)
         {
             var client = _httpClientFactory.CreateClient();
@@ -146,6 +152,7 @@ namespace ISKI.SARS.WebUI.Services
             return await response.Content.ReadFromJsonAsync<ReportTemplateListResponse>()
                    ?? new ReportTemplateListResponse();
         }
+
         public async Task<ReportTemplateListResponse> GetReportTemplateListAsync(ReportTemplateListRequest request, string token)
         {
             var client = _httpClientFactory.CreateClient();
@@ -160,8 +167,58 @@ namespace ISKI.SARS.WebUI.Services
                 return await response.Content.ReadFromJsonAsync<ReportTemplateListResponse>() ?? new();
             }
 
-            return new ReportTemplateListResponse(); // Boş liste döndür
+            return new ReportTemplateListResponse();
         }
 
+        public async Task<List<ReportTemplateTagItem>> GetReportTemplateTagsAsync(ReportTemplateQueryModel query, string token)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(ApiEndpoints.BaseUrl);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var url = ApiEndpoints.Report.TagList;
+            var json = JsonConvert.SerializeObject(query);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync(url, content);
+
+            if (!response.IsSuccessStatusCode)
+                return new List<ReportTemplateTagItem>();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ReportTemplateTagListResponse>(responseContent);
+
+            return result?.Items ?? new List<ReportTemplateTagItem>();
+        }
+
+        public async Task<List<ReportTemplateTagItem>> GetReportTemplateTagListAsync(ReportTemplateTagListRequest request, string token)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(ApiEndpoints.BaseUrl);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var queryParams = $"?PageNumber={request.PageNumber}&PageSize={request.PageSize}";
+            var url = $"{ApiEndpoints.Report.TagList}{queryParams}";
+
+            var json = JsonConvert.SerializeObject(request.Query);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync(url, content);
+
+            if (!response.IsSuccessStatusCode)
+                return new List<ReportTemplateTagItem>();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ReportTemplateTagListResponse>(responseContent);
+
+            return result?.Items ?? new List<ReportTemplateTagItem>();
+        }
+    }
+
+    public class ReportTemplateTagListRequest
+    {
+        public int PageNumber { get; set; }
+        public int PageSize { get; set; }
+        public ReportTemplateQueryModel Query { get; set; }
     }
 }

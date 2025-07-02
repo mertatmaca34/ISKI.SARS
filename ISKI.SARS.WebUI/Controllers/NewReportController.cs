@@ -69,6 +69,18 @@ namespace ISKI.SARS.WebUI.Controllers
             var result = await _apiService.GetReportTemplateListAsync(request, token);
             return View(result);
         }
+        [HttpPost]
+        public IActionResult CreateFromTemplate(ReportTemplateListItem model)
+        {
+            var viewModel = new NewReportFromTemplateViewModel
+            {
+                SelectedTemplate = model,
+                AllTags = new List<ReportTemplateTagItem>(), // API'den çekeceğiz
+                SelectedTags = new List<ReportTemplateTagItem>()
+            };
+
+            return View(viewModel);
+        }
 
     }
 }
