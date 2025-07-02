@@ -70,12 +70,37 @@ namespace ISKI.SARS.WebUI.Controllers
             return View(result);
         }
         [HttpPost]
-        public IActionResult CreateFromTemplate(ReportTemplateListItem model)
+        public async Task<IActionResult> CreateFromTemplate(ReportTemplateListItem model)
         {
+            var token = HttpContext.Session.GetString("AccessToken");
+
+            if (string.IsNullOrEmpty(token))
+                return RedirectToAction("Index", "Login");
+
+            var request = new ReportTemplateTagListRequest
+            {
+                PageNumber = 1,
+                PageSize = 100,
+                Query = new ReportTemplateQueryModel
+                {
+                    Filters =
+                    [
+                        new FilterModel
+                        {
+                            Field = "reportTemplateId",
+                            Operator = "eq",
+                            Value = model.Id.ToString()
+                        }
+                    ]
+                }
+            };
+
+            var tags = await _apiService.GetReportTemplateTagListAsync(request, token);
+
             var viewModel = new NewReportFromTemplateViewModel
             {
                 SelectedTemplate = model,
-                AllTags = new List<ReportTemplateTagItem>(), // API'den çekeceğiz
+                AllTags = tags,
                 SelectedTags = new List<ReportTemplateTagItem>()
             };
 

@@ -17,24 +17,4 @@ namespace ISKI.SARS.WebUI.Models
         public ReportTemplateQueryModel Query { get; set; } = new();
         public List<ReportTemplateListItem> Items { get; set; } = new();
     }
-
-
-    class ReportTemplateTagListRequest
-    {
-        public int PageNumber { get; set; } = 1;
-        public int PageSize { get; set; } = 10;
-        public ReportTemplateQueryModel Query { get; set; } = new();
-    }
-
-    public class ReportTemplateTagListResponse
-    {
-        public List<ReportTemplateTagItem> Items { get; set; } = new();
-        public int TotalCount { get; set; }
-    }
-
-    public class ReportTemplateTagItem
-    {
-        public string TagName { get; set; }
-        public string TagNodeId { get; set; }
-    }
 }

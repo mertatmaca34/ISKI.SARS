@@ -214,11 +214,4 @@ namespace ISKI.SARS.WebUI.Services
             return result?.Items ?? new List<ReportTemplateTagItem>();
         }
     }
-
-    public class ReportTemplateTagListRequest
-    {
-        public int PageNumber { get; set; }
-        public int PageSize { get; set; }
-        public ReportTemplateQueryModel Query { get; set; }
-    }
 }
