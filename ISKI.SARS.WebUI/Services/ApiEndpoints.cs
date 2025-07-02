@@ -25,7 +25,11 @@
         {
             public const string ListReportTemplates = "/api/ReportTemplates/list";
             public const string TagList = "/api/ReportTemplateTags/list";
+        }
 
+        public static class InstantValues
+        {
+            public const string List = "/api/InstantValues/list";
         }
     }
 }
