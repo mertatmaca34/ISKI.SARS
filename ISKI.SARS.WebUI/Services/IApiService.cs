@@ -18,7 +18,6 @@ namespace ISKI.SARS.WebUI.Services
         Task<(bool IsSuccess, int StatusCode, string? Error)> CreateNewTemplateAsync(NewTemplateViewModel model, string token);
         Task<ReportTemplateListResponse> GetReportTemplatesAsync(ReportTemplateListRequest request, string token);
         Task<ReportTemplateListResponse> GetReportTemplateListAsync(ReportTemplateListRequest request, string token);
-        Task<List<ReportTemplateTagItem>> GetReportTemplateTagListAsync(ReportTemplateTagListRequest request, string token);
         Task<InstantValueListResponse> GetInstantValuesAsync(InstantValueListRequest request, string token);
 
 
