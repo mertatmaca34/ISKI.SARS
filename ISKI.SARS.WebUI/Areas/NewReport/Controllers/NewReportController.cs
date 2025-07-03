@@ -84,9 +84,63 @@ namespace ISKI.SARS.WebUI.Areas.NewReport.Controllers
             {
                 new ReportTemplateTagItem
                 {
-                    Id = 3,
+                    Id = 1,
                     TagName = "AgvaDesarjDebi",
                     TagNodeId = "sd213k1l4n"
+                },
+                new ReportTemplateTagItem
+                {
+                    Id = 2,
+                    TagName = "AgvaSeviye",
+                    TagNodeId = "as465k9h8g"
+                },
+                new ReportTemplateTagItem
+                {
+                    Id = 3,
+                    TagName = "BeykozDebi",
+                    TagNodeId = "bk123z4p8r"
+                },
+                new ReportTemplateTagItem
+                {
+                    Id = 4,
+                    TagName = "BeykozSeviye",
+                    TagNodeId = "bk456g7m2q"
+                },
+                new ReportTemplateTagItem
+                {
+                    Id = 5,
+                    TagName = "KadikoyBasinc",
+                    TagNodeId = "kd789a1s0d"
+                },
+                new ReportTemplateTagItem
+                {
+                    Id = 6,
+                    TagName = "KadikoySicaklik",
+                    TagNodeId = "kd098d3f5g"
+                },
+                new ReportTemplateTagItem
+                {
+                    Id = 7,
+                    TagName = "UmraniyeDebi",
+                    TagNodeId = "um234v6b9c"
+                },
+                new ReportTemplateTagItem
+                {
+                    Id = 8,
+                    TagName = "UmraniyeSeviye",
+                    TagNodeId = "um345x7n8y"
+                },
+                new ReportTemplateTagItem
+                {
+                    Id = 9,
+                    TagName = "AtasehirDebi",
+                    TagNodeId = "at567h4k9r"
+                },
+                new ReportTemplateTagItem
+                {
+                    Id = 10,
+                    TagName = "AtasehirBasinc",
+                    TagNodeId = "at678p1d2q"
                 }
             };
 
