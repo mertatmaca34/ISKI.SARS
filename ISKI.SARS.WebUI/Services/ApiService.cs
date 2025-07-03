@@ -163,28 +163,6 @@ namespace ISKI.SARS.WebUI.Services
             return new ReportTemplateListResponse();
         }
 
-        public async Task<List<ReportTemplateTagItem>> GetReportTemplateTagListAsync(ReportTemplateTagListRequest request, string token)
-        {
-            var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(ApiEndpoints.BaseUrl);
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            var queryParams = $"?PageNumber={request.PageNumber}&PageSize={request.PageSize}";
-            var url = $"{ApiEndpoints.Report.TagList}{queryParams}";
-
-            var json = JsonConvert.SerializeObject(request.Query);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var response = await client.PostAsync(url, content);
-
-            if (!response.IsSuccessStatusCode)
-                return new List<ReportTemplateTagItem>();
-
-            var responseContent = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<ReportTemplateTagListResponse>(responseContent);
-
-            return result?.Items ?? new List<ReportTemplateTagItem>();
-        }
 
         public async Task<InstantValueListResponse> GetInstantValuesAsync(InstantValueListRequest request, string token)
         {

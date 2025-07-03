@@ -24,7 +24,6 @@
         public static class Report
         {
             public const string ListReportTemplates = "/api/ReportTemplates/list";
-            public const string TagList = "/api/ReportTemplateTags/list";
         }
 
         public static class InstantValues

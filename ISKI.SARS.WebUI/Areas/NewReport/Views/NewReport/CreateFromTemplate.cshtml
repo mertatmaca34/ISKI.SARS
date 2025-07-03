@@ -2,20 +2,77 @@
 @{
     ViewData["Title"] = "Şablondan Rapor";
 }
-<div class="p-6">
-    <h2 class="text-2xl font-bold mb-4">Şablon: @Model.SelectedTemplate.Name</h2>
-    <form method="post">
-        <div class="mb-4">
-            <label class="block font-semibold mb-2">Tag Seçimi</label>
-            <div class="grid grid-cols-2 gap-2">
-                @foreach (var tag in Model.AllTags)
-                {
-                    <label class="flex items-center space-x-2">
-                        <input type="checkbox" name="SelectedTags" value="@tag.TagNodeId" class="form-checkbox" />
-                        <span>@tag.TagName (@tag.TagNodeId)</span>
-                    </label>
-                }
-            </div>
+<div class="w-full h-[calc(100vh-64px)] px-10 py-8 bg-[#dcecff]">
+    <div class="bg-white p-10 rounded shadow-md max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold text-blue-700 mb-6 flex items-center gap-2">
+            <span>📄</span> Şablondan Rapor Oluştur
+        </h2>
+
+        <div class="text-sm text-gray-700 mb-6">
+            <p><strong>Şablon Adı:</strong> @Model.SelectedTemplate.Name</p>
+            <p><strong>Endpoint:</strong> @Model.SelectedTemplate.OpcEndpoint</p>
+            <p><strong>Çekme Aralığı:</strong> @Model.SelectedTemplate.PullInterval sn</p>
         </div>
-    </form>
+
+        <form method="post">
+            <div class="grid grid-cols-2 gap-6">
+                <div>
+                    <label class="block font-semibold mb-2">Taglar</label>
+                    <div class="flex flex-col space-y-2">
+                        @foreach (var tag in Model.AllTags)
+                        {
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" id="tag-@tag.Id" name="SelectedTags" value="@tag.TagNodeId" data-tag-name="@tag.TagName" class="form-checkbox tag-checkbox" />
+                                <span>@tag.TagName (@tag.TagNodeId)</span>
+                            </label>
+                        }
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-semibold mb-2">Seçili Taglar</label>
+                    <div id="selectedTagsContainer" class="flex flex-col space-y-2"></div>
+                </div>
+            </div>
+
+            <div class="mt-6 text-right">
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Rapor Oluştur</button>
+            </div>
+        </form>
+
+    </div>
+
+    <script>
+        document.querySelectorAll('.tag-checkbox').forEach(cb => {
+            cb.addEventListener('change', function () {
+                const container = document.getElementById('selectedTagsContainer');
+                const existing = container.querySelector(`[data-checkbox-id="${this.id}"]`);
+
+                if (this.checked) {
+                    if (existing) return;
+                    const chip = document.createElement('span');
+                    chip.className = 'bg-blue-100 px-2 py-1 rounded flex items-center space-x-1 mb-1';
+                    chip.dataset.checkboxId = this.id;
+
+                    const text = document.createElement('span');
+                    text.textContent = `${this.dataset.tagName} (${this.value})`;
+
+                    const removeBtn = document.createElement('button');
+                    removeBtn.type = 'button';
+                    removeBtn.textContent = '✕';
+                    removeBtn.className = 'text-red-500 hover:text-red-700';
+                    removeBtn.addEventListener('click', () => {
+                        this.checked = false;
+                        chip.remove();
+                    });
+
+                    chip.appendChild(text);
+                    chip.appendChild(removeBtn);
+                    container.appendChild(chip);
+                } else {
+                    if (existing) existing.remove();
+                }
+            });
+        });
+    </script>
 </div>
