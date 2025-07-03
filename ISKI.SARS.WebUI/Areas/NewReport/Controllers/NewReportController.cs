@@ -79,25 +79,16 @@ namespace ISKI.SARS.WebUI.Areas.NewReport.Controllers
             if (string.IsNullOrEmpty(token))
                 return RedirectToAction("Index", "Login");
 
-            var request = new ReportTemplateTagListRequest
+            // TODO: Replace temporary tags with service call when API is available
+            var tags = new List<ReportTemplateTagItem>
             {
-                PageNumber = 1,
-                PageSize = 100,
-                Query = new ReportTemplateQueryModel
+                new ReportTemplateTagItem
                 {
-                    Filters =
-                    [
-                        new FilterModel
-                        {
-                            Field = "reportTemplateId",
-                            Operator = "eq",
-                            Value = model.Id.ToString()
-                        }
-                    ]
+                    Id = 3,
+                    TagName = "AgvaDesarjDebi",
+                    TagNodeId = "sd213k1l4n"
                 }
             };
-
-            var tags = await _apiService.GetReportTemplateTagListAsync(request, token);
 
             var viewModel = new NewReportFromTemplateViewModel
             {
