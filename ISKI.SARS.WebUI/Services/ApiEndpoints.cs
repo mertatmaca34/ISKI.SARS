@@ -2,7 +2,7 @@
 {
     public static class ApiEndpoints
     {
-        public const string BaseUrl = "https://localhost:7094";
+        public static string BaseUrl { get; set; } = "https://localhost:7094";
 
         public static class Auth
         {

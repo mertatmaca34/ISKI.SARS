@@ -1,6 +1,14 @@
 using ISKI.SARS.WebUI.Services;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Load API base URL from configuration
+var apiBaseUrl = builder.Configuration["ApiBaseUrl"];
+if (!string.IsNullOrWhiteSpace(apiBaseUrl))
+{
+    ApiEndpoints.BaseUrl = apiBaseUrl;
+}
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
