@@ -2,7 +2,6 @@
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddHttpClient<IApiService, ApiService>(client =>
@@ -33,7 +32,6 @@ app.UseSession();
 app.UseRouting();
 app.UseAuthorization();
 
-// 💡 Root ("/") adresi için otomatik yönlendirme
 app.Use(async (context, next) =>
 {
     if (context.Request.Path == "/")
@@ -44,12 +42,10 @@ app.Use(async (context, next) =>
     await next();
 });
 
-// Area rotaları (örneğin: /Login/Login/Index)
 app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
-// Varsayılan route (Area yoksa)
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Login}/{action=Index}/{id?}");
