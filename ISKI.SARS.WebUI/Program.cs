@@ -1,4 +1,4 @@
-﻿using ISKI.SARS.WebUI.Services;
+using ISKI.SARS.WebUI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,23 +33,10 @@ app.UseSession();
 app.UseRouting();
 app.UseAuthorization();
 
-// 💡 Root ("/") adresi için otomatik yönlendirme
-app.Use(async (context, next) =>
-{
-    if (context.Request.Path == "/")
-    {
-        context.Response.Redirect("/Login/Login/Index");
-        return;
-    }
-    await next();
-});
-
-// Area rotaları (örneğin: /Login/Login/Index)
 app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
-// Varsayılan route (Area yoksa)
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Login}/{action=Index}/{id?}");

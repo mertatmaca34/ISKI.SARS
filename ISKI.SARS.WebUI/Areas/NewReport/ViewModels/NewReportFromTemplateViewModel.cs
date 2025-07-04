@@ -1,5 +1,4 @@
-﻿using ISKI.SARS.WebUI.Common.ViewModels;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace ISKI.SARS.WebUI.Areas.NewReport.ViewModels
 {

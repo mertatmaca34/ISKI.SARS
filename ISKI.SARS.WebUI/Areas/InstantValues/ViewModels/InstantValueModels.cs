@@ -1,5 +1,3 @@
-using ISKI.SARS.WebUI.Common.ViewModels;
-
 namespace ISKI.SARS.WebUI.Areas.InstantValues.ViewModels;
 
 public class InstantValueListRequest
