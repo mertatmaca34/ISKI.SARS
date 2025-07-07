@@ -33,6 +33,13 @@ namespace ISKI.SARS.WebUI.Areas.Login.Controllers
             try
             {
                 var loginResponse = await _apiService.LoginAsync(model);
+
+                if (loginResponse == null || string.IsNullOrWhiteSpace(loginResponse.Token))
+                {
+                    ModelState.AddModelError("", "Giriş başarısız. Sunucudan geçerli bir yanıt alınamadı.");
+                    return View(model);
+                }
+
                 var token = loginResponse.Token;
 
                 var handler = new JwtSecurityTokenHandler();
@@ -42,11 +49,18 @@ namespace ISKI.SARS.WebUI.Areas.Login.Controllers
                     ?.Value;
 
                 HttpContext.Session.SetString("AccessToken", token);
-                HttpContext.Session.SetString("UserId", userId ?? "");
+                HttpContext.Session.SetString("UserId", userId ?? string.Empty);
 
-                var userInfo = await _apiService.GetUserInfoAsync(userId, token);
+                var userInfo = await _apiService.GetUserInfoAsync(userId ?? string.Empty, token);
 
-                HttpContext.Session.SetString("UserFirstName", userInfo.FirstName);
+                if (userInfo != null)
+                {
+                    HttpContext.Session.SetString("UserFirstName", userInfo.FirstName);
+                }
+                else
+                {
+                    HttpContext.Session.Remove("UserFirstName");
+                }
 
                 return RedirectToAction("Index", "Home", new { area = "Home" });
             }

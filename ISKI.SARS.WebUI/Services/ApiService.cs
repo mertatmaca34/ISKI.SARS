@@ -61,6 +61,11 @@ namespace ISKI.SARS.WebUI.Services
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(userId))
+                {
+                    _logger.LogWarning("GetUserInfoAsync called with empty userId");
+                    return null;
+                }
                 var client = _httpClientFactory.CreateClient();
                 client.BaseAddress = new Uri(ApiEndpoints.BaseUrl);
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
