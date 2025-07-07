@@ -21,7 +21,7 @@ namespace ISKI.SARS.WebUI.Areas.NewReport.Controllers
             var token = HttpContext.Session.GetString("AccessToken");
 
             if (string.IsNullOrEmpty(token))
-                return RedirectToAction("Index", "Login");
+                return RedirectToAction("Index", "Login", new { area = "Login" });
 
             // ViewBag ile filtreleri geri aktar
             ViewBag.NameFilter = name;
@@ -77,7 +77,7 @@ namespace ISKI.SARS.WebUI.Areas.NewReport.Controllers
             var token = HttpContext.Session.GetString("AccessToken");
 
             if (string.IsNullOrEmpty(token))
-                return RedirectToAction("Index", "Login");
+                return RedirectToAction("Index", "Login", new { area = "Login" });
 
             // TODO: Replace temporary tags with service call when API is available
             var tags = new List<ReportTemplateTagItem>

@@ -30,7 +30,10 @@ namespace ISKI.SARS.WebUI.Areas.Register.Controllers
 
             if (result)
             {
-                return RedirectToAction("Index", "Login", new { message = "Kayıt başarılı! Yönetici onayı bekleniyor." });
+                return RedirectToAction(
+                    "Index",
+                    "Login",
+                    new { area = "Login", message = "Kayıt başarılı! Yönetici onayı bekleniyor." });
             }
 
             ModelState.AddModelError(string.Empty, "Kayıt sırasında bir hata oluştu.");
