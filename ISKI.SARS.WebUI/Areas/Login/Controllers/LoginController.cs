@@ -48,7 +48,7 @@ namespace ISKI.SARS.WebUI.Areas.Login.Controllers
 
                 HttpContext.Session.SetString("UserFirstName", userInfo.FirstName);
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home", new { area = "Home" });
             }
             catch
             {
@@ -61,7 +61,7 @@ namespace ISKI.SARS.WebUI.Areas.Login.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-            return RedirectToAction("Index", "Login");
+            return RedirectToAction("Index", "Login", new { area = "Login" });
         }
     }
 }
