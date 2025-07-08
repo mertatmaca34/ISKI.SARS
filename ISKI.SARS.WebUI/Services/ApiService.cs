@@ -42,7 +42,20 @@ public class ApiService(HttpClient httpClient, TokenService tokenService, IMappe
         {
             parsedError = JsonConvert.DeserializeObject<ErrorResponse>(content);
         }
-        catch { }
+        catch
+        {
+            // ASP.NET validation problem details
+            try
+            {
+                var dict = JsonConvert.DeserializeObject<Dictionary<string, string[]>>(content);
+                if (dict != null)
+                {
+                    var messages = string.Join(" ", dict.SelectMany(d => d.Value));
+                    parsedError = new ErrorResponse((int)response.StatusCode, messages);
+                }
+            }
+            catch { }
+        }
         parsedError ??= new ErrorResponse((int)response.StatusCode, response.ReasonPhrase ?? "Error");
         return new ApiResult<T>(parsedError);
     }

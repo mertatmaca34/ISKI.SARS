@@ -32,6 +32,8 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.UseMiddleware<ISKI.SARS.WebUI.Middlewares.AuthRedirectMiddleware>();
+
 app.MapRazorPages();
 
 app.Run();
