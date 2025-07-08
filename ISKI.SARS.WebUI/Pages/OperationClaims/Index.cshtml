@@ -1,0 +1,27 @@
+@page
+@model ISKI.SARS.WebUI.Pages.OperationClaims.IndexModel
+@{
+    ViewData["Title"] = "Operation Claims";
+}
+<h1>Operation Claims</h1>
+<a asp-page="Create" class="btn btn-primary">Create New</a>
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.Claims)
+    {
+        <tr>
+            <td>@item.Name</td>
+            <td>
+                <a asp-page="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="Details" asp-route-id="@item.Id">Details</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
