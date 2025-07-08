@@ -1,0 +1,30 @@
+@page
+@model ISKI.SARS.WebUI.Pages.ReportTemplates.IndexModel
+@{
+    ViewData["Title"] = "Report Templates";
+}
+<h1>Report Templates</h1>
+<a asp-page="Create" class="btn btn-primary">Create New</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>OpcEndpoint</th>
+            <th>PullInterval</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.Templates)
+    {
+        <tr>
+            <td>@item.Name</td>
+            <td>@item.OpcEndpoint</td>
+            <td>@item.PullInterval</td>
+            <td>
+                <a asp-page="Edit" asp-route-id="@item.Id">Edit</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

@@ -1,0 +1,24 @@
+@page
+@model ISKI.SARS.WebUI.Pages.ReportTemplates.CreateModel
+@{
+    ViewData["Title"] = "Create Report Template";
+}
+<h1>Create Report Template</h1>
+<form method="post">
+    <div class="mb-3">
+        <label asp-for="Template.Name" class="form-label"></label>
+        <input asp-for="Template.Name" class="form-control" />
+        <span asp-validation-for="Template.Name" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Template.OpcEndpoint" class="form-label"></label>
+        <input asp-for="Template.OpcEndpoint" class="form-control" />
+        <span asp-validation-for="Template.OpcEndpoint" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Template.PullInterval" class="form-label"></label>
+        <input asp-for="Template.PullInterval" class="form-control" />
+        <span asp-validation-for="Template.PullInterval" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
