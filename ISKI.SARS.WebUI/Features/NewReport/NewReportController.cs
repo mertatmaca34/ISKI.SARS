@@ -97,16 +97,6 @@ namespace ISKI.SARS.WebUI.Features.NewReport
 
             var tags = await _apiService.GetReportTemplateTagListAsync(request, token);
 
-            if (tags == null || !tags.Any())
-            {
-                tags = new List<ReportTemplateTagItem>
-                {
-                    new() { TagName = "Tag 1", TagNodeId = "NODE1" },
-                    new() { TagName = "Tag 2", TagNodeId = "NODE2" },
-                    new() { TagName = "Tag 3", TagNodeId = "NODE3" }
-                };
-            }
-
             var viewModel = new NewReportFromTemplateViewModel
             {
                 SelectedTemplate = model,
