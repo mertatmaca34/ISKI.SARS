@@ -6,16 +6,4 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Views\Settings\**" />
-    <Content Remove="Views\Settings\**" />
-    <EmbeddedResource Remove="Views\Settings\**" />
-    <None Remove="Views\Settings\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
-  </ItemGroup>
-
 </Project>
