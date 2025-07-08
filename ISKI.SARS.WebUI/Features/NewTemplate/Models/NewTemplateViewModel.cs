@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace ISKI.SARS.WebUI.Models
+namespace ISKI.SARS.WebUI.Features.NewTemplate.Models
 {
     public class NewTemplateViewModel
     {

@@ -1,6 +1,7 @@
-﻿using ISKI.SARS.WebUI.Models;
+﻿using ISKI.SARS.WebUI.Features.UserInfo.Models;
 using ISKI.SARS.WebUI.Services;
 using Microsoft.AspNetCore.Mvc;
+namespace ISKI.SARS.WebUI.Features.UserInfo;
 
 public class UserInfoController : Controller
 {

@@ -1,10 +1,10 @@
-﻿using ISKI.SARS.WebUI.Models;
+﻿using ISKI.SARS.WebUI.Features.NewTemplate.Models;
 using ISKI.SARS.WebUI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
-namespace ISKI.SARS.WebUI.Controllers
+namespace ISKI.SARS.WebUI.Features.NewTemplate
 {
     public class NewTemplateController : Controller
     {

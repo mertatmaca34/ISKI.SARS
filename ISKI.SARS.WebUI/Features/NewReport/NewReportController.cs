@@ -1,8 +1,8 @@
-﻿using ISKI.SARS.WebUI.Models;
+﻿using ISKI.SARS.WebUI.Features.NewReport.Models;
 using ISKI.SARS.WebUI.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ISKI.SARS.WebUI.Controllers
+namespace ISKI.SARS.WebUI.Features.NewReport
 {
     public class NewReportController : Controller
     {

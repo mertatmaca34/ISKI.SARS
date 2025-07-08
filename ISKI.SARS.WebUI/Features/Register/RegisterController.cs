@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ISKI.SARS.WebUI.Models;
+using ISKI.SARS.WebUI.Features.Register.Models;
 using ISKI.SARS.WebUI.Services;
 
-namespace ISKI.SARS.WebUI.Controllers
+namespace ISKI.SARS.WebUI.Features.Register
 {
     public class RegisterController : Controller
     {

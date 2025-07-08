@@ -1,4 +1,6 @@
-namespace ISKI.SARS.WebUI.Models;
+using ISKI.SARS.WebUI.Features.NewReport.Models;
+
+namespace ISKI.SARS.WebUI.Features.InstantValues.Models;
 
 public class InstantValueListRequest
 {

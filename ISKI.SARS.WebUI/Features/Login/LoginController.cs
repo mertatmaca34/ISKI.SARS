@@ -1,4 +1,4 @@
-﻿using ISKI.SARS.WebUI.Models;
+﻿using ISKI.SARS.WebUI.Features.Login.Models;
 using ISKI.SARS.WebUI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -6,7 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 using System.Linq;
 
-namespace ISKI.SARS.WebUI.Controllers
+namespace ISKI.SARS.WebUI.Features.Login
 {
     public class LoginController : Controller
     {

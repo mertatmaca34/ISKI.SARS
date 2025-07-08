@@ -1,7 +1,8 @@
-using ISKI.SARS.WebUI.Models;
+using ISKI.SARS.WebUI.Features.InstantValues.Models;
 using ISKI.SARS.WebUI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+namespace ISKI.SARS.WebUI.Features.InstantValues;
 
 public class InstantValuesController : Controller
 {

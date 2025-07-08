@@ -1,4 +1,4 @@
-﻿namespace ISKI.SARS.WebUI.Models
+﻿namespace ISKI.SARS.WebUI.Features.UserInfo.Models
 {
     public class UpdateUserViewModel
     {
