@@ -1,0 +1,32 @@
+@page
+@model ISKI.SARS.WebUI.Pages.InstantValues.IndexModel
+@{
+    ViewData["Title"] = "Instant Values";
+}
+<h1>Instant Values</h1>
+<a asp-page="Create" class="btn btn-primary">Create New</a>
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th>Timestamp</th>
+            <th>TagId</th>
+            <th>Value</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.Values)
+    {
+        <tr>
+            <td>@item.Timestamp</td>
+            <td>@item.ReportTemplateTagId</td>
+            <td>@item.Value</td>
+            <td>@item.Status</td>
+            <td>
+                <a asp-page="Details" asp-route-timestamp="@item.Timestamp.ToString("o")">Details</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
