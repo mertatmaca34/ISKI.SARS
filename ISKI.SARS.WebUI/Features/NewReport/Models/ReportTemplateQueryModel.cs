@@ -1,4 +1,4 @@
-﻿namespace ISKI.SARS.WebUI.Models
+﻿namespace ISKI.SARS.WebUI.Features.NewReport.Models
 {
     public class FilterModel
     {

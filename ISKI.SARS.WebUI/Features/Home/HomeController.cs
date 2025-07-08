@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using ISKI.SARS.WebUI.Models;
+using ISKI.SARS.WebUI.Features.Home.Models;
 
-namespace ISKI.SARS.WebUI.Controllers;
+namespace ISKI.SARS.WebUI.Features.Home;
 
 public class HomeController : Controller
 {

@@ -1,4 +1,9 @@
-using ISKI.SARS.WebUI.Models;
+using ISKI.SARS.WebUI.Features.Login.Models;
+using ISKI.SARS.WebUI.Features.Register.Models;
+using ISKI.SARS.WebUI.Features.UserInfo.Models;
+using ISKI.SARS.WebUI.Features.NewTemplate.Models;
+using ISKI.SARS.WebUI.Features.NewReport.Models;
+using ISKI.SARS.WebUI.Features.InstantValues.Models;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Net.Http;

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ISKI.SARS.WebUI.Models
+namespace ISKI.SARS.WebUI.Features.Login.Models
 {
     public class LoginViewModel
     {
@@ -15,7 +15,7 @@ namespace ISKI.SARS.WebUI.Models
 }
 
 
-namespace ISKI.SARS.WebUI.Models
+namespace ISKI.SARS.WebUI.Features.Login.Models
 {
     public class LoginResponse
     {

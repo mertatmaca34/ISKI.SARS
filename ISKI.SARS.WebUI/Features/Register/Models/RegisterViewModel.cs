@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ISKI.SARS.WebUI.Models
+namespace ISKI.SARS.WebUI.Features.Register.Models
 {
     public class RegisterViewModel
     {
