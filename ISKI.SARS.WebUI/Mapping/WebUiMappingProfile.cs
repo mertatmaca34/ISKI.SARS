@@ -3,6 +3,9 @@ using ISKI.SARS.Application.Features.ReportTemplates.Dtos;
 using ISKI.SARS.WebUI.ViewModels.ReportTemplates;
 using ISKI.SARS.Application.Features.OperationClaims.Dtos;
 using ISKI.SARS.WebUI.ViewModels.OperationClaims;
+using ISKI.SARS.Application.Features.InstantValues.Dtos;
+using ISKI.SARS.Application.Features.InstantValues.Commands.CreateInstantValue;
+using ISKI.SARS.WebUI.ViewModels.InstantValues;
 using ISKI.Core.Security.Dtos;
 using ISKI.SARS.WebUI.ViewModels.Auths;
 using ISKI.SARS.Application.Features.Users.Dtos;
@@ -25,5 +28,7 @@ public class WebUiMappingProfile : Profile
         CreateMap<CreateUserCommand, UserVm>().ReverseMap();
         CreateMap<UpdateUserCommand, UserVm>().ReverseMap();
         CreateMap<ChangePasswordCommand, ChangePasswordVm>().ReverseMap();
+        CreateMap<GetInstantValueDto, InstantValueVm>().ReverseMap();
+        CreateMap<CreateInstantValueCommand, InstantValueVm>().ReverseMap();
     }
 }
