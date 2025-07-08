@@ -1,7 +1,11 @@
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
+builder.Services.AddHttpClient<ISKI.SARS.WebUI.Services.ApiService>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ISKI.SARS.WebUI.Services.TokenService>();
+builder.Services.AddAutoMapper(typeof(ISKI.SARS.WebUI.Mapping.WebUiMappingProfile));
 
 var app = builder.Build();
 
@@ -20,8 +24,7 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapRazorPages();
 
+app.MapDefaultControllerRoute();
 app.Run();
