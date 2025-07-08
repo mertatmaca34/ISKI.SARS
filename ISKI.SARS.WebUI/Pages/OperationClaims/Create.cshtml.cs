@@ -24,8 +24,10 @@ public class CreateModel(ApiService apiService, IMapper mapper) : PageModel
     {
         var command = _mapper.Map<CreateOperationClaimCommand>(Claim);
         var result = await _apiService.PostAsync<CreatedOperationClaimResponse>("api/OperationClaims", command);
-        if (result != null)
+        if (result.Success)
             return RedirectToPage("Index");
+
+        ModelState.AddModelError(string.Empty, result.Error?.Message ?? "Create failed");
         return Page();
     }
 }

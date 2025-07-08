@@ -23,10 +23,11 @@ public class CreateModel(ApiService apiService, IMapper mapper) : PageModel
     {
         var command = _mapper.Map<CreateReportTemplateCommand>(Template);
         var result = await _apiService.PostAsync<GetReportTemplateDto>("api/ReportTemplates", command);
-        if (result != null)
+        if (result.Success)
         {
             return RedirectToPage("Index");
         }
+        ModelState.AddModelError(string.Empty, result.Error?.Message ?? "Create failed");
         return Page();
     }
 }

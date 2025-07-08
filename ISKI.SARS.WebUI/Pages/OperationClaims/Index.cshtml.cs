@@ -17,8 +17,8 @@ public class IndexModel(ApiService apiService, IMapper mapper) : PageModel
     public async Task OnGetAsync()
     {
         var result = await _apiService.GetAsync<PaginatedList<OperationClaimDto>>("api/OperationClaims");
-        if (result != null)
-            Claims = _mapper.Map<List<OperationClaimVm>>(result.Items);
+        if (result.Success && result.Data != null)
+            Claims = _mapper.Map<List<OperationClaimVm>>(result.Data.Items);
     }
 
     public class PaginatedList<T>

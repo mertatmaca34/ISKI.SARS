@@ -15,8 +15,8 @@ public class IndexModel(ApiService apiService, IMapper mapper) : PageModel
     public async Task OnGetAsync()
     {
         var result = await _apiService.PostAsync<PaginatedList<GetReportTemplateDto>>("api/ReportTemplates/list", new { });
-        if (result != null)
-            Templates = _mapper.Map<List<ReportTemplateVm>>(result.Items);
+        if (result.Success && result.Data != null)
+            Templates = _mapper.Map<List<ReportTemplateVm>>(result.Data.Items);
     }
 
     public class PaginatedList<T>
