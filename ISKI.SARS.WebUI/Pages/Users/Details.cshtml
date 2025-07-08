@@ -1,0 +1,16 @@
+@page
+@model ISKI.SARS.WebUI.Pages.Users.DetailsModel
+@{
+    ViewData["Title"] = "User Details";
+}
+<h1>User Details</h1>
+<div>
+    <strong>Email:</strong> @Model.User.Email
+</div>
+<div>
+    <strong>Name:</strong> @Model.User.FirstName @Model.User.LastName
+</div>
+<div>
+    <strong>Status:</strong> @Model.User.Status
+</div>
+<a asp-page="Edit" asp-route-id="@Model.User.Id">Edit</a>
