@@ -1,0 +1,15 @@
+@page "{id:int}"
+@model ISKI.SARS.WebUI.Pages.OperationClaims.EditModel
+@{
+    ViewData["Title"] = "Edit";
+}
+<h1>Edit Operation Claim</h1>
+<form method="post">
+    <input type="hidden" asp-for="Claim.Id" />
+    <div class="mb-3">
+        <label asp-for="Claim.Name" class="form-label"></label>
+        <input asp-for="Claim.Name" class="form-control" />
+        <span asp-validation-for="Claim.Name" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
