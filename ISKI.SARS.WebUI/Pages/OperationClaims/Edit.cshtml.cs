@@ -20,16 +20,18 @@ public class EditModel(ApiService apiService, IMapper mapper) : PageModel
     public async Task OnGetAsync(int id)
     {
         var dto = await _apiService.GetAsync<OperationClaimDto>($"api/OperationClaims/{id}");
-        if (dto != null)
-            Claim = _mapper.Map<OperationClaimVm>(dto);
+        if (dto.Success && dto.Data != null)
+            Claim = _mapper.Map<OperationClaimVm>(dto.Data);
     }
 
     public async Task<IActionResult> OnPostAsync()
     {
         var command = _mapper.Map<UpdateOperationClaimCommand>(Claim);
         var result = await _apiService.PutAsync<UpdatedOperationClaimResponse>("api/OperationClaims", command);
-        if (result != null)
+        if (result.Success)
             return RedirectToPage("Index");
+
+        ModelState.AddModelError(string.Empty, result.Error?.Message ?? "Update failed");
         return Page();
     }
 }
