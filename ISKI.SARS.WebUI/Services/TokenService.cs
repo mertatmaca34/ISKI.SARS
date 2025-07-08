@@ -14,4 +14,14 @@ public class TokenService
     {
         return _httpContextAccessor.HttpContext?.Request.Cookies["token"];
     }
+
+    public void SetToken(string token)
+    {
+        _httpContextAccessor.HttpContext?.Response.Cookies.Append("token", token);
+    }
+
+    public void RemoveToken()
+    {
+        _httpContextAccessor.HttpContext?.Response.Cookies.Delete("token");
+    }
 }
