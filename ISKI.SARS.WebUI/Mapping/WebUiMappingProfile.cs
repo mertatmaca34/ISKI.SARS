@@ -1,4 +1,6 @@
 using AutoMapper;
+using ISKI.SARS.WebUI.DTOs.Tags;
+using ISKI.SARS.WebUI.ViewModels.Tags;
 
 namespace ISKI.SARS.WebUI.Mapping;
 
@@ -6,6 +8,6 @@ public class WebUiMappingProfile : Profile
 {
     public WebUiMappingProfile()
     {
-        // DTO to VM mappings
+        CreateMap<TagDto, TagVm>().ReverseMap();
     }
 }

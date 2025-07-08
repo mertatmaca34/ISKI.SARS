@@ -1,0 +1,33 @@
+@page
+@model ISKI.SARS.WebUI.Pages.Tags.IndexModel
+
+<h2>Tags</h2>
+
+@if (Model.Tags.Count == 0)
+{
+    <p>No tags found.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Display Name</th>
+                <th>Opc Path</th>
+                <th>Pull Interval</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var tag in Model.Tags)
+        {
+            <tr>
+                <td>@tag.DisplayName</td>
+                <td>@tag.OpcPath</td>
+                <td>@tag.PullInterval</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+<a asp-page="Create">Create New</a>
