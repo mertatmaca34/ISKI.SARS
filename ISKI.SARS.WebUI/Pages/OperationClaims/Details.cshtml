@@ -1,0 +1,11 @@
+@page "{id:int}"
+@model ISKI.SARS.WebUI.Pages.OperationClaims.DetailsModel
+@{
+    ViewData["Title"] = "Details";
+}
+<h1>Claim Details</h1>
+<div>
+    <h4>@Model.Claim.Name</h4>
+</div>
+<a asp-page="Edit" asp-route-id="@Model.Claim.Id">Edit</a> |
+<a asp-page="Index">Back to List</a>

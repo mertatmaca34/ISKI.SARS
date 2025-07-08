@@ -1,0 +1,14 @@
+@page
+@model ISKI.SARS.WebUI.Pages.OperationClaims.CreateModel
+@{
+    ViewData["Title"] = "Create Operation Claim";
+}
+<h1>Create Operation Claim</h1>
+<form method="post">
+    <div class="mb-3">
+        <label asp-for="Claim.Name" class="form-label"></label>
+        <input asp-for="Claim.Name" class="form-control" />
+        <span asp-validation-for="Claim.Name" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
