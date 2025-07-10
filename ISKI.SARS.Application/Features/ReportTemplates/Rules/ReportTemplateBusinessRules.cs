@@ -14,4 +14,11 @@ public class ReportTemplateBusinessRules(IReportTemplateRepository repository)
         if (exists is not null)
             throw new BusinessException(ReportTemplateMessages.NameAlreadyExists);
     }
+
+    public async Task ReportTemplateMustExist(int id)
+    {
+        var entity = await _repository.GetByIdAsync(id);
+        if (entity is null)
+            throw new BusinessException(ReportTemplateMessages.NotFound);
+    }
 }

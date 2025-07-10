@@ -87,11 +87,8 @@ builder.Services.AddSwaggerGen(opt =>
 var app = builder.Build();
 
 // 🌐 Environment config
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 

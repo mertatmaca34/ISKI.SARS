@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using ISKI.SARS.Application.Features.ReportTemplates.Commands.CreateReportTemplate;
 using ISKI.SARS.Application.Features.ReportTemplates.Queries.GetReportTemplateById;
 using ISKI.SARS.Application.Features.ReportTemplates.Queries.GetReportTemplates;
+using ISKI.SARS.Application.Features.ReportTemplates.Commands.ChangeStatus;
 
 namespace ISKI.SARS.API.Controllers;
 
@@ -20,6 +21,15 @@ public class ReportTemplatesController(IMediator mediator) : ControllerBase
     {
         GetReportTemplateDto result = await mediator.Send(command);
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpPut("{id}/status")]
+    public async Task<IActionResult> ChangeStatus(int id, [FromBody] bool isActive)
+    {
+        var command = new ChangeReportTemplateStatusCommand { Id = id, IsActive = isActive };
+        GetReportTemplateDto result = await mediator.Send(command);
+        return Ok(result);
     }
 
     [Authorize(Roles = "Admin,Operator")]
