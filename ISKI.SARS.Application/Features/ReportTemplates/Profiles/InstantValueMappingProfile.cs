@@ -11,6 +11,7 @@ public class ReportTemplateMappingProfile : Profile
     public ReportTemplateMappingProfile()
     {
         CreateMap<CreateReportTemplateCommand, ReportTemplate>();
+        CreateMap<ChangeReportTemplateStatusCommand, ReportTemplate>();
         CreateMap<ReportTemplate, GetReportTemplateDto>();
     }
 }
