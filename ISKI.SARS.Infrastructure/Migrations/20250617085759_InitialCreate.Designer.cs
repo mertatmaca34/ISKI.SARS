@@ -238,6 +238,9 @@ namespace ISKI.SARS.Infrastructure.Migrations
                     b.Property<int>("PullInterval")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
