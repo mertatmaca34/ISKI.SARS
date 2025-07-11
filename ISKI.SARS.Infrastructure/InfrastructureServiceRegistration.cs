@@ -6,24 +6,18 @@ using ISKI.SARS.Infrastructure.Persistence;
 using ISKI.SARS.Infrastructure.Persistence.Seeders;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.DependencyInjection;
-using System.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace ISKI.SARS.Infrastructure;
 public static class InfrastructureServiceRegistration
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, string connectionString)
     {
-        if (CanConnect(connectionString))
-        {
-            services.AddDbContext<SarsDbContext>(options =>
-                options.UseSqlServer(connectionString));
-        }
-        else
-        {
-            services.AddDbContext<SarsDbContext>(options =>
-                options.UseInMemoryDatabase("FakeDB"));
-        }
+        EnsureDatabaseExists(connectionString);
+
+        services.AddDbContext<SarsDbContext>(options =>
+            options.UseSqlServer(connectionString));
 
         services.AddScoped<JwtHelper>();
 
@@ -35,10 +29,10 @@ public static class InfrastructureServiceRegistration
         services.AddScoped<IUserOperationClaimRepository, UserOperationClaimRepository>();
         services.AddScoped<IOperationClaimRepository, OperationClaimRepository>();
 
-        // Burada DbContext'i alıyoruz
         using (var scope = services.BuildServiceProvider().CreateScope())
         {
             var dbContext = scope.ServiceProvider.GetRequiredService<SarsDbContext>();
+            dbContext.Database.Migrate(); // Migrationları otomatik uygula
 
             var opClaimRepo = scope.ServiceProvider.GetRequiredService<IOperationClaimRepository>();
             OperationClaimSeeder.SeedAsync(opClaimRepo).Wait();
@@ -51,17 +45,19 @@ public static class InfrastructureServiceRegistration
         return services;
     }
 
-    private static bool CanConnect(string connectionString)
+    private static void EnsureDatabaseExists(string connectionString)
     {
-        try
-        {
-            using var connection = new SqlConnection(connectionString);
-            connection.Open();
-            return connection.State == ConnectionState.Open;
-        }
-        catch
-        {
-            return false;
-        }
+        var builder = new SqlConnectionStringBuilder(connectionString);
+        var databaseName = builder.InitialCatalog;
+
+        // Bağlantı stringini master DB'ye bağlanacak şekilde değiştir
+        builder.InitialCatalog = "master";
+
+        using var connection = new SqlConnection(builder.ConnectionString);
+        connection.Open();
+
+        using var command = connection.CreateCommand();
+        command.CommandText = $"IF DB_ID(N'{databaseName}') IS NULL CREATE DATABASE [{databaseName}];";
+        command.ExecuteNonQuery();
     }
 }
