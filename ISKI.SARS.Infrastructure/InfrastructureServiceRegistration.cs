@@ -30,6 +30,7 @@ public static class InfrastructureServiceRegistration
         services.AddScoped<IInstantValueRepository, InstantValueRepository>();
         services.AddScoped<IReportTemplateRepository, ReportTemplateRepository>();
         services.AddScoped<IReportTemplateTagRepository, ReportTemplateTagRepository>();
+        services.AddScoped<ISystemMetricRepository, SystemMetricRepository>();
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserOperationClaimRepository, UserOperationClaimRepository>();
