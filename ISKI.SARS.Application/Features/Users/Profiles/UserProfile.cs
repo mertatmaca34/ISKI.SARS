@@ -11,7 +11,9 @@ public class UserProfile : Profile
 {
     public UserProfile()
     {
-        CreateMap<User, UserDto>();
+        CreateMap<User, UserDto>()
+            .ForMember(dest => dest.OperationClaimId, opt => opt.Ignore())
+            .ForMember(dest => dest.OperationClaimName, opt => opt.Ignore());
         CreateMap<User, CreatedUserResponse>();
         CreateMap<User, UpdatedUserResponse>();
         CreateMap<CreateUserCommand, User>();
