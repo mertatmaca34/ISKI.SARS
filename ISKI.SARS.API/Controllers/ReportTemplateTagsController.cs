@@ -1,4 +1,6 @@
 ﻿using ISKI.SARS.Application.Features.ReportTemplateTags.Commands;
+using ISKI.SARS.Application.Features.ReportTemplateTags.Commands.UpdateReportTemplateTag;
+using ISKI.SARS.Application.Features.ReportTemplateTags.Commands.DeleteReportTemplateTag;
 using ISKI.SARS.Application.Features.ReportTemplateTags.Dtos;
 using ISKI.Core.Persistence.Dynamic;
 using ISKI.Core.Persistence.Paging;
@@ -22,12 +24,29 @@ public class ReportTemplateTagsController(IMediator mediator) : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
     }
 
+    [Authorize(Roles = "Admin")]
+    [HttpPut]
+    public async Task<IActionResult> Update([FromBody] UpdateReportTemplateTagCommand command)
+    {
+        GetReportTemplateTagDto result = await mediator.Send(command);
+        return Ok(result);
+    }
+
     [Authorize(Roles = "Admin,Operator")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
         var query = new GetReportTemplateTagByIdQuery(id);
         GetReportTemplateTagDto result = await mediator.Send(query);
+        return Ok(result);
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var command = new DeleteReportTemplateTagCommand { Id = id };
+        GetReportTemplateTagDto result = await mediator.Send(command);
         return Ok(result);
     }
 
