@@ -3,6 +3,7 @@ using ISKI.SARS.Application.Features.UserOperationClaims.Commands.Update;
 using ISKI.SARS.Application.Features.UserOperationClaims.Commands.Delete;
 using ISKI.SARS.Application.Features.UserOperationClaims.Queries.GetById;
 using ISKI.SARS.Application.Features.UserOperationClaims.Queries.GetList;
+using ISKI.SARS.Application.Features.UserOperationClaims.Queries.GetByUserId;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
@@ -42,6 +43,13 @@ public class UserOperationClaimsController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("user/{userId}")]
+    public async Task<IActionResult> GetByUserId(Guid userId)
+    {
+        var result = await mediator.Send(new GetUserOperationClaimByUserIdQuery { UserId = userId });
+        return Ok(result);
+    }
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
@@ -49,3 +57,4 @@ public class UserOperationClaimsController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 }
+

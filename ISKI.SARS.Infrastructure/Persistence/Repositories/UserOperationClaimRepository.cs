@@ -2,6 +2,7 @@
 using ISKI.Core.Security.Entities;
 using ISKI.Core.Security.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace ISKI.SARS.Infrastructure.Persistence.Repositories;
 
@@ -15,5 +16,12 @@ public class UserOperationClaimRepository(SarsDbContext context)
             .Include(uoc => uoc.OperationClaim)
             .Select(uoc => uoc.OperationClaim!)
             .ToListAsync();
+    }
+
+    public async Task<UserOperationClaim?> GetByUserIdAsync(Guid userId)
+    {
+        return await _context.UserOperationClaims
+            .Include(uoc => uoc.OperationClaim)
+            .FirstOrDefaultAsync(uoc => uoc.UserId == userId);
     }
 }
