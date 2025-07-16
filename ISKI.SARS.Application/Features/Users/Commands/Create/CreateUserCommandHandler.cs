@@ -3,11 +3,18 @@ using ISKI.Core.Security.Entities;
 using ISKI.Core.Security.Hashing;
 using ISKI.Core.Security.Repositories;
 using ISKI.SARS.Application.Features.Users.Rules;
+using ISKI.Core.Security.Constants;
 using MediatR;
 
 namespace ISKI.SARS.Application.Features.Users.Commands.Create;
 
-public class CreateUserCommandHandler(IUserRepository repository, IMapper mapper, UserBusinessRules rules) : IRequestHandler<CreateUserCommand, CreatedUserResponse>
+public class CreateUserCommandHandler(
+    IUserRepository repository,
+    IMapper mapper,
+    UserBusinessRules rules,
+    IOperationClaimRepository operationClaimRepository,
+    IUserOperationClaimRepository userOperationClaimRepository)
+    : IRequestHandler<CreateUserCommand, CreatedUserResponse>
 {
     public async Task<CreatedUserResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
@@ -21,6 +28,20 @@ public class CreateUserCommandHandler(IUserRepository repository, IMapper mapper
         user.Status = true;
 
         var created = await repository.AddAsync(user);
+
+        var claim = request.OperationClaimId.HasValue
+            ? await operationClaimRepository.GetAsync(x => x.Id == request.OperationClaimId.Value)
+            : await operationClaimRepository.GetAsync(x => x.Name == GeneralOperationClaims.PendingUser);
+
+        if (claim != null)
+        {
+            await userOperationClaimRepository.AddAsync(new UserOperationClaim
+            {
+                UserId = created.Id,
+                OperationClaimId = claim.Id
+            });
+        }
+
         return mapper.Map<CreatedUserResponse>(created);
     }
 }
