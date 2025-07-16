@@ -16,7 +16,6 @@ public class UpdateReportTemplateCommandHandler(
     public async Task<GetReportTemplateDto> Handle(UpdateReportTemplateCommand request, CancellationToken cancellationToken)
     {
         await rules.ReportTemplateMustExist(request.Id);
-        await rules.NameMustBeUnique(request.Name);
 
         var entity = await repository.GetByIdAsync(request.Id);
         mapper.Map(request, entity!);
