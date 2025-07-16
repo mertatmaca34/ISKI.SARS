@@ -14,4 +14,11 @@ public class ReportTemplateTagBusinessRules(IReportTemplateTagRepository reposit
         if (exists is not null)
             throw new BusinessException(ReportTemplateTagMessages.DuplicateTagNodeId);
     }
+
+    public async Task ReportTemplateTagMustExist(int id)
+    {
+        var entity = await _repository.GetByIdAsync(id);
+        if (entity is null)
+            throw new BusinessException(ReportTemplateTagMessages.NotFound);
+    }
 }
