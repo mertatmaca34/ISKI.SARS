@@ -71,7 +71,7 @@ public class Worker : BackgroundService
                 await valueRepo.AddAsync(instantValue);
             }
 
-            await Task.Delay(template.PullInterval, token);
+            await Task.Delay(template.PullInterval*1000, token);
         }
     }
 
