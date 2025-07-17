@@ -16,6 +16,7 @@ public class SarsDbContext(DbContextOptions<SarsDbContext> options) : DbContext(
     public DbSet<OperationClaim> OperationClaims => Set<OperationClaim>();
     public DbSet<UserOperationClaim> UserOperationClaims => Set<UserOperationClaim>();
     public DbSet<SystemMetric> SystemMetrics => Set<SystemMetric>();
+    public DbSet<SystemSetting> SystemSettings => Set<SystemSetting>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
