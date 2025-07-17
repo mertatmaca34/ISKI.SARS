@@ -27,6 +27,7 @@
     <ProjectReference Include="..\ISKI.SARS.Application\ISKI.SARS.Application.csproj" />
     <ProjectReference Include="..\ISKI.SARS.Domain\ISKI.SARS.Domain.csproj" />
     <ProjectReference Include="..\ISKI.SARS.Infrastructure\ISKI.SARS.Infrastructure.csproj" />
+    <ProjectReference Include="..\ISKI.SARS.Worker\ISKI.SARS.Worker.csproj" />
   </ItemGroup>
 
 </Project>

@@ -4,6 +4,7 @@ using ISKI.OpcUa.Client;
 using ISKI.SARS.Application;
 using ISKI.SARS.Infrastructure;
 using ISKI.SARS.Infrastructure.Persistence;
+using ISKI.SARS.Worker;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -38,6 +39,7 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.Get
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddIskiOpcUaClient();
+builder.Services.AddHostedService<Worker>();
 
 // 📚 Application & Infrastructure servisleri
 builder.Services.AddApplicationServices();

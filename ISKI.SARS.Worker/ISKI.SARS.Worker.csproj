@@ -8,6 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+    <PackageReference Include="ISKI.OpcUa.Client" Version="1.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ISKI.SARS.Application\ISKI.SARS.Application.csproj" />
+    <ProjectReference Include="..\ISKI.SARS.Infrastructure\ISKI.SARS.Infrastructure.csproj" />
   </ItemGroup>
 </Project>
