@@ -15,6 +15,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="14.0.0" />
     <PackageReference Include="FluentValidation" Version="11.11.0" />
+    <PackageReference Include="ISKI.OpcUa.Client" Version="1.0.5" />
   </ItemGroup>
 
   <ItemGroup>
