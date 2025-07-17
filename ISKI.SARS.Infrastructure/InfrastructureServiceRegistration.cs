@@ -14,6 +14,7 @@ public static class ServiceRegistration
             options.UseSqlServer(connectionString));
 
         services.AddScoped<ITagRepository, TagRepository>();
+        services.AddScoped<ISystemSettingsRepository, SystemSettingsRepository>();
 
         return services;
     }

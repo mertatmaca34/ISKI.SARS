@@ -15,6 +15,7 @@ public class SarsDbContext : DbContext
     public DbSet<TagValues> TagValues => Set<TagValues>();
     public DbSet<ReportTemplates> ReportTemplates => Set<ReportTemplates>();
     public DbSet<ReportTemplateTags> ReportTemplateTags => Set<ReportTemplateTags>();
+    public DbSet<SystemSettings> SystemSettings => Set<SystemSettings>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
