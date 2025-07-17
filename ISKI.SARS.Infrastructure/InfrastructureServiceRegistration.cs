@@ -42,6 +42,9 @@ public static class InfrastructureServiceRegistration
             var userRepo = scope.ServiceProvider.GetRequiredService<IUserRepository>();
             var userOpClaimRepo = scope.ServiceProvider.GetRequiredService<IUserOperationClaimRepository>();
             UserSeeder.SeedAsync(userRepo, opClaimRepo, userOpClaimRepo).Wait();
+
+            var settingRepo = scope.ServiceProvider.GetRequiredService<ISystemSettingRepository>();
+            SystemSettingSeeder.SeedAsync(settingRepo).Wait();
         }
 
         return services;
