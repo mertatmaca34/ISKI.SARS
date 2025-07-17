@@ -1,5 +1,6 @@
 using ISKI.SARS.Application.Features.SystemSettings.Dtos;
 using ISKI.SARS.Application.Features.SystemSettings.Queries.GetSystemSettings;
+using ISKI.SARS.Application.Features.SystemSettings.Commands.WriteSystemSetting;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,14 @@ public class SystemSettingsController(IMediator mediator) : ControllerBase
     {
         var query = new GetSystemSettingsQuery();
         SystemSettingDto result = await mediator.Send(query);
+        return Ok(result);
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpPut]
+    public async Task<ActionResult<SystemSettingDto>> Write([FromBody] WriteSystemSettingCommand command)
+    {
+        SystemSettingDto result = await mediator.Send(command);
         return Ok(result);
     }
 }
