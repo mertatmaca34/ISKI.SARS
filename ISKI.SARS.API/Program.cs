@@ -5,6 +5,7 @@ using ISKI.SARS.Application;
 using ISKI.SARS.Infrastructure;
 using ISKI.SARS.Infrastructure.Persistence;
 using ISKI.SARS.Worker;
+using ISKI.SARS.API.Constants;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -15,8 +16,11 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // 🔐 TokenOptions config
-var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
-builder.Services.Configure<TokenOptions>(builder.Configuration.GetSection("TokenOptions"));
+var tokenOptions = builder.Configuration
+    .GetSection(ApiConstants.ApiConstants.TokenOptionsSection)
+    .Get<TokenOptions>();
+builder.Services.Configure<TokenOptions>(
+    builder.Configuration.GetSection(ApiConstants.ApiConstants.TokenOptionsSection));
 
 // 🔑 JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -44,12 +48,13 @@ builder.Services.AddHostedService<Worker>();
 // 📚 Application & Infrastructure servisleri
 builder.Services.AddApplicationServices();
 
-builder.Services.AddInfrastructureServices(builder.Configuration.GetConnectionString("DefaultConnection")!);
+builder.Services.AddInfrastructureServices(
+    builder.Configuration.GetConnectionString(ApiConstants.ApiConstants.DefaultConnection)!);
 
 // 🔐 CORS (Opsiyonel açılabilir)
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", builder => builder
+options.AddPolicy(ApiConstants.ApiConstants.AllowAllCorsPolicy, builder => builder
         .AllowAnyOrigin()
         .AllowAnyMethod()
         .AllowAnyHeader());
@@ -60,25 +65,30 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opt =>
 {
-    opt.SwaggerDoc("v1", new OpenApiInfo { Title = "ISKI.SARS API", Version = "v1" });
+    opt.SwaggerDoc(ApiConstants.ApiConstants.SwaggerVersion,
+        new OpenApiInfo
+        {
+            Title = ApiConstants.ApiConstants.SwaggerTitle,
+            Version = ApiConstants.ApiConstants.SwaggerVersion
+        });
 
     var jwtSecurityScheme = new OpenApiSecurityScheme
     {
-        Scheme = "bearer",
-        BearerFormat = "JWT",
-        Name = "Authorization",
+        Scheme = ApiConstants.ApiConstants.JwtScheme,
+        BearerFormat = ApiConstants.ApiConstants.JwtBearerFormat,
+        Name = ApiConstants.ApiConstants.AuthorizationHeader,
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.Http,
         Description = "JWT Token header'ına 'Bearer {token}' formatında girin.",
 
         Reference = new OpenApiReference
         {
-            Id = "Bearer",
+            Id = ApiConstants.ApiConstants.BearerReference,
             Type = ReferenceType.SecurityScheme
         }
     };
 
-    opt.AddSecurityDefinition("Bearer", jwtSecurityScheme);
+    opt.AddSecurityDefinition(ApiConstants.ApiConstants.BearerReference, jwtSecurityScheme);
 
     opt.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
@@ -104,7 +114,7 @@ app.UseMiddleware<ExceptionMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseCors("AllowAll");
+app.UseCors(ApiConstants.ApiConstants.AllowAllCorsPolicy);
 
 app.MapControllers();
 
