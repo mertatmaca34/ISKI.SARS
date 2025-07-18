@@ -1,6 +1,7 @@
 using ISKI.SARS.Application.Features.Dashboard.Dtos;
 using ISKI.SARS.Domain.Services;
 using ISKI.Core.Security.Repositories;
+using ISKI.SARS.Application.Features.Dashboard.Constants;
 using MediatR;
 
 namespace ISKI.SARS.Application.Features.Dashboard.Queries.GetDashboardStats;
@@ -20,8 +21,8 @@ public class GetDashboardStatsQueryHandler(
         var dataPoints24h = (await instantValueRepository.GetAllAsync(x => x.Id >= since)).Count;
         var activeUsers = (await userRepository.GetAllAsync(x => x.Status)).Count;
         // System health and uptime placeholders
-        string systemHealth = "OK";
-        string uptime = "Online";
+        string systemHealth = DashboardConstants.DefaultSystemHealth;
+        string uptime = DashboardConstants.DefaultUptime;
         int alerts24h = 0;
 
         return new DashboardStatsDto

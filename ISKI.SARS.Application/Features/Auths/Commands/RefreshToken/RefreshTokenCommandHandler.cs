@@ -3,6 +3,7 @@ using ISKI.Core.Security.Entities;
 using ISKI.Core.Security.JWT;
 using ISKI.Core.Security.Repositories;
 using ISKI.SARS.Application.Features.Auths.Commands.RefreshToken;
+using ISKI.SARS.Application.Features.Auths.Constants;
 using ISKI.SARS.Domain.Services;
 using MediatR;
 
@@ -32,7 +33,7 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, A
         var user = await _userRepository.GetAsync(x => true); // Gerçek implementasyonda token'dan userId çözülmeli
 
         if (user == null)
-            throw new BusinessException("Kullanıcı bulunamadı");
+            throw new BusinessException(AuthMessages.UserNotFound);
 
         var claims = await _claimRepository.GetAllAsync(1, 100);
         var token = _jwtHelper.CreateAccessToken(user, claims.Items);
