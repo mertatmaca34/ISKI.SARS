@@ -26,6 +26,7 @@ public static class InfrastructureServiceRegistration
         services.AddScoped<IReportTemplateTagRepository, ReportTemplateTagRepository>();
         services.AddScoped<ISystemMetricRepository, SystemMetricRepository>();
         services.AddScoped<ISystemSettingRepository, SystemSettingRepository>();
+        services.AddScoped<ILogRepository, LogRepository>();
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserOperationClaimRepository, UserOperationClaimRepository>();
