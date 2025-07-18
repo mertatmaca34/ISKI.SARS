@@ -12,7 +12,7 @@ public class CreateLogCommandHandler(ILogRepository repository, IMapper mapper)
     public async Task<LogDto> Handle(CreateLogCommand request, CancellationToken cancellationToken)
     {
         var entity = mapper.Map<LogEntry>(request);
-        entity.CreatedAt = DateTime.UtcNow;
+        entity.CreatedAt = DateTime.Now;
         var created = await repository.AddAsync(entity);
         return mapper.Map<LogDto>(created);
     }

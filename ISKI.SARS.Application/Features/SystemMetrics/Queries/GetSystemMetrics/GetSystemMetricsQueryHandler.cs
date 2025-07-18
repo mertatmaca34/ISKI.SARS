@@ -29,7 +29,7 @@ public class GetSystemMetricsQueryHandler(
 
         watch.Stop();
 
-        DateTime now = DateTime.UtcNow;
+        DateTime now = DateTime.Now;
 
         var metrics = new List<SystemMetricDto>
         {

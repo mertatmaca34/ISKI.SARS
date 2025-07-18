@@ -18,7 +18,7 @@ public class CreateReportTemplateCommandHandler(
         await rules.NameMustBeUnique(request.Name);
 
         var entity = mapper.Map<ReportTemplate>(request);
-        entity.CreatedAt = DateTime.UtcNow;
+        entity.CreatedAt = DateTime.Now;
 
         var created = await repository.AddAsync(entity);
         return mapper.Map<GetReportTemplateDto>(created);

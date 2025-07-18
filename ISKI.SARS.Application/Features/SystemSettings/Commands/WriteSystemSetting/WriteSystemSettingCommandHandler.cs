@@ -22,7 +22,7 @@ public class WriteSystemSettingCommandHandler(
                 OpcServerUrl = request.OpcServerUrl,
                 SessionTimeout = request.SessionTimeout,
                 LogLevel = request.LogLevel,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.Now
             };
             await repository.AddAsync(entity);
         }
@@ -31,7 +31,7 @@ public class WriteSystemSettingCommandHandler(
             entity.OpcServerUrl = request.OpcServerUrl;
             entity.SessionTimeout = request.SessionTimeout;
             entity.LogLevel = request.LogLevel;
-            entity.UpdatedAt = DateTime.UtcNow;
+            entity.UpdatedAt = DateTime.Now;
 
             await repository.UpdateAsync(entity);
         }

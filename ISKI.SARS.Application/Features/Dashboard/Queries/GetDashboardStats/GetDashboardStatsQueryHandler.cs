@@ -16,7 +16,7 @@ public class GetDashboardStatsQueryHandler(
     {
         var totalTemplates = (await reportTemplateRepository.GetAllAsync(x => true)).Count;
         var activeTags = (await reportTemplateTagRepository.GetAllAsync(x => true)).Count;
-        var since = DateTime.UtcNow.AddHours(-24);
+        var since = DateTime.Now.AddHours(-24);
         var dataPoints24h = (await instantValueRepository.GetAllAsync(x => x.Id >= since)).Count;
         var activeUsers = (await userRepository.GetAllAsync(x => x.Status)).Count;
         // System health and uptime placeholders

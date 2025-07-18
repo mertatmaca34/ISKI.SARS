@@ -19,7 +19,7 @@ public class UserRepository(SarsDbContext context) : EfRepositoryBase<User, Guid
         if (existingEntity == null)
             return null;
 
-        existingEntity.DeletedAt = DateTime.UtcNow;
+        existingEntity.DeletedAt = DateTime.Now;
         existingEntity.Status = false;
         await _context.SaveChangesAsync();
         return existingEntity;

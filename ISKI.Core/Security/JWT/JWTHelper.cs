@@ -16,13 +16,13 @@ public class JwtHelper(IConfiguration configuration)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenOptions.SecurityKey));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512Signature);
-        var expiration = DateTime.UtcNow.AddMinutes(_tokenOptions.AccessTokenExpiration);
+        var expiration = DateTime.Now.AddMinutes(_tokenOptions.AccessTokenExpiration);
 
         var jwt = new JwtSecurityToken(
             issuer: _tokenOptions.Issuer,
             audience: _tokenOptions.Audience,
             expires: expiration,
-            notBefore: DateTime.UtcNow,
+            notBefore: DateTime.Now,
             claims: SetClaims(user, operationClaims),
             signingCredentials: credentials
         );

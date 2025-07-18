@@ -24,7 +24,7 @@ public class CreateInstantValueCommandHandler(
 
         var instantValue = _mapper.Map<InstantValue>(request);
         instantValue.Id = request.Timestamp;
-        instantValue.CreatedAt = DateTime.UtcNow;
+        instantValue.CreatedAt = DateTime.Now;
 
         var created = await _instantValueRepository.AddAsync(instantValue);
         return _mapper.Map<GetInstantValueDto>(created);

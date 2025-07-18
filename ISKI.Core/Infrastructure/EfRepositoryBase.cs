@@ -90,7 +90,7 @@ public class EfRepositoryBase<TEntity, TEntityId, TContext>(TContext context) : 
 
     public virtual async Task<TEntity> UpdateAsync(TEntity entity)
     {
-        entity.UpdatedAt = DateTime.UtcNow;
+        entity.UpdatedAt = DateTime.Now;
         _context.Set<TEntity>().Update(entity);
         await _context.SaveChangesAsync();
         return entity;
@@ -102,7 +102,7 @@ public class EfRepositoryBase<TEntity, TEntityId, TContext>(TContext context) : 
         if (existingEntity == null)
             return null;
 
-        existingEntity.DeletedAt = DateTime.UtcNow;
+        existingEntity.DeletedAt = DateTime.Now;
         await _context.SaveChangesAsync();
         return existingEntity;
     }

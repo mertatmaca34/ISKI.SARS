@@ -18,7 +18,7 @@ public class CreateReportTemplateTagCommandHandler(
         await rules.TagNodeIdMustBeUnique(request.TagNodeId, request.ReportTemplateId);
 
         var entity = mapper.Map<ReportTemplateTag>(request);
-        entity.CreatedAt = DateTime.UtcNow;
+        entity.CreatedAt = DateTime.Now;
 
         var created = await repository.AddAsync(entity);
         return mapper.Map<GetReportTemplateTagDto>(created);
