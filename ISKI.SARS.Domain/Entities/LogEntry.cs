@@ -7,4 +7,5 @@ public class LogEntry : BaseEntity<int>
 {
     public LogLevel Level { get; set; }
     public string Message { get; set; } = string.Empty;
+    public string? Detail { get; set; }
 }

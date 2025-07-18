@@ -4,6 +4,7 @@ using ISKI.SARS.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,7 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ISKI.SARS.Infrastructure.Migrations
 {
     [DbContext(typeof(SarsDbContext))]
-    partial class SarsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250718070000_addLogDetail")]
+    partial class addLogDetail : Migration
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
