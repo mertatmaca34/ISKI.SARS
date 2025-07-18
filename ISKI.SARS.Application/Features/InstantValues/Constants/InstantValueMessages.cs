@@ -6,6 +6,7 @@ public static class InstantValueMessages
     public const string TimestampMustBeUnique = "Bu zaman damgasına ait veri zaten mevcut.";
     public const string ValueCannotBeEmpty = "Değer alanı boş olamaz.";
     public const string InvalidTagId = "Geçersiz Tag bilgisi.";
+    public const string InvalidTimestamp = "Zaman bilgisi geçerli bir tarih olmalıdır.";
 
     // Success
     public const string InstantValueCreated = "Anlık değer başarıyla kaydedildi.";

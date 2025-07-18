@@ -1,4 +1,5 @@
 using ISKI.SARS.Application.Features.SystemMetrics.Dtos;
+using ISKI.SARS.Application.Features.SystemMetrics.Constants;
 using ISKI.SARS.Infrastructure.Persistence;
 using ISKI.OpcUa.Client.Interfaces;
 using MediatR;
@@ -35,26 +36,26 @@ public class GetSystemMetricsQueryHandler(
         {
             new()
             {
-                Name = "OpcUaConnection",
+                Name = SystemMetricConstants.OpcUaConnection,
                 Value = opcConnected ? 1 : 0,
                 Unit = string.Empty,
-                Status = opcConnected ? "Connected" : "Disconnected",
+                Status = opcConnected ? SystemMetricConstants.StatusConnected : SystemMetricConstants.StatusDisconnected,
                 LastUpdated = now
             },
             new()
             {
-                Name = "DatabaseConnection",
+                Name = SystemMetricConstants.DatabaseConnection,
                 Value = dbConnected ? 1 : 0,
                 Unit = string.Empty,
-                Status = dbConnected ? "Connected" : "Disconnected",
+                Status = dbConnected ? SystemMetricConstants.StatusConnected : SystemMetricConstants.StatusDisconnected,
                 LastUpdated = now
             },
             new()
             {
-                Name = "ApiResponseTime",
+                Name = SystemMetricConstants.ApiResponseTime,
                 Value = watch.Elapsed.TotalMilliseconds,
-                Unit = "ms",
-                Status = "OK",
+                Unit = SystemMetricConstants.UnitMilliseconds,
+                Status = SystemMetricConstants.StatusOk,
                 LastUpdated = now
             }
         };

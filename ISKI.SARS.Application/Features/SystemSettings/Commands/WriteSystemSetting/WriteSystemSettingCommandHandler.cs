@@ -3,6 +3,7 @@ using ISKI.SARS.Domain.Entities;
 using ISKI.SARS.Domain.Services;
 using MediatR;
 using Microsoft.Extensions.Configuration;
+using ISKI.SARS.Application.Features.SystemSettings.Constants;
 
 namespace ISKI.SARS.Application.Features.SystemSettings.Commands.WriteSystemSetting;
 
@@ -39,7 +40,7 @@ public class WriteSystemSettingCommandHandler(
         return new SystemSettingDto
         {
             OpcServerUrl = entity.OpcServerUrl,
-            DatabaseConnection = configuration.GetConnectionString("DefaultConnection") ?? string.Empty,
+            DatabaseConnection = configuration.GetConnectionString(SystemSettingConstants.DefaultConnection) ?? string.Empty,
             RetentionDays = 90,
             EmailNotifications = true,
             SmsNotifications = false,

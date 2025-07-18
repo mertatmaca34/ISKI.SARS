@@ -26,7 +26,7 @@ public class UserBusinessRules(IUserRepository repository, IHttpContextAccessor 
     {
         var user = httpContextAccessor.HttpContext?.User;
         var currentUserId = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var isAdmin = user?.IsInRole("Admin") ?? false;
+        var isAdmin = user?.IsInRole(UserConstants.AdminRole) ?? false;
 
         if (!isAdmin && currentUserId != targetUserId.ToString())
             throw new BusinessException(UserMessages.UpdateNotAllowed);

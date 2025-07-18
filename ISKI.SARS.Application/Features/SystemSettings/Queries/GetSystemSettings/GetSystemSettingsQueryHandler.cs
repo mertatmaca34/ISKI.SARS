@@ -2,6 +2,7 @@ using ISKI.SARS.Application.Features.SystemSettings.Dtos;
 using ISKI.SARS.Domain.Services;
 using MediatR;
 using Microsoft.Extensions.Configuration;
+using ISKI.SARS.Application.Features.SystemSettings.Constants;
 
 namespace ISKI.SARS.Application.Features.SystemSettings.Queries.GetSystemSettings;
 
@@ -17,7 +18,7 @@ public class GetSystemSettingsQueryHandler(
         return new SystemSettingDto
         {
             OpcServerUrl = entity?.OpcServerUrl ?? string.Empty,
-            DatabaseConnection = configuration.GetConnectionString("DefaultConnection") ?? string.Empty,
+            DatabaseConnection = configuration.GetConnectionString(SystemSettingConstants.DefaultConnection) ?? string.Empty,
             RetentionDays = 90,
             EmailNotifications = true,
             SmsNotifications = false,

@@ -17,6 +17,6 @@ public class CreateInstantValueCommandValidator : AbstractValidator<CreateInstan
 
         RuleFor(x => x.Timestamp)
             .LessThanOrEqualTo(DateTime.Now.AddMinutes(1)) // çok ileri zaman olmasın
-            .WithMessage("Zaman bilgisi geçerli bir tarih olmalıdır.");
+            .WithMessage(InstantValueMessages.InvalidTimestamp);
     }
 }
