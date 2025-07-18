@@ -4,6 +4,7 @@ using ISKI.OpcUa.Client;
 using ISKI.SARS.Application;
 using ISKI.SARS.Infrastructure;
 using ISKI.SARS.Infrastructure.Persistence;
+using ISKI.SARS.Infrastructure.Logging;
 using ISKI.SARS.Worker;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ using System.Reflection;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.AddDatabaseLogger();
 
 // 🔐 TokenOptions config
 var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
