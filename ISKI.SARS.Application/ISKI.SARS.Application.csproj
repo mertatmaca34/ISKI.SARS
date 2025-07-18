@@ -7,16 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <Folder Include="Features\Auths\Dtos\" />
+    <Folder Include="Features\InstantValues\Commands\DeleteTag\" />
+    <Folder Include="Features\InstantValues\Commands\UpdateTag\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="14.0.0" />
+    <PackageReference Include="FluentValidation" Version="11.11.0" />
+    <PackageReference Include="ISKI.OpcUa.Client" Version="1.0.5" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ISKI.Core\ISKI.Core.csproj" />
     <ProjectReference Include="..\ISKI.SARS.Domain\ISKI.SARS.Domain.csproj" />
+    <ProjectReference Include="..\ISKI.SARS.Infrastructure\ISKI.SARS.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

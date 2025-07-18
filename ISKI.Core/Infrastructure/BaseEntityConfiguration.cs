@@ -1,4 +1,4 @@
-﻿using ISKI.SARS.Core.Domain;
+﻿using ISKI.Core.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
