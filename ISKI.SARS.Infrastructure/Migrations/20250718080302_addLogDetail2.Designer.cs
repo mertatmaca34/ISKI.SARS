@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ISKI.SARS.Infrastructure.Migrations
 {
     [DbContext(typeof(SarsDbContext))]
-    [Migration("20250718064444_addingLog")]
-    partial class addingLog
+    [Migration("20250718080302_addLogDetail2")]
+    partial class addLogDetail2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -224,6 +224,10 @@ namespace ISKI.SARS.Infrastructure.Migrations
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Detail")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
 
                     b.Property<int>("Level")
                         .HasColumnType("int");

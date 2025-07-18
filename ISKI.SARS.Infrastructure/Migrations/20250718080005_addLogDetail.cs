@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -12,9 +12,8 @@ namespace ISKI.SARS.Infrastructure.Migrations
         {
             migrationBuilder.AddColumn<string>(
                 name: "Detail",
-                table: "LogEntries",
-                type: "nvarchar(2000)",
-                maxLength: 2000,
+                table: "LogEntry",
+                type: "nvarchar(max)",
                 nullable: true);
         }
 
@@ -23,7 +22,7 @@ namespace ISKI.SARS.Infrastructure.Migrations
         {
             migrationBuilder.DropColumn(
                 name: "Detail",
-                table: "LogEntries");
+                table: "LogEntry");
         }
     }
 }

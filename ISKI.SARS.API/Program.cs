@@ -15,6 +15,9 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.AddDatabaseLogger();
+builder.Logging.AddFilter(
+    "Microsoft.EntityFrameworkCore.Database.Command",
+    LogLevel.Warning);
 
 // 🔐 TokenOptions config
 var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
