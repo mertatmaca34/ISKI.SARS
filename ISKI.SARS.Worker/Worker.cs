@@ -50,9 +50,17 @@ public class Worker : BackgroundService
             await EnsureConnectedAsync(token);
 
             using var scope = _serviceProvider.CreateScope();
-            var tagRepo = scope.ServiceProvider.GetRequiredService<IReportTemplateTagRepository>();
+            var mappingRepo = scope.ServiceProvider.GetRequiredService<IReportTemplateArchiveTagRepository>();
+            var tagRepo = scope.ServiceProvider.GetRequiredService<IArchiveTagRepository>();
 
-            var tags = await tagRepo.GetAllAsync(t => t.ReportTemplateId == template.Id);
+            var mappings = await mappingRepo.GetAllAsync(m => m.ReportTemplateId == template.Id);
+            var tags = new List<ArchiveTag>();
+            foreach (var map in mappings)
+            {
+                var tag = await tagRepo.GetByIdAsync(map.ArchiveTagId);
+                if (tag is not null && tag.IsActive)
+                    tags.Add(tag);
+            }
 
             foreach (var tag in tags)
             {
@@ -66,7 +74,7 @@ public class Worker : BackgroundService
                 var instantValue = new InstantValue
                 {
                     Id = result.Timestamp,
-                    ReportTemplateTagId = tag.Id,
+                    ArchiveTagId = tag.Id,
                     Value = result.Data?.Value?.ToString() ?? string.Empty,
                     Status = true
                 };
