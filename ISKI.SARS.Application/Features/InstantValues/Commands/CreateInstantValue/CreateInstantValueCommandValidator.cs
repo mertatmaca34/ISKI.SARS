@@ -7,7 +7,7 @@ public class CreateInstantValueCommandValidator : AbstractValidator<CreateInstan
 {
     public CreateInstantValueCommandValidator()
     {
-        RuleFor(x => x.ReportTemplateTagId)
+        RuleFor(x => x.ArchiveTagId)
             .GreaterThan(0)
             .WithMessage(InstantValueMessages.InvalidTagId);
 
