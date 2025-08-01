@@ -9,6 +9,8 @@ namespace ISKI.SARS.Infrastructure.Persistence;
 
 public class SarsDbContext(DbContextOptions<SarsDbContext> options) : DbContext(options)
 {
+    public DbSet<ArchiveTag> ArchiveTags => Set<ArchiveTag>();
+    public DbSet<ReportTemplateArchiveTag> ReportTemplateArchiveTags => Set<ReportTemplateArchiveTag>();
     public DbSet<ReportTemplateTag> ReportTemplateTags  => Set<ReportTemplateTag>();
     public DbSet<ReportTemplate> ReportTemplates => Set<ReportTemplate>();
     public DbSet<InstantValue> InstantValues => Set<InstantValue>();
