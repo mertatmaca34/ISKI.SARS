@@ -14,6 +14,7 @@ public class ReportTemplateTagConfiguration : BaseEntityConfiguration<ReportTemp
         builder.Property(x => x.ReportTemplateId).IsRequired();
         builder.Property(x => x.TagName).IsRequired().HasMaxLength(200);
         builder.Property(x => x.TagNodeId).IsRequired().HasMaxLength(300);
+        builder.Property(x => x.Description).HasMaxLength(500);
 
         builder.HasIndex(x => x.ReportTemplateId);
 
