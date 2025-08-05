@@ -10,6 +10,7 @@ using ISKI.SARS.Application.Features.ReportTemplates.Commands.DeleteReportTempla
 using ISKI.SARS.Application.Features.ReportTemplates.Queries.GetReportTemplateById;
 using ISKI.SARS.Application.Features.ReportTemplates.Queries.GetReportTemplates;
 using ISKI.SARS.Application.Features.ReportTemplates.Commands.ChangeStatus;
+using System;
 
 namespace ISKI.SARS.API.Controllers;
 
@@ -53,21 +54,22 @@ public class ReportTemplatesController(IMediator mediator) : ControllerBase
 
     [Authorize(Roles = "Admin,Operator")]
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(int id, [FromQuery] Guid userId)
     {
-        var query = new GetReportTemplateByIdQuery(id);
+        var query = new GetReportTemplateByIdQuery(id, userId);
         GetReportTemplateDto result = await mediator.Send(query);
         return Ok(result);
     }
 
     [Authorize(Roles = "Admin,Operator")]
     [HttpPost("list")]
-    public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest, [FromBody] DynamicQuery? dynamicQuery)
+    public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest, [FromQuery] Guid userId, [FromBody] DynamicQuery? dynamicQuery)
     {
         var query = new GetReportTemplateListQuery
         {
             PageRequest = pageRequest,
-            DynamicQuery = dynamicQuery
+            DynamicQuery = dynamicQuery,
+            UserId = userId
         };
 
         PaginatedList<GetReportTemplateDto> result = await mediator.Send(query);

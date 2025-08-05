@@ -9,4 +9,5 @@ public class GetReportTemplateDto
     public string OpcEndpoint { get; set; }
     public int PullInterval { get; set; }
     public bool IsActive { get; set; }
+    public bool IsShared { get; set; }
 }

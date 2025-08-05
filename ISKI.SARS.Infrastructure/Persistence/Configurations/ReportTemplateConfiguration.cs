@@ -15,5 +15,12 @@ public class ReportTemplateConfiguration : BaseEntityConfiguration<ReportTemplat
         builder.Property(x => x.OpcEndpoint).IsRequired().HasMaxLength(300);
         builder.Property(x => x.PullInterval).IsRequired();
         builder.Property(x => x.IsActive).IsRequired();
+        builder.Property(x => x.CreatedByUserId).IsRequired();
+
+        builder
+            .HasMany(x => x.ReportTemplateUsers)
+            .WithOne(x => x.ReportTemplate)
+            .HasForeignKey(x => x.ReportTemplateId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
