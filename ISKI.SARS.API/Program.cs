@@ -103,11 +103,12 @@ app.UseHttpsRedirection();
 // 🔥 Global hata yönetimi
 app.UseMiddleware<ExceptionMiddleware>();
 
+// 🌐 CORS should run before authentication to handle pre-flight requests
+app.UseCors("AllowAll");
+
 // 🔑 Auth
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.UseCors("AllowAll");
 
 app.MapControllers();
 
