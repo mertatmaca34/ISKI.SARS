@@ -14,8 +14,6 @@ public static class InfrastructureServiceRegistration
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, string connectionString)
     {
-        EnsureDatabaseExists(connectionString);
-
         services.AddDbContext<SarsDbContext>(options =>
             options.UseSqlServer(connectionString));
 
@@ -37,7 +35,7 @@ public static class InfrastructureServiceRegistration
         using (var scope = services.BuildServiceProvider().CreateScope())
         {
             var dbContext = scope.ServiceProvider.GetRequiredService<SarsDbContext>();
-            dbContext.Database.Migrate(); // Migrationları otomatik uygula
+            dbContext.Database.EnsureCreated(); // Migrationları otomatik uygula
 
             var opClaimRepo = scope.ServiceProvider.GetRequiredService<IOperationClaimRepository>();
             OperationClaimSeeder.SeedAsync(opClaimRepo).Wait();
