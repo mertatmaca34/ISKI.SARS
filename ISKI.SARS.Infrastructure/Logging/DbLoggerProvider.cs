@@ -2,6 +2,7 @@ using ISKI.SARS.Domain.Entities;
 using ISKI.SARS.Domain.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 
 namespace ISKI.SARS.Infrastructure.Logging;
 
@@ -17,7 +18,11 @@ public class DbLoggerProvider(IServiceScopeFactory scopeFactory) : ILoggerProvid
 public class DbLogger(IServiceScopeFactory scopeFactory, string categoryName) : ILogger
 {
     private readonly IServiceScopeFactory _scopeFactory = scopeFactory;
-    private readonly string _category = categoryName;
+    private static readonly object _lock = new();
+    private static DateTime _lastLogTime = DateTime.MinValue;
+    private const int MaxLines = 300;
+    private const int MaxLength = 300;
+    private static readonly TimeSpan MinInterval = TimeSpan.FromSeconds(1);
 
     public IDisposable BeginScope<TState>(TState state) => default!;
 
@@ -25,15 +30,36 @@ public class DbLogger(IServiceScopeFactory scopeFactory, string categoryName) : 
 
     public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
     {
-        var message = formatter(state, exception);
+        var now = DateTime.Now;
+        lock (_lock)
+        {
+            if (now - _lastLogTime < MinInterval)
+                return;
+            _lastLogTime = now;
+        }
+
+        var message = formatter(state, exception) ?? string.Empty;
+        if (message.Length > MaxLength)
+            message = message[..MaxLength];
+
+        string? detail = exception?.ToString();
+        if (detail is not null)
+        {
+            var lines = detail.Split('\n');
+            if (lines.Length > MaxLines)
+                detail = string.Join('\n', lines.Take(MaxLines));
+            if (detail.Length > MaxLength)
+                detail = detail[..MaxLength];
+        }
+
         using var scope = _scopeFactory.CreateScope();
         var repo = scope.ServiceProvider.GetRequiredService<ILogRepository>();
         var entry = new LogEntry
         {
             Level = MapLevel(logLevel),
             Message = message,
-            Detail = exception?.ToString(),
-            CreatedAt = DateTime.Now
+            Detail = detail,
+            CreatedAt = now
         };
         repo.AddAsync(entry).GetAwaiter().GetResult();
     }
