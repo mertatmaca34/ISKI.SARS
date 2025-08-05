@@ -16,11 +16,13 @@ public class GetReportTemplateByIdQueryHandler(
 {
     public async Task<GetReportTemplateDto> Handle(GetReportTemplateByIdQuery request, CancellationToken cancellationToken)
     {
-        var entity = await repository.GetByIdAsync(request.Id);
+        var entity = await repository.GetByIdForUserAsync(request.Id, request.UserId);
 
         if (entity is null)
             throw new BusinessException(ReportTemplateMessages.NotFound);
 
-        return mapper.Map<GetReportTemplateDto>(entity);
+        var dto = mapper.Map<GetReportTemplateDto>(entity);
+        dto.IsShared = entity.CreatedByUserId != request.UserId;
+        return dto;
     }
 }

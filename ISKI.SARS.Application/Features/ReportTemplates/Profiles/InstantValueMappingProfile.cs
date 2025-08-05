@@ -15,6 +15,7 @@ public class ReportTemplateMappingProfile : Profile
         CreateMap<CreateReportTemplateCommand, ReportTemplate>();
         CreateMap<ChangeReportTemplateStatusCommand, ReportTemplate>();
         CreateMap<UpdateReportTemplateCommand, ReportTemplate>();
-        CreateMap<ReportTemplate, GetReportTemplateDto>();
+        CreateMap<ReportTemplate, GetReportTemplateDto>()
+            .ForMember(dest => dest.IsShared, opt => opt.Ignore());
     }
 }

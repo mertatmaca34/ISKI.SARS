@@ -20,5 +20,8 @@ public class CreateReportTemplateCommandValidator : AbstractValidator<CreateRepo
         RuleFor(x => x.PullInterval)
             .GreaterThanOrEqualTo(1000)
             .WithMessage(ReportTemplateMessages.PullIntervalTooLow);
+
+        RuleFor(x => x.CreatedByUserId)
+            .NotEmpty();
     }
 }
