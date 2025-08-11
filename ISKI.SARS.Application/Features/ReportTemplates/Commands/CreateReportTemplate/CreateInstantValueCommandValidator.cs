@@ -12,15 +12,6 @@ public class CreateReportTemplateCommandValidator : AbstractValidator<CreateRepo
             .NotEmpty()
             .MinimumLength(3)
             .WithMessage(ReportTemplateMessages.NameIsRequired);
-
-        RuleFor(x => x.OpcEndpoint)
-            .NotEmpty()
-            .WithMessage(ReportTemplateMessages.OpcEndpointIsRequired);
-
-        RuleFor(x => x.PullInterval)
-            .GreaterThanOrEqualTo(1000)
-            .WithMessage(ReportTemplateMessages.PullIntervalTooLow);
-
         RuleFor(x => x.CreatedByUserId)
             .NotEmpty();
     }
