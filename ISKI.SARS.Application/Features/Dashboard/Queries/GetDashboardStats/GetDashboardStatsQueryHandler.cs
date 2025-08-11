@@ -8,7 +8,7 @@ namespace ISKI.SARS.Application.Features.Dashboard.Queries.GetDashboardStats;
 
 public class GetDashboardStatsQueryHandler(
     IReportTemplateRepository reportTemplateRepository,
-    IReportTemplateTagRepository reportTemplateTagRepository,
+    IArchiveTagRepository archiveTagRepository,
     IInstantValueRepository instantValueRepository,
     IUserRepository userRepository)
     : IRequestHandler<GetDashboardStatsQuery, DashboardStatsDto>
@@ -16,7 +16,7 @@ public class GetDashboardStatsQueryHandler(
     public async Task<DashboardStatsDto> Handle(GetDashboardStatsQuery request, CancellationToken cancellationToken)
     {
         var totalTemplates = (await reportTemplateRepository.GetAllAsync(x => true)).Count;
-        var activeTags = (await reportTemplateTagRepository.GetAllAsync(x => true)).Count;
+        var activeTags = (await archiveTagRepository.GetAllAsync(x => x.IsActive)).Count;
         var since = DateTime.Now.AddHours(-24);
         var dataPoints24h = (await instantValueRepository.GetAllAsync(x => x.Id >= since)).Count;
         var activeUsers = (await userRepository.GetAllAsync(x => x.Status)).Count;
