@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
 using ISKI.SARS.Application.Features.ReportTemplates.Commands;
 using ISKI.SARS.Application.Features.ReportTemplates.Constants;
-using ISKI.SARS.Application.Features.ReportTemplateTags.Constants;
 
 namespace ISKI.SARS.Application.Features.ReportTemplates.Commands.CreateReportTemplate;
 
@@ -15,21 +14,5 @@ public class CreateReportTemplateCommandValidator : AbstractValidator<CreateRepo
             .WithMessage(ReportTemplateMessages.NameIsRequired);
         RuleFor(x => x.CreatedByUserId)
             .NotEmpty();
-
-        RuleFor(x => x.Tags)
-            .NotEmpty()
-            .WithMessage(ReportTemplateMessages.TagListIsRequired);
-
-        RuleForEach(x => x.Tags).ChildRules(tag =>
-        {
-            tag.RuleFor(t => t.TagName)
-                .NotEmpty()
-                .MinimumLength(3)
-                .WithMessage(ReportTemplateTagMessages.TagNameTooShort);
-
-            tag.RuleFor(t => t.TagNodeId)
-                .NotEmpty()
-                .WithMessage(ReportTemplateTagMessages.TagNodeIdIsRequired);
-        });
     }
 }

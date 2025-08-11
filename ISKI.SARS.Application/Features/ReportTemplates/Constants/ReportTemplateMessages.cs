@@ -8,5 +8,4 @@ public static class ReportTemplateMessages
     public const string OpcEndpointIsRequired = "OPC endpoint boş olamaz.";
     public const string PullIntervalTooLow = "Çekim aralığı en az 1000 ms olmalıdır.";
     public const string InvalidReportTemplateId = "Şablon ID geçerli olmalıdır.";
-    public const string TagListIsRequired = "Etiket listesi boş olamaz.";
 }

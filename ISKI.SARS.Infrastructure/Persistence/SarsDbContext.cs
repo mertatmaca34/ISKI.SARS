@@ -11,7 +11,6 @@ public class SarsDbContext(DbContextOptions<SarsDbContext> options) : DbContext(
 {
     public DbSet<ArchiveTag> ArchiveTags => Set<ArchiveTag>();
     public DbSet<ReportTemplateArchiveTag> ReportTemplateArchiveTags => Set<ReportTemplateArchiveTag>();
-    public DbSet<ReportTemplateTag> ReportTemplateTags  => Set<ReportTemplateTag>();
     public DbSet<ReportTemplate> ReportTemplates => Set<ReportTemplate>();
     public DbSet<ReportTemplateUser> ReportTemplateUsers => Set<ReportTemplateUser>();
     public DbSet<InstantValue> InstantValues => Set<InstantValue>();
