@@ -4,6 +4,7 @@ using ISKI.SARS.Application.Features.ReportTemplates.Rules;
 using ISKI.SARS.Domain.Entities;
 using ISKI.SARS.Domain.Services;
 using MediatR;
+using System;
 using System.Linq;
 
 namespace ISKI.SARS.Application.Features.ReportTemplates.Commands.CreateReportTemplate;
@@ -11,6 +12,7 @@ namespace ISKI.SARS.Application.Features.ReportTemplates.Commands.CreateReportTe
 public class CreateReportTemplateCommandHandler(
     IReportTemplateRepository repository,
     IReportTemplateUserRepository shareRepository,
+    IReportTemplateTagRepository tagRepository,
     IMapper mapper,
     ReportTemplateBusinessRules rules)
     : IRequestHandler<CreateReportTemplateCommand, GetReportTemplateDto>
@@ -23,6 +25,21 @@ public class CreateReportTemplateCommandHandler(
         entity.CreatedAt = DateTime.Now;
 
         var created = await repository.AddAsync(entity);
+
+        foreach (var tag in request.Tags)
+        {
+            var tagEntity = new ReportTemplateTag
+            {
+                ReportTemplateId = created.Id,
+                TagName = tag.TagName,
+                TagNodeId = tag.TagNodeId,
+                Description = tag.Description,
+                Type = tag.Type,
+                CreatedAt = DateTime.Now
+            };
+
+            await tagRepository.AddAsync(tagEntity);
+        }
 
         foreach (var userId in request.SharedUserIds.Distinct())
         {
