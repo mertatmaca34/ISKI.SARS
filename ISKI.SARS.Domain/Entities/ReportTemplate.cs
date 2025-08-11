@@ -8,9 +8,7 @@ namespace ISKI.SARS.Domain.Entities;
 public class ReportTemplate : BaseEntity<int>
 {
     public string Name { get; set; } = string.Empty;
-    public bool IsActive { get; set; } = true;
-
     public Guid CreatedByUserId { get; set; }
-
     public ICollection<ReportTemplateUser> ReportTemplateUsers { get; set; } = new List<ReportTemplateUser>();
+    public ICollection<ReportTemplateArchiveTag> ReportTemplateArchiveTags { get; set; } = new List<ReportTemplateArchiveTag>();
 }
