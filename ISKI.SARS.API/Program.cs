@@ -14,8 +14,6 @@ using System.Reflection;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Logging.AddDatabaseLogger();
-builder.Logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command",LogLevel.Warning);
 
 // 🔐 TokenOptions config
 var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
@@ -118,5 +116,8 @@ using (var scope = app.Services.CreateScope())
     var dbContext = scope.ServiceProvider.GetRequiredService<SarsDbContext>();
     dbContext.Database.EnsureCreated();
 }
+
+//builder.Logging.AddDatabaseLogger();
+//builder.Logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning);
 
 app.Run();
