@@ -5,6 +5,7 @@ using ISKI.SARS.Application.Features.SystemMetrics.Queries.GetSystemMetrics;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ISKI.Core.Security.Constants;
 
 namespace ISKI.SARS.API.Controllers;
 
@@ -12,7 +13,7 @@ namespace ISKI.SARS.API.Controllers;
 [ApiController]
 public class DashboardController(IMediator mediator) : ControllerBase
 {
-    [Authorize(Roles = "Admin,Operator")]
+    [Authorize(Roles = GeneralOperationClaims.Admin + "," + GeneralOperationClaims.Operator)]
     [HttpGet]
     public async Task<ActionResult<DashboardStatsDto>> GetStats()
     {
@@ -21,7 +22,7 @@ public class DashboardController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = "Admin,Operator")]
+    [Authorize(Roles = GeneralOperationClaims.Admin + "," + GeneralOperationClaims.Operator)]
     [HttpGet("metrics")]
     public async Task<ActionResult<List<SystemMetricDto>>> GetMetrics()
     {
