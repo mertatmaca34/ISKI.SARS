@@ -11,6 +11,7 @@ using ISKI.SARS.Application.Features.ReportTemplates.Queries.GetReportTemplateBy
 using ISKI.SARS.Application.Features.ReportTemplates.Queries.GetReportTemplates;
 using ISKI.SARS.Application.Features.ReportTemplates.Commands.ChangeStatus;
 using System;
+using ISKI.Core.Security.Constants;
 
 namespace ISKI.SARS.API.Controllers;
 
@@ -18,7 +19,7 @@ namespace ISKI.SARS.API.Controllers;
 [ApiController]
 public class ReportTemplatesController(IMediator mediator) : ControllerBase
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = GeneralOperationClaims.Admin)]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateReportTemplateCommand command)
     {
@@ -26,7 +27,7 @@ public class ReportTemplatesController(IMediator mediator) : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = GeneralOperationClaims.Admin)]
     [HttpPut]
     public async Task<IActionResult> Update([FromBody] UpdateReportTemplateCommand command)
     {
@@ -34,7 +35,7 @@ public class ReportTemplatesController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = GeneralOperationClaims.Admin)]
     [HttpPut("{id}/status")]
     public async Task<IActionResult> ChangeStatus(int id, [FromBody] bool isActive)
     {
@@ -43,7 +44,7 @@ public class ReportTemplatesController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = GeneralOperationClaims.Admin)]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
@@ -52,7 +53,7 @@ public class ReportTemplatesController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = "Admin,Operator")]
+    [Authorize(Roles = GeneralOperationClaims.Admin + "," + GeneralOperationClaims.Operator)]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id, [FromQuery] Guid userId)
     {
@@ -61,7 +62,7 @@ public class ReportTemplatesController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = "Admin,Operator")]
+    [Authorize(Roles = GeneralOperationClaims.Admin + "," + GeneralOperationClaims.Operator)]
     [HttpPost("list")]
     public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest, [FromQuery] Guid userId, [FromBody] DynamicQuery? dynamicQuery)
     {

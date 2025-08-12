@@ -4,6 +4,7 @@ using ISKI.SARS.Application.Features.SystemSettings.Commands.WriteSystemSetting;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ISKI.Core.Security.Constants;
 
 namespace ISKI.SARS.API.Controllers;
 
@@ -11,7 +12,7 @@ namespace ISKI.SARS.API.Controllers;
 [ApiController]
 public class SystemSettingsController(IMediator mediator) : ControllerBase
 {
-    [Authorize(Roles = "Admin,Operator")]
+    [Authorize(Roles = GeneralOperationClaims.Admin + "," + GeneralOperationClaims.Operator)]
     [HttpGet]
     public async Task<ActionResult<SystemSettingDto>> Get()
     {
@@ -20,7 +21,7 @@ public class SystemSettingsController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = GeneralOperationClaims.Admin)]
     [HttpPut]
     public async Task<ActionResult<SystemSettingDto>> Write([FromBody] WriteSystemSettingCommand command)
     {
