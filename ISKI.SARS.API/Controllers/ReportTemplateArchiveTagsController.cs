@@ -8,6 +8,7 @@ using ISKI.Core.Persistence.Paging;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ISKI.Core.Security.Constants;
 
 namespace ISKI.SARS.API.Controllers;
 
@@ -15,7 +16,7 @@ namespace ISKI.SARS.API.Controllers;
 [ApiController]
 public class ReportTemplateArchiveTagsController(IMediator mediator) : ControllerBase
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = GeneralOperationClaims.Admin)]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateReportTemplateArchiveTagCommand command)
     {
@@ -23,7 +24,7 @@ public class ReportTemplateArchiveTagsController(IMediator mediator) : Controlle
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = GeneralOperationClaims.Admin)]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
@@ -32,7 +33,7 @@ public class ReportTemplateArchiveTagsController(IMediator mediator) : Controlle
         return Ok(result);
     }
 
-    [Authorize(Roles = "Admin,Operator")]
+    [Authorize(Roles = GeneralOperationClaims.Admin + "," + GeneralOperationClaims.Operator)]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
@@ -41,7 +42,7 @@ public class ReportTemplateArchiveTagsController(IMediator mediator) : Controlle
         return Ok(result);
     }
 
-    [Authorize(Roles = "Admin,Operator")]
+    [Authorize(Roles = GeneralOperationClaims.Admin + "," + GeneralOperationClaims.Operator)]
     [HttpPost("list")]
     public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest, [FromBody] DynamicQuery? dynamicQuery)
     {

@@ -7,6 +7,7 @@ using ISKI.Core.Persistence.Paging;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ISKI.Core.Security.Constants;
 
 namespace ISKI.SARS.API.Controllers;
 
@@ -14,7 +15,7 @@ namespace ISKI.SARS.API.Controllers;
 [ApiController]
 public class InstantValuesController(IMediator mediator) : ControllerBase
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = GeneralOperationClaims.Admin)]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateInstantValueCommand command)
     {
@@ -22,7 +23,7 @@ public class InstantValuesController(IMediator mediator) : ControllerBase
         return CreatedAtAction(nameof(GetByTimestamp), new { timestamp = result.Timestamp }, result);
     }
 
-    [Authorize(Roles = "Admin,Operator")]
+    [Authorize(Roles = GeneralOperationClaims.Admin + "," + GeneralOperationClaims.Operator)]
     [HttpGet("{timestamp}")]
     public async Task<IActionResult> GetByTimestamp(DateTime timestamp)
     {
@@ -31,7 +32,7 @@ public class InstantValuesController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = "Admin,Operator")]
+    [Authorize(Roles = GeneralOperationClaims.Admin + "," + GeneralOperationClaims.Operator)]
     [HttpPost("list")]
     public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest, [FromBody] DynamicQuery? dynamicQuery)
     {
