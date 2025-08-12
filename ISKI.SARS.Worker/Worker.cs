@@ -32,57 +32,42 @@ public class Worker : BackgroundService
         await EnsureConnectedAsync(stoppingToken);
 
         using var scope = _serviceProvider.CreateScope();
-        var templateRepo = scope.ServiceProvider.GetRequiredService<IReportTemplateRepository>();
+        var tagRepo = scope.ServiceProvider.GetRequiredService<IArchiveTagRepository>();
 
-        var templates = await templateRepo.GetAllAsync(t => t.IsActive);
+        var tags = await tagRepo.GetAllAsync(t => t.IsActive);
 
         var queueTask = ProcessQueueAsync(stoppingToken);
-        var tasks = templates.Select(t => ProcessTemplateAsync(t, stoppingToken)).ToList();
+        var tasks = tags.Select(t => ProcessTagAsync(t, stoppingToken)).ToList();
         tasks.Add(queueTask);
 
         await Task.WhenAll(tasks);
     }
 
-    private async Task ProcessTemplateAsync(ReportTemplate template, CancellationToken token)
+    private async Task ProcessTagAsync(ArchiveTag tag, CancellationToken token)
     {
         while (!token.IsCancellationRequested)
         {
             await EnsureConnectedAsync(token);
 
-            using var scope = _serviceProvider.CreateScope();
-            var mappingRepo = scope.ServiceProvider.GetRequiredService<IReportTemplateArchiveTagRepository>();
-            var tagRepo = scope.ServiceProvider.GetRequiredService<IArchiveTagRepository>();
-
-            var mappings = await mappingRepo.GetAllAsync(m => m.ReportTemplateId == template.Id);
-            var tags = new List<ArchiveTag>();
-            foreach (var map in mappings)
+            var result = await _readWriteService.ReadNodeAsync(tag.TagNodeId);
+            if (!result.Success)
             {
-                var tag = await tagRepo.GetByIdAsync(map.ArchiveTagId);
-                if (tag is not null && tag.IsActive)
-                    tags.Add(tag);
+                _logger.LogWarning("Failed to read {node}", tag.TagNodeId);
+                await Task.Delay(tag.PullInterval * 1000, token);
+                continue;
             }
 
-            foreach (var tag in tags)
+            var instantValue = new InstantValue
             {
-                var result = await _readWriteService.ReadNodeAsync(tag.TagNodeId);
-                if (!result.Success)
-                {
-                    _logger.LogWarning("Failed to read {node}", tag.TagNodeId);
-                    continue;
-                }
+                Id = result.Timestamp,
+                ArchiveTagId = tag.Id,
+                Value = result.Data?.Value?.ToString() ?? string.Empty,
+                Status = true
+            };
 
-                var instantValue = new InstantValue
-                {
-                    Id = result.Timestamp,
-                    ArchiveTagId = tag.Id,
-                    Value = result.Data?.Value?.ToString() ?? string.Empty,
-                    Status = true
-                };
+            _instantValueQueue.Enqueue(instantValue);
 
-                _instantValueQueue.Enqueue(instantValue);
-            }
-
-            await Task.Delay(template.PullInterval*1000, token);
+            await Task.Delay(tag.PullInterval * 1000, token);
         }
     }
 
