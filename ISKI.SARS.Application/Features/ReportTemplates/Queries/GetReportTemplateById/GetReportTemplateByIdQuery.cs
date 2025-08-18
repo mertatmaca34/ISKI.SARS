@@ -1,4 +1,4 @@
-﻿using ISKI.SARS.Application.Features.ReportTemplates.Dtos;
+using ISKI.SARS.Application.Features.ReportTemplates.Dtos;
 using MediatR;
 using System;
 
@@ -9,3 +9,4 @@ public class GetReportTemplateByIdQuery(int id, Guid userId) : IRequest<GetRepor
     public int Id { get; set; } = id;
     public Guid UserId { get; set; } = userId;
 }
+

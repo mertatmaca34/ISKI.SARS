@@ -1,9 +1,9 @@
-﻿using AutoMapper;
+using AutoMapper;
 using ISKI.Core.Persistence.Paging;
 using ISKI.SARS.Application.Features.ReportTemplates.Dtos;
 using ISKI.SARS.Domain.Services;
 using MediatR;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace ISKI.SARS.Application.Features.ReportTemplates.Queries.GetReportTemplates;
 
@@ -34,3 +34,4 @@ public class GetReportTemplateListQueryHandler(
         };
     }
 }
+

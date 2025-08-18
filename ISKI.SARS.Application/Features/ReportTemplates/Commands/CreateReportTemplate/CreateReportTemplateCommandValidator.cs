@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using ISKI.SARS.Application.Features.ReportTemplates.Commands;
+using FluentValidation;
 using ISKI.SARS.Application.Features.ReportTemplates.Constants;
 
 namespace ISKI.SARS.Application.Features.ReportTemplates.Commands.CreateReportTemplate;
@@ -12,7 +11,9 @@ public class CreateReportTemplateCommandValidator : AbstractValidator<CreateRepo
             .NotEmpty()
             .MinimumLength(3)
             .WithMessage(ReportTemplateMessages.NameIsRequired);
+
         RuleFor(x => x.CreatedByUserId)
             .NotEmpty();
     }
 }
+
