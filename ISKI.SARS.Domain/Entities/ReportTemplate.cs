@@ -1,5 +1,4 @@
-﻿using ISKI.Core.Domain;
-using ISKI.SARS.Domain.Enums;
+using ISKI.Core.Domain;
 using System;
 using System.Collections.Generic;
 
@@ -12,3 +11,4 @@ public class ReportTemplate : BaseEntity<int>
     public ICollection<ReportTemplateUser> ReportTemplateUsers { get; set; } = new List<ReportTemplateUser>();
     public ICollection<ReportTemplateArchiveTag> ReportTemplateArchiveTags { get; set; } = new List<ReportTemplateArchiveTag>();
 }
+

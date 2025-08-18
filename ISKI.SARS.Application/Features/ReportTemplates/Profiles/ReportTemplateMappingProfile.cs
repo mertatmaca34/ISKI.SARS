@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using ISKI.SARS.Application.Features.ReportTemplates.Commands;
+using AutoMapper;
 using ISKI.SARS.Application.Features.ReportTemplates.Commands.CreateReportTemplate;
 using ISKI.SARS.Application.Features.ReportTemplates.Commands.UpdateReportTemplate;
 using ISKI.SARS.Application.Features.ReportTemplates.Dtos;
@@ -17,3 +16,4 @@ public class ReportTemplateMappingProfile : Profile
             .ForMember(dest => dest.IsShared, opt => opt.Ignore());
     }
 }
+

@@ -1,10 +1,10 @@
-﻿using AutoMapper;
+using AutoMapper;
+using ISKI.Core.CrossCuttingConcerns.Exceptions;
 using ISKI.SARS.Application.Features.ReportTemplates.Constants;
 using ISKI.SARS.Application.Features.ReportTemplates.Dtos;
 using ISKI.SARS.Application.Features.ReportTemplates.Rules;
 using ISKI.SARS.Domain.Services;
 using MediatR;
-using ISKI.Core.CrossCuttingConcerns.Exceptions;
 
 namespace ISKI.SARS.Application.Features.ReportTemplates.Queries.GetReportTemplateById;
 
@@ -26,3 +26,4 @@ public class GetReportTemplateByIdQueryHandler(
         return dto;
     }
 }
+
