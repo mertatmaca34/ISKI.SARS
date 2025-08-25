@@ -10,32 +10,24 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
 
-      - name: Restore
-        run: dotnet restore
+      - run: dotnet restore
+      - run: dotnet build --configuration Release --no-restore
+      - run: dotnet test --configuration Release --no-build
 
-      - name: Build (Release)
-        run: dotnet build --configuration Release --no-restore
-
-      - name: Test
-        run: dotnet test --configuration Release --no-build
-
-      - name: Publish WebUI (include IIS assets)
+      - name: Publish WebUI
         run: dotnet publish ISKI.SARS.WebUI/ISKI.SARS.WebUI.csproj -c Release -o ./publish /p:PublishIISAssets=true
 
-      - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./publish/
-          server-dir: ${{ secrets.FTP_REMOTE_DIR }}
-          dangerous-clean-slate: true
+      - name: Zero-downtime deploy to IIS
+        shell: pwsh
+        run: |
+          $src = (Resolve-Path "./publish").Path
+          $dst = "C:\inetpub\wwwroot\ISKI.SARS"
+          Set-Content "$dst\app_offline.htm" "Maintenance" -Encoding ASCII
+          robocopy $src $dst /MIR /R:2 /W:2
+          Remove-Item "$dst\app_offline.htm" -ErrorAction SilentlyContinue
