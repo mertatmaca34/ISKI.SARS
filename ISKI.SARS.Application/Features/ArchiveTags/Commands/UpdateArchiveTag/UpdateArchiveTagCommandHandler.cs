@@ -16,7 +16,6 @@ public class UpdateArchiveTagCommandHandler(
     public async Task<GetArchiveTagDto> Handle(UpdateArchiveTagCommand request, CancellationToken cancellationToken)
     {
         await rules.ArchiveTagMustExist(request.Id);
-        await rules.TagNodeIdMustBeUnique(request.TagNodeId);
 
         var entity = await repository.GetByIdAsync(request.Id);
         mapper.Map(request, entity!);

@@ -11,4 +11,3 @@ public class ReportTemplate : BaseEntity<int>
     public ICollection<ReportTemplateUser> ReportTemplateUsers { get; set; } = new List<ReportTemplateUser>();
     public ICollection<ReportTemplateArchiveTag> ReportTemplateArchiveTags { get; set; } = new List<ReportTemplateArchiveTag>();
 }
-
