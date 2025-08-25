@@ -35,6 +35,7 @@ public class CreateReportTemplateCommandHandler(
             };
 
             await shareRepository.AddAsync(share);
+            created.ReportTemplateUsers.Add(share);
         }
 
         return mapper.Map<GetReportTemplateDto>(created);
