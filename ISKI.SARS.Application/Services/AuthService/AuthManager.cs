@@ -66,7 +66,7 @@ public class AuthManager(
     public async Task<AccessToken> RefreshTokenAsync(string refreshToken, string ipAddress)
     {
         var storedToken = await refreshTokenRepository.GetAsync(x => x.Token == refreshToken);
-        if (storedToken == null || storedToken.Expires < DateTime.UtcNow)
+        if (storedToken == null || storedToken.Expires < DateTime.Now)
             throw new BusinessException("Refresh token geçersiz.");
 
         var user = await userRepository.GetAsync(x => x.Id == storedToken.UserId);

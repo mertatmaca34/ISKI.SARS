@@ -11,5 +11,6 @@ public class LogEntryConfiguration : BaseEntityConfiguration<LogEntry, int>
         base.Configure(builder);
         builder.Property(x => x.Level).IsRequired();
         builder.Property(x => x.Message).IsRequired().HasMaxLength(1000);
+        builder.Property(x => x.Detail).HasMaxLength(2000);
     }
 }

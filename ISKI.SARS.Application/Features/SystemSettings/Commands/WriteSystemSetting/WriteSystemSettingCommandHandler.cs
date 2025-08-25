@@ -3,6 +3,7 @@ using ISKI.SARS.Domain.Entities;
 using ISKI.SARS.Domain.Services;
 using MediatR;
 using Microsoft.Extensions.Configuration;
+using ISKI.SARS.Application.Features.SystemSettings.Constants;
 
 namespace ISKI.SARS.Application.Features.SystemSettings.Commands.WriteSystemSetting;
 
@@ -22,7 +23,7 @@ public class WriteSystemSettingCommandHandler(
                 OpcServerUrl = request.OpcServerUrl,
                 SessionTimeout = request.SessionTimeout,
                 LogLevel = request.LogLevel,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.Now
             };
             await repository.AddAsync(entity);
         }
@@ -31,7 +32,7 @@ public class WriteSystemSettingCommandHandler(
             entity.OpcServerUrl = request.OpcServerUrl;
             entity.SessionTimeout = request.SessionTimeout;
             entity.LogLevel = request.LogLevel;
-            entity.UpdatedAt = DateTime.UtcNow;
+            entity.UpdatedAt = DateTime.Now;
 
             await repository.UpdateAsync(entity);
         }
@@ -39,7 +40,7 @@ public class WriteSystemSettingCommandHandler(
         return new SystemSettingDto
         {
             OpcServerUrl = entity.OpcServerUrl,
-            DatabaseConnection = configuration.GetConnectionString("DefaultConnection") ?? string.Empty,
+            DatabaseConnection = configuration.GetConnectionString(SystemSettingConstants.DefaultConnection) ?? string.Empty,
             RetentionDays = 90,
             EmailNotifications = true,
             SmsNotifications = false,

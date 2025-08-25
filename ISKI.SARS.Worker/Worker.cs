@@ -3,6 +3,7 @@ using ISKI.SARS.Domain.Entities;
 using ISKI.SARS.Domain.Services;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Concurrent;
 
 namespace ISKI.SARS.Worker;
 
@@ -12,6 +13,7 @@ public class Worker : BackgroundService
     private readonly IServiceProvider _serviceProvider;
     private readonly IConnectionService _connectionService;
     private readonly INodeReadWriteService _readWriteService;
+    private readonly ConcurrentQueue<InstantValue> _instantValueQueue = new();
 
     public Worker(
         ILogger<Worker> logger,
@@ -30,48 +32,62 @@ public class Worker : BackgroundService
         await EnsureConnectedAsync(stoppingToken);
 
         using var scope = _serviceProvider.CreateScope();
-        var templateRepo = scope.ServiceProvider.GetRequiredService<IReportTemplateRepository>();
+        var tagRepo = scope.ServiceProvider.GetRequiredService<IArchiveTagRepository>();
 
-        var templates = await templateRepo.GetAllAsync(t => t.IsActive);
+        var tags = await tagRepo.GetAllAsync(t => t.IsActive);
 
-        var tasks = templates.Select(t => ProcessTemplateAsync(t, stoppingToken)).ToList();
+        var queueTask = ProcessQueueAsync(stoppingToken);
+        var tasks = tags.Select(t => ProcessTagAsync(t, stoppingToken)).ToList();
+        tasks.Add(queueTask);
 
         await Task.WhenAll(tasks);
     }
 
-    private async Task ProcessTemplateAsync(ReportTemplate template, CancellationToken token)
+    private async Task ProcessTagAsync(ArchiveTag tag, CancellationToken token)
     {
         while (!token.IsCancellationRequested)
         {
             await EnsureConnectedAsync(token);
 
-            using var scope = _serviceProvider.CreateScope();
-            var tagRepo = scope.ServiceProvider.GetRequiredService<IReportTemplateTagRepository>();
-            var valueRepo = scope.ServiceProvider.GetRequiredService<IInstantValueRepository>();
-
-            var tags = await tagRepo.GetAllAsync(t => t.ReportTemplateId == template.Id);
-
-            foreach (var tag in tags)
+            var result = await _readWriteService.ReadNodeAsync(tag.TagNodeId);
+            if (!result.Success)
             {
-                var result = await _readWriteService.ReadNodeAsync(tag.TagNodeId);
-                if (!result.Success)
-                {
-                    _logger.LogWarning("Failed to read {node}", tag.TagNodeId);
-                    continue;
-                }
-
-                var instantValue = new InstantValue
-                {
-                    Id = result.Timestamp,
-                    ReportTemplateTagId = tag.Id,
-                    Value = result.Data?.Value?.ToString() ?? string.Empty,
-                    Status = true
-                };
-
-                await valueRepo.AddAsync(instantValue);
+                _logger.LogWarning("Failed to read {node}", tag.TagNodeId);
+                await Task.Delay(tag.PullInterval * 1000, token);
+                continue;
             }
 
-            await Task.Delay(template.PullInterval*1000, token);
+            var instantValue = new InstantValue
+            {
+                Id = result.Timestamp,
+                ArchiveTagId = tag.Id,
+                Value = result.Data?.Value?.ToString() ?? string.Empty,
+                Status = true
+            };
+
+            _instantValueQueue.Enqueue(instantValue);
+
+            await Task.Delay(tag.PullInterval * 1000, token);
+        }
+    }
+
+    private async Task ProcessQueueAsync(CancellationToken token)
+    {
+        while (!token.IsCancellationRequested)
+        {
+            if (_instantValueQueue.IsEmpty)
+            {
+                await Task.Delay(100, token);
+                continue;
+            }
+
+            using var scope = _serviceProvider.CreateScope();
+            var valueRepo = scope.ServiceProvider.GetRequiredService<IInstantValueRepository>();
+
+            while (_instantValueQueue.TryDequeue(out var instantValue))
+            {
+                await valueRepo.AddAsync(instantValue);
+            }
         }
     }
 

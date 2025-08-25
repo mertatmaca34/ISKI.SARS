@@ -6,12 +6,13 @@ using ISKI.SARS.Application.Features.Logs.Queries.GetLogs;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ISKI.Core.Security.Constants;
 
 namespace ISKI.SARS.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = "Admin")]
+[Authorize(Roles = GeneralOperationClaims.Admin)]
 public class LogsController(IMediator mediator) : ControllerBase
 {
     [HttpPost]

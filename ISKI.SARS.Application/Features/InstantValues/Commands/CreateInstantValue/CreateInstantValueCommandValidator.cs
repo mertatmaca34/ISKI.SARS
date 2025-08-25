@@ -7,7 +7,7 @@ public class CreateInstantValueCommandValidator : AbstractValidator<CreateInstan
 {
     public CreateInstantValueCommandValidator()
     {
-        RuleFor(x => x.ReportTemplateTagId)
+        RuleFor(x => x.ArchiveTagId)
             .GreaterThan(0)
             .WithMessage(InstantValueMessages.InvalidTagId);
 
@@ -16,7 +16,7 @@ public class CreateInstantValueCommandValidator : AbstractValidator<CreateInstan
             .WithMessage(InstantValueMessages.ValueCannotBeEmpty);
 
         RuleFor(x => x.Timestamp)
-            .LessThanOrEqualTo(DateTime.UtcNow.AddMinutes(1)) // çok ileri zaman olmasın
-            .WithMessage("Zaman bilgisi geçerli bir tarih olmalıdır.");
+            .LessThanOrEqualTo(DateTime.Now.AddMinutes(1)) // çok ileri zaman olmasın
+            .WithMessage(InstantValueMessages.InvalidTimestamp);
     }
 }

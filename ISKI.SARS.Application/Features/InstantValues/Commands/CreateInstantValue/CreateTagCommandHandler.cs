@@ -20,11 +20,11 @@ public class CreateInstantValueCommandHandler(
     public async Task<GetInstantValueDto> Handle(CreateInstantValueCommand request, CancellationToken cancellationToken)
     {
         // Opsiyonel: aynı tag için aynı timestamp varsa ekleme
-        await _businessRules.TimestampMustBeUnique(request.ReportTemplateTagId, request.Timestamp);
+        await _businessRules.TimestampMustBeUnique(request.ArchiveTagId, request.Timestamp);
 
         var instantValue = _mapper.Map<InstantValue>(request);
         instantValue.Id = request.Timestamp;
-        instantValue.CreatedAt = DateTime.UtcNow;
+        instantValue.CreatedAt = DateTime.Now;
 
         var created = await _instantValueRepository.AddAsync(instantValue);
         return _mapper.Map<GetInstantValueDto>(created);

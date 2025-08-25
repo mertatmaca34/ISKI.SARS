@@ -1,6 +1,7 @@
 using AutoMapper;
 using ISKI.Core.CrossCuttingConcerns.Exceptions;
 using ISKI.SARS.Application.Features.Logs.Dtos;
+using ISKI.SARS.Application.Features.Logs.Constants;
 using ISKI.SARS.Domain.Services;
 using MediatR;
 
@@ -13,7 +14,7 @@ public class DeleteLogCommandHandler(ILogRepository repository, IMapper mapper)
     {
         var entity = await repository.GetByIdAsync(request.Id);
         if (entity is null)
-            throw new BusinessException("Log not found");
+            throw new BusinessException(LogMessages.LogNotFound);
         var deleted = await repository.DeleteAsync(entity);
         return mapper.Map<LogDto>(deleted);
     }

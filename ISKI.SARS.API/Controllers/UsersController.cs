@@ -7,6 +7,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ISKI.SARS.Application.Features.Users.Commands.ChangePassword;
+using ISKI.Core.Security.Constants;
 
 namespace ISKI.SARS.API.Controllers;
 
@@ -14,7 +15,7 @@ namespace ISKI.SARS.API.Controllers;
 [ApiController]
 public class UsersController(IMediator mediator) : ControllerBase
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = GeneralOperationClaims.Admin)]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateUserCommand command)
     {
@@ -22,7 +23,7 @@ public class UsersController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = "Admin,Operator")]
+    [Authorize(Roles = GeneralOperationClaims.Admin + "," + GeneralOperationClaims.Operator)]
     [HttpPut]
     public async Task<IActionResult> Update([FromBody] UpdateUserCommand command)
     {
@@ -30,7 +31,7 @@ public class UsersController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = GeneralOperationClaims.Admin)]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {
@@ -38,7 +39,7 @@ public class UsersController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = "Admin,Operator")]
+    [Authorize(Roles = GeneralOperationClaims.Admin + "," + GeneralOperationClaims.Operator)]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id)
     {
@@ -46,7 +47,7 @@ public class UsersController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = GeneralOperationClaims.Admin)]
     [HttpGet]
     public async Task<IActionResult> GetList([FromQuery] GetUserListQuery query)
     {
@@ -54,7 +55,7 @@ public class UsersController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = "Admin,Operator")]
+    [Authorize(Roles = GeneralOperationClaims.Admin + "," + GeneralOperationClaims.Operator)]
     [HttpPut("change-password")]
     public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommand command)
     {

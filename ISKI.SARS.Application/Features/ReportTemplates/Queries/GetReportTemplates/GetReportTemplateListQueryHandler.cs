@@ -1,9 +1,9 @@
-﻿using AutoMapper;
-using ISKI.Core.Persistence.Dynamic;
+using AutoMapper;
 using ISKI.Core.Persistence.Paging;
 using ISKI.SARS.Application.Features.ReportTemplates.Dtos;
 using ISKI.SARS.Domain.Services;
 using MediatR;
+using System.Collections.Generic;
 
 namespace ISKI.SARS.Application.Features.ReportTemplates.Queries.GetReportTemplates;
 
@@ -14,13 +14,15 @@ public class GetReportTemplateListQueryHandler(
 {
     public async Task<PaginatedList<GetReportTemplateDto>> Handle(GetReportTemplateListQuery request, CancellationToken cancellationToken)
     {
-        var list = await repository.GetAllAsync(
+        var list = await repository.GetByUserAsync(
+            request.UserId,
             request.PageRequest.PageNumber,
-            request.PageRequest.PageSize,
-            request.DynamicQuery ?? new DynamicQuery()
-        );
+            request.PageRequest.PageSize);
 
         var mapped = mapper.Map<List<GetReportTemplateDto>>(list.Items);
+
+        for (var i = 0; i < mapped.Count; i++)
+            mapped[i].IsShared = list.Items[i].CreatedByUserId != request.UserId;
 
         return new PaginatedList<GetReportTemplateDto>
         {
@@ -32,3 +34,4 @@ public class GetReportTemplateListQueryHandler(
         };
     }
 }
+

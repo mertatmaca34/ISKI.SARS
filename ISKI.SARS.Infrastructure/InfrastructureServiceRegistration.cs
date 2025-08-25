@@ -14,8 +14,6 @@ public static class InfrastructureServiceRegistration
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, string connectionString)
     {
-        EnsureDatabaseExists(connectionString);
-
         services.AddDbContext<SarsDbContext>(options =>
             options.UseSqlServer(connectionString));
 
@@ -23,7 +21,9 @@ public static class InfrastructureServiceRegistration
 
         services.AddScoped<IInstantValueRepository, InstantValueRepository>();
         services.AddScoped<IReportTemplateRepository, ReportTemplateRepository>();
-        services.AddScoped<IReportTemplateTagRepository, ReportTemplateTagRepository>();
+        services.AddScoped<IArchiveTagRepository, ArchiveTagRepository>();
+        services.AddScoped<IReportTemplateArchiveTagRepository, ReportTemplateArchiveTagRepository>();
+        services.AddScoped<IReportTemplateUserRepository, ReportTemplateUserRepository>();
         services.AddScoped<ISystemMetricRepository, SystemMetricRepository>();
         services.AddScoped<ISystemSettingRepository, SystemSettingRepository>();
         services.AddScoped<ILogRepository, LogRepository>();
@@ -35,7 +35,7 @@ public static class InfrastructureServiceRegistration
         using (var scope = services.BuildServiceProvider().CreateScope())
         {
             var dbContext = scope.ServiceProvider.GetRequiredService<SarsDbContext>();
-            dbContext.Database.Migrate(); // Migrationları otomatik uygula
+            dbContext.Database.EnsureCreated(); // Migrationları otomatik uygula
 
             var opClaimRepo = scope.ServiceProvider.GetRequiredService<IOperationClaimRepository>();
             OperationClaimSeeder.SeedAsync(opClaimRepo).Wait();

@@ -4,6 +4,7 @@ using ISKI.OpcUa.Client;
 using ISKI.SARS.Application;
 using ISKI.SARS.Infrastructure;
 using ISKI.SARS.Infrastructure.Persistence;
+using ISKI.SARS.Infrastructure.Logging;
 using ISKI.SARS.Worker;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -100,11 +101,12 @@ app.UseHttpsRedirection();
 // 🔥 Global hata yönetimi
 app.UseMiddleware<ExceptionMiddleware>();
 
+// 🌐 CORS should run before authentication to handle pre-flight requests
+app.UseCors("AllowAll");
+
 // 🔑 Auth
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.UseCors("AllowAll");
 
 app.MapControllers();
 
@@ -114,5 +116,8 @@ using (var scope = app.Services.CreateScope())
     var dbContext = scope.ServiceProvider.GetRequiredService<SarsDbContext>();
     dbContext.Database.EnsureCreated();
 }
+
+//builder.Logging.AddDatabaseLogger();
+//builder.Logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning);
 
 app.Run();

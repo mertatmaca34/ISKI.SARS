@@ -8,10 +8,10 @@ public class InstantValueBusinessRules(IInstantValueRepository instantValueRepos
 {
     private readonly IInstantValueRepository _instantValueRepository = instantValueRepository;
 
-    public async Task TimestampMustBeUnique(int reportTemplateTagId, DateTime timestamp)
+    public async Task TimestampMustBeUnique(int archiveTagId, DateTime timestamp)
     {
         var existing = await _instantValueRepository.GetAsync(x =>
-            x.ReportTemplateTagId == reportTemplateTagId && x.Id == timestamp);
+            x.ArchiveTagId == archiveTagId && x.Id == timestamp);
 
         if (existing is not null)
             throw new BusinessException(InstantValueMessages.TimestampMustBeUnique);

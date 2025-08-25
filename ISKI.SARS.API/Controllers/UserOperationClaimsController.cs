@@ -7,10 +7,11 @@ using ISKI.SARS.Application.Features.UserOperationClaims.Queries.GetByUserId;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using ISKI.Core.Security.Constants;
 
 namespace ISKI.SARS.API.Controllers;
 
-[Authorize(Roles = "Admin")]
+[Authorize(Roles = GeneralOperationClaims.Admin)]
 [Route("api/[controller]")]
 [ApiController]
 public class UserOperationClaimsController(IMediator mediator) : ControllerBase

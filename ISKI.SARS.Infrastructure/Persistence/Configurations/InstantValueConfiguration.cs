@@ -11,19 +11,19 @@ public class InstantValueConfiguration : BaseEntityConfiguration<InstantValue, D
     {
         base.Configure(builder);
 
-        builder.Property(x => x.ReportTemplateTagId).IsRequired();
+        builder.Property(x => x.ArchiveTagId).IsRequired();
         builder.Property(x => x.Value).IsRequired().HasMaxLength(500); // Opsiyonel: 500 fazla bile olabilir
         builder.Property(x => x.Status).IsRequired();
 
         // Index önerileri
-        builder.HasIndex(x => x.ReportTemplateTagId);
+        builder.HasIndex(x => x.ArchiveTagId);
         builder.HasIndex(x => x.Id); // Id = Timestamp, sorgularda BETWEEN vs. yapılacağı için mantıklı
 
         // Navigation (isteğe bağlı, eğer InstantValue içinde tanımlandıysa)
         builder
-            .HasOne(x => x.ReportTemplateTag)
+            .HasOne(x => x.ArchiveTag)
             .WithMany()
-            .HasForeignKey(x => x.ReportTemplateTagId)
+            .HasForeignKey(x => x.ArchiveTagId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

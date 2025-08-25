@@ -15,7 +15,7 @@ public static class UserSeeder
         var adminClaim = await operationClaimRepository.GetAsync(x => x.Name == GeneralOperationClaims.Admin);
         if (adminClaim == null) return;
 
-        var existingUser = await userRepository.GetAsync(x => x.Email == "admin");
+        var existingUser = await userRepository.GetAsync(x => x.Email == "admin@gmail.com");
         if (existingUser != null) return;
 
         HashingHelper.CreatePasswordHash("1Q2w3e", out var hash, out var salt);
@@ -25,7 +25,7 @@ public static class UserSeeder
             Id = Guid.NewGuid(),
             FirstName = "admin",
             LastName = "root",
-            Email = "admin",
+            Email = "admin@gmail.com",
             PasswordHash = hash,
             PasswordSalt = salt,
             Status = true

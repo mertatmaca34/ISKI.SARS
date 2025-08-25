@@ -6,7 +6,8 @@ using ISKI.SARS.Application.Features.OperationClaims.Rules;
 using ISKI.SARS.Application.Features.UserOperationClaims.Rules;
 using ISKI.SARS.Application.Features.Users.Rules;
 using ISKI.SARS.Application.Features.ReportTemplates.Rules;
-using ISKI.SARS.Application.Features.ReportTemplateTags.Rules;
+using ISKI.SARS.Application.Features.ArchiveTags.Rules;
+using ISKI.SARS.Application.Features.ReportTemplateArchiveTags.Rules;
 
 namespace ISKI.SARS.Application;
 
@@ -24,7 +25,8 @@ public static class ApplicationServiceRegistration
         services.AddScoped<UserBusinessRules>();
         services.AddScoped<InstantValueBusinessRules>();
         services.AddScoped<ReportTemplateBusinessRules>();
-        services.AddScoped<ReportTemplateTagBusinessRules>();
+        services.AddScoped<ArchiveTagBusinessRules>();
+        services.AddScoped<ReportTemplateArchiveTagBusinessRules>();
 
         return services;
     }

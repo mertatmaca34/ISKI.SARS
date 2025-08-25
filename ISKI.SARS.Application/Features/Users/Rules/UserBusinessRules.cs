@@ -1,4 +1,5 @@
 ﻿using ISKI.Core.CrossCuttingConcerns.Exceptions;
+using ISKI.Core.Security.Constants;
 using ISKI.Core.Security.Repositories;
 using ISKI.SARS.Application.Features.Users.Constants;
 using Microsoft.AspNetCore.Http;
@@ -26,7 +27,7 @@ public class UserBusinessRules(IUserRepository repository, IHttpContextAccessor 
     {
         var user = httpContextAccessor.HttpContext?.User;
         var currentUserId = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var isAdmin = user?.IsInRole("Admin") ?? false;
+        var isAdmin = user?.IsInRole(GeneralOperationClaims.Admin) ?? false;
 
         if (!isAdmin && currentUserId != targetUserId.ToString())
             throw new BusinessException(UserMessages.UpdateNotAllowed);
