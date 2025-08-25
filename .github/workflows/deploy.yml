@@ -27,25 +27,8 @@ jobs:
       - name: Test
         run: dotnet test --configuration Release --no-build
 
-      - name: Publish WebUI
-        run: dotnet publish ISKI.SARS.WebUI/ISKI.SARS.WebUI.csproj -c Release -o ./publish
-
-      - name: Ensure web.config (IIS)
-        shell: pwsh
-        run: |
-          if (-not (Test-Path "./publish/web.config")) {
-            @"
-<?xml version="1.0" encoding="utf-8"?>
-<configuration>
-  <system.webServer>
-    <handlers>
-      <add name="aspNetCore" path="*" verb="*" modules="AspNetCoreModuleV2" resourceType="Unspecified" />
-    </handlers>
-    <aspNetCore processPath="dotnet" arguments="ISKI.SARS.WebUI.dll" stdoutLogEnabled="false" stdoutLogFile=".\logs\stdout" hostingModel="inprocess" />
-  </system.webServer>
-</configuration>
-"@ | Out-File -FilePath "./publish/web.config" -Encoding utf8
-          }
+      - name: Publish WebUI (include IIS assets)
+        run: dotnet publish ISKI.SARS.WebUI/ISKI.SARS.WebUI.csproj -c Release -o ./publish /p:PublishIISAssets=true
 
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4
